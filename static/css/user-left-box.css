@@ -1,0 +1,90 @@
+.left-box {
+    position: fixed; /* ตำแหน่งคงที่ */
+    top: 50%; /* อยู่ตรงกลางหน้าจอในแนวตั้ง */
+    left: 0; /* ชิดด้านซ้าย */
+    transform: translateY(-50%); /* จัดให้อยู่ตรงกลางในแนวตั้ง */
+    width: 20px; /* ความกว้างของกล่อง */
+    padding: 30px 30px 30px 15px; /* เพิ่มพื้นที่ภายในกล่อง */
+    background-color: rgba(255, 255, 255, 0.2); /* สีพื้นหลัง */
+    clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%); /* ปรับมุมขวาบนและล่างให้ทะแยง */
+    text-align: left; /* จัดข้อความให้อยู่ชิดซ้าย */
+    z-index: 1000; /* แสดงด้านบนสุด */
+    color: white; /* สีข้อความ */
+    font-size: 18px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
+    border: 2px solid rgba(255, 255, 255, 0.3); /* ขอบกรอบโปร่งใส */
+    animation: slide-in 1s ease-out forwards; /* เพิ่มแอนิเมชัน */
+}
+
+/* แอนิเมชันสไลด์ */
+@keyframes slide-in {
+    from {
+        left: -100px; /* ตำแหน่งเริ่มต้น (ซ่อนอยู่ด้านซ้าย) */
+    }
+    to {
+        left: 0; /* ตำแหน่งสุดท้าย (แสดงเต็มที่) */
+    }
+}
+
+.icon-button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.icon-button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.scroll-to-top {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-to-top:hover {
+    background-color: rgba(0, 123, 255, 0.8); /* เปลี่ยนสีเมื่อ hover */
+    transform: scale(1.1); /* ขยายเล็กน้อยเมื่อ hover */
+}
+
+.logout-button {
+    background-color: #d9534f; /* สีแดง */
+}
+
+.logout-button:hover {
+    background-color: #c9302c; /* สีแดงเข้มเมื่อ hover */
+}
+
+
+.tooltip {
+    position: fixed; /* ตำแหน่งแบบคงที่ ไม่เลื่อนตาม Scroll */
+    padding: 10px 15px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc); /* พื้นหลังแบบ Gradient */
+    color: white; /* สีข้อความ */
+    border-radius: 8px; /* มุมโค้งของ Tooltip */
+    font-size: 14px; /* ขนาดข้อความ */
+    white-space: nowrap; /* ป้องกันข้อความตัดบรรทัด */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* เงาให้ Tooltip */
+    opacity: 0; /* เริ่มต้นซ่อน Tooltip */
+    transform: translateY(-10px) scale(0.95); /* ขยับขึ้นและย่อขนาดเล็กลงเล็กน้อย */
+    transition: opacity 0.2s ease, transform 0.2s ease; /* การเปลี่ยนแปลงแบบนุ่มนวล */
+    pointer-events: none; /* ป้องกันการคลิกหรือโต้ตอบ */
+    z-index: 1000; /* แสดง Tooltip ด้านบน */
+}
+
+.tooltip.show {
+    opacity: 1; /* แสดง Tooltip */
+    transform: translateY(0) scale(1); /* เลื่อนลงและขยายขนาดเป็นปกติ */
+}
+
+@media (max-width: 768px) {
+    .left-box {
+        display: none;
+    }
+}

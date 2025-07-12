@@ -1,0 +1,44 @@
+.header-box {
+    position: fixed; /* ทำให้ส่วน header เลื่อนตาม */
+    top: 0; /* ยึดไว้ที่ด้านบนของหน้าจอ */
+    left: 50%; /* เลื่อนจุดอ้างอิงไปตรงกลางจอ */
+    transform: translateX(-50%); /* จัดให้อยู่กลางจอ */
+    width: 500px; /* กำหนดความกว้างของกรอบ */
+    padding: 0 20px; 
+    background: linear-gradient(135deg, #1a73e8, #4a90e2); /* พื้นหลังแบบ Gradient */
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%); /* รูปร่างกรอบ */
+    text-align: center; /* จัดข้อความให้อยู่ตรงกลาง */
+    z-index: 1000; /* แสดงเหนือองค์ประกอบอื่น */
+    color: white; /* สีข้อความ */
+    font-size: 20px; /* ขนาดข้อความ */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* เพิ่มเงาที่ชัดเจนขึ้น */
+    font-weight: bold;
+    letter-spacing: 1px; /* เพิ่มช่องว่างระหว่างตัวอักษร */
+    animation: slideDown 1s ease-in-out; /* เพิ่มการเคลื่อนไหว */
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease; /* เพิ่มการเปลี่ยนแปลงแบบนุ่มนวล */
+    height: 50px;              /* กำหนดความสูงแน่นอน */
+    line-height: 50px;         /* จัดข้อความให้กลางแนวดิ่ง */
+}
+
+.header-box:hover {
+    transform: translateX(-50%) scale(1.05); /* ขยายเล็กน้อยเมื่อ hover */
+    background: linear-gradient(135deg, #4a90e2, #1a73e8); /* สลับ Gradient */
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3); /* เพิ่มเงาเมื่อ hover */
+}
+
+/* การเคลื่อนไหว */
+@keyframes slideDown {
+    0% {
+        transform: translateX(-50%) translateY(-100%);
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .header-box{
+        display: none;
+    }
+}

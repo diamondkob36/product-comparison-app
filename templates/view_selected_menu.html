@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view-menu.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+<div class="view-menu-container">
+    <h1><i class="fas fa-utensils text-main"></i> {{ recipe.name }}</h1>
+
+    <!-- รูปภาพ -->
+    <div class="image-box">
+        <img src="{{ url_for('static', filename='images/' + recipe.image_url) }}" alt="{{ recipe.name }}">
+    </div>
+
+    <!-- จำนวนที่ผู้ใช้เลือก -->
+    <p class="serving-info">
+        <i class="fas fa-user-check"></i> คุณแบ่งทาน {{ recipe.user_servings | round(0) | int }} หน่วยบริโภค
+    </p>
+
+    <!-- วัตถุดิบหลัก -->
+    <div class="section">
+        <h2><i class="fas fa-carrot text-main"></i> วัตถุดิบหลัก</h2>
+        <ul>
+            {% for ing in recipe.primary_ingredients %}
+                <li>{{ ing.name }} {{ ing.converted_display }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- วัตถุดิบเสริม -->
+    <div class="section">
+        <h2><i class="fas fa-pepper-hot text-danger"></i> วัตถุดิบเสริม / เครื่องปรุง</h2>
+
+        {% if recipe.secondary_ingredients and recipe.secondary_ingredients|length > 0 %}
+            <ul>
+                {% for ing in recipe.secondary_ingredients %}
+                    <li>{{ ing.name }} {{ ing.converted_display }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">
+                <i class="fas fa-ban text-danger"></i> ไม่มีการใช้วัตถุดิบเสริมหรือเครื่องปรุง
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- วิธีทำ -->
+    <div class="section">
+        <h2><i class="fas fa-list-ol text-primary"></i> วิธีทำ</h2>
+        {% if recipe.instructions and recipe.instructions|length > 0 %}
+            <ol>
+                {% for step in recipe.instructions %}
+                    <li>{{ step }}</li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <p class="text-muted">
+                <i class="fas fa-info-circle text-secondary"></i> ไม่มีขั้นตอนการทำอาหารสำหรับเมนูนี้
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- ข้อมูลโภชนาการ -->
+    <div class="section">
+        <h2><i class="fas fa-apple-alt text-danger"></i> ข้อมูลโภชนาการ</h2>
+        <div class="nutrition-box">
+            <h3><i class="fas fa-utensils text-success"></i> พลังงานและสารอาหาร {{ recipe.user_servings | round(0) | int }} หน่วยบริโภค</h3>
+            <ul>
+                <li><i class="fas fa-fire-alt text-danger"></i> <strong>แคลอรี่:</strong> {{ recipe.nutrition.user_selected.calories | round(2) }} kcal</li>
+                <li><i class="fas fa-drumstick-bite text-primary"></i> <strong>โปรตีน:</strong> {{ recipe.nutrition.user_selected.protein | round(2) }} g</li>
+                <li><i class="fas fa-bacon text-warning"></i> <strong>ไขมัน:</strong> {{ recipe.nutrition.user_selected.fat | round(2) }} g</li>
+                <li><i class="fas fa-bread-slice text-info"></i> <strong>คาร์โบไฮเดรต:</strong> {{ recipe.nutrition.user_selected.carbs | round(2) }} g</li>
+                <li><i class="fas fa-candy-cane text-pink"></i> <strong>น้ำตาล:</strong> {{ recipe.nutrition.user_selected.sugar | round(2) }} g</li>
+                <li><i class="fas fa-prescription-bottle-alt text-secondary"></i> <strong>โซเดียม:</strong> {{ recipe.nutrition.user_selected.sodium | round(2) }} mg</li>
+            </ul>
+        </div>
+
+        <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
+            <i class="fas fa-info-circle text-info icon-inline" style="size: 14;"></i>
+            หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
+        </p>
+    </div>
+
+    <div class="action-buttons">
+        <a href="{{ url_for('users.homeuser') }}" class="back-button">
+            <i class="fas fa-arrow-left"></i> ย้อนกลับ
+        </a>
+        <a href="{{ url_for('users.edit_selected_menu', selected_id=selected_id) }}" class="edit-menu-btn">
+            <i class="fas fa-pen"></i> แก้ไขเมนู
+        </a>
+    </div>
+</div>
+</body>
+</html>

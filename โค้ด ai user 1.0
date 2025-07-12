@@ -1,0 +1,198 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const ingredientDropdown = $('#ingredient'); // ใช้ jQuery สำหรับ Select2
+    const ingredientAmount = document.getElementById("amount");
+    const expirationDate = document.getElementById("expiration-date");
+    const addIngredientForm = document.getElementById("add-ingredient-form");
+    const userIngredientsTable = document.getElementById("user-ingredients-table").querySelector("tbody");
+
+    let currentPage = 1;
+    let rowsPerPage = 10; // ค่าเริ่มต้นจำนวนแถวต่อหน้า
+
+    // ฟังก์ชันฟอร์แมตวันที่เป็น dd/mm/yyyy
+    function formatDate(dateString) {
+        if (!dateString) return "ไม่มีวันหมดอายุ";
+        const date = new Date(dateString);
+        return `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+    }
+
+    // ฟังก์ชันโหลดข้อมูลวัตถุดิบสำหรับ dropdown
+    async function loadIngredients() {
+        try {
+            const response = await fetch('/api/get_ingredients');
+            const data = await response.json();
+
+            if (data.ingredients) {
+                ingredientDropdown.empty(); // ล้างค่าเดิมใน dropdown
+                ingredientDropdown.append('<option value="" disabled selected>กรุณาเลือกวัตถุดิบ</option>');
+                data.ingredients.forEach(ingredient => {
+                    ingredientDropdown.append(
+                        `<option value="${ingredient.id}">${ingredient.name} (${ingredient.unit})</option>`
+                    );
+                });
+
+                // เรียกใช้ Select2
+                ingredientDropdown.select2({
+                    placeholder: "ค้นหาวัตถุดิบ",
+                    allowClear: true,
+                    width: '100%'
+                });
+            }
+        } catch (error) {
+            console.error("Error loading ingredients:", error);
+        }
+    }
+
+    // ฟังก์ชันโหลดวัตถุดิบของผู้ใช้จาก API
+    async function loadUserIngredients() {
+        try {
+            const response = await fetch('/users/get_user_ingredients');
+            const data = await response.json();
+
+            if (data.ingredients && data.ingredients.length > 0) {
+                userIngredientsTable.innerHTML = ""; // ล้างตารางเดิม
+
+                // เรียงลำดับวัตถุดิบ: วันที่หมดอายุจากใกล้ไปไกล และไม่มีวันหมดอายุไปอยู่ล่างสุด
+                const sortedIngredients = data.ingredients.sort((a, b) => {
+                    if (!a.expiration_date) return 1; // ไม่มีวันหมดอายุไปล่างสุด
+                    if (!b.expiration_date) return -1;
+                    return new Date(a.expiration_date) - new Date(b.expiration_date); // เรียงวันที่
+                });
+
+                displayTable(sortedIngredients); // แสดงผลข้อมูลในตาราง
+            } else {
+                userIngredientsTable.innerHTML = "<tr><td colspan='5'>ไม่มีวัตถุดิบในคลัง</td></tr>";
+            }
+        } catch (error) {
+            console.error("Error loading user ingredients:", error);
+        }
+    }
+
+    function displayTable(data) {
+        const tableBody = document.querySelector("#user-ingredients-table tbody");
+        tableBody.innerHTML = "";
+
+        // คำนวณหน้าที่จะแสดง
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const paginatedData = data.slice(startIndex, endIndex);
+
+        const today = new Date(); // วันที่ปัจจุบัน
+
+        // สร้างแถวในตาราง
+        paginatedData.forEach((ingredient) => {
+            let expirationText = "ไม่มีวันหมดอายุ";
+            let expirationClass = "text-success"; // สีเขียว
+
+            if (ingredient.expiration_date) {
+                const expirationDate = new Date(ingredient.expiration_date);
+                const diffTime = expirationDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays < 0) {
+                    expirationText = "หมดอายุ";
+                    expirationClass = "text-danger"; // สีแดง
+                } else if (diffDays <= 3) {
+                    expirationText = "ใกล้หมดอายุ";
+                    expirationClass = "text-warning"; // สีเหลือง
+                } else {
+                    expirationText = "ยังไม่หมดอายุ";
+                }
+            }
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${ingredient.name}</td>
+                <td>${ingredient.amount}</td>
+                <td>${ingredient.unit}</td>
+                <td>${formatDate(ingredient.expiration_date)}</td>
+                <td class="${expirationClass}">${expirationText}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        setupPagination(data); // ตั้งค่าการแบ่งหน้า
+    }
+
+    function setupPagination(data) {
+        const pagination = document.getElementById("pagination");
+        pagination.innerHTML = "";
+
+        const totalPages = Math.ceil(data.length / rowsPerPage);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement("button");
+            button.textContent = i;
+            button.className = i === currentPage ? "active" : "";
+            button.addEventListener("click", () => {
+                currentPage = i;
+                displayTable(data);
+            });
+            pagination.appendChild(button);
+        }
+    }
+
+    // ตัวเลือกเปลี่ยนจำนวนแถวต่อหน้า
+    document.getElementById("rows-per-page").addEventListener("change", (event) => {
+        rowsPerPage = parseInt(event.target.value, 10);
+        currentPage = 1; // รีเซ็ตเป็นหน้าแรก
+        loadUserIngredients();
+    });
+
+    // ฟังก์ชันเพิ่มวัตถุดิบใหม่
+    addIngredientForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const ingredientId = ingredientDropdown.val(); // ใช้ jQuery เพื่อดึงค่า
+        const amount = parseFloat(ingredientAmount.value);
+        const expirationDateValue = expirationDate.value;
+
+        // แปลงวันที่เป็นฟอร์แมต YYYY-MM-DD
+        const [day, month, year] = expirationDateValue.split('/');
+        const formattedExpirationDate = `${year}-${month}-${day}`;
+
+        if (!ingredientId || isNaN(amount) || amount <= 0 || !formattedExpirationDate) {
+            alert("กรุณาเลือกวัตถุดิบ ระบุจำนวน และวันหมดอายุให้ถูกต้อง");
+            return;
+        }
+
+        try {
+            const response = await fetch('/users/add_ingredient', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ingredient_id: ingredientId,
+                    amount: amount,
+                    expiration_date: formattedExpirationDate // ส่งวันหมดอายุที่แปลงฟอร์แมตแล้ว
+                })
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                alert(data.message || "เพิ่มวัตถุดิบสำเร็จ!");
+                ingredientAmount.value = "";
+                expirationDate.value = "";
+                ingredientDropdown.val(null).trigger('change'); // รีเซ็ต Select2
+                loadUserIngredients(); // โหลดข้อมูลใหม่ทันที
+                recommendMenu(); // เรียกฟังก์ชันแนะนำเมนูทันที
+            } else {
+                alert(data.error || "เกิดข้อผิดพลาดในการเพิ่มวัตถุดิบ");
+            }
+        } catch (error) {
+            console.error("Error adding ingredient:", error);
+        }
+    });
+
+    // โหลดข้อมูลเริ่มต้น
+    loadIngredients();
+    loadUserIngredients();
+
+    // ปรับช่องเลือกวันหมดอายุให้แสดงปฏิทินทันที
+    $(expirationDate).datepicker({
+        dateFormat: "dd/mm/yy", // รูปแบบวัน/เดือน/ปี
+        changeMonth: true,
+        changeYear: true,
+        showAnim: "slideDown"
+    });
+});

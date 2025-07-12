@@ -1,0 +1,232 @@
+import mysql.connector
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import MultiLabelBinarizer
+import json
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+from markupsafe import Markup, escape
+
+# ฟังก์ชันโหลดข้อมูลจากฐานข้อมูล
+def load_recipes():
+    try:
+        conn = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='',
+            database='recipes_db'
+        )
+        cursor = conn.cursor()
+        cursor.execute('SELECT name, ingredients, instructions, category_id FROM recipes')
+        recipes = []
+        for row in cursor.fetchall():
+            recipes.append({
+                'name': row[0],
+                'ingredients': json.loads(row[1]),  # แปลง JSON เป็น Python object
+                'instructions': row[2],
+                'category_id': row[3]
+            })
+    except mysql.connector.Error as err:
+        print(f"Database error: {err}")
+        recipes = []
+    finally:
+        if conn.is_connected():
+            conn.close()
+    return recipes
+
+def load_categories():
+    try:
+        conn = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='',  # ใส่รหัสผ่านจริงหากมี
+            database='recipes_db'
+        )
+        cursor = conn.cursor()
+        cursor.execute('SELECT id, name FROM categories')
+        categories = {row[0]: row[1] for row in cursor.fetchall()}
+    except mysql.connector.Error as err:
+        print(f"Database error: {err}")
+        categories = {}
+    finally:
+        if conn.is_connected():
+            conn.close()
+    return categories
+
+
+
+# ฟังก์ชันสำหรับฝึกโมเดล Decision Tree
+def train_model():
+    recipes = load_recipes()
+    if not recipes:
+        raise ValueError("No recipes found. Please check your database.")
+
+    recipe_names = [recipe['name'] for recipe in recipes]
+    ingredients = [recipe['ingredients'] for recipe in recipes]
+
+    # แปลงวัตถุดิบเป็นข้อมูลเชิงตัวเลข
+    mlb = MultiLabelBinarizer()
+    ingredient_matrix = mlb.fit_transform(
+    [[item['name'] for item in ing if item['name']] for ing in ingredients]
+    )
+
+    # สร้างและฝึกโมเดล
+    model = DecisionTreeClassifier(random_state=42)
+    model.fit(ingredient_matrix, recipe_names)
+
+    return model, mlb
+
+
+# ฟังก์ชันเปรียบเทียบและแนะนำเมนู
+def recommend_recipes(available_ingredients, model, mlb):
+    # โหลดสูตรอาหารทั้งหมด
+    recipes = load_recipes()
+
+    # โหลดหมวดหมู่จากฐานข้อมูล
+    categories = load_categories()  # ดึงข้อมูล {id: ชื่อหมวดหมู่}
+
+    # แปลงวัตถุดิบที่มีให้อยู่ในรูปแบบ dictionary
+    available_dict = {ing['name']: ing for ing in available_ingredients}
+
+    # คำนวณ Cosine Similarity
+    recipe_matrix = mlb.transform(
+        [[item['name'] for item in recipe['ingredients']] for recipe in recipes]
+    )
+    available_vector = mlb.transform([[ing['name'] for ing in available_ingredients]])[0]
+    similarity_scores = cosine_similarity([available_vector], recipe_matrix).flatten()
+
+    # ผลลัพธ์สำหรับการแนะนำเมนู
+    results = []
+    for i, recipe in enumerate(recipes):
+        weighted_score = 0  # คะแนนถ่วงน้ำหนัก
+        match_count = 0  # จำนวนวัตถุดิบที่เพียงพอ
+        partial_match_count = 0  # จำนวนวัตถุดิบที่ไม่เพียงพอ
+        total_count = len(recipe['ingredients'])
+        ingredient_details = []  # รายละเอียดวัตถุดิบ
+
+        for ing in recipe['ingredients']:
+            if ing['name'] in available_dict:
+                available_amount = available_dict[ing['name']]['amount']
+                if available_amount >= ing['amount']:
+                    status = "ครบ"
+                    match_count += 1  # วัตถุดิบเพียงพอ
+                    weighted_score += 1  # คะแนนเต็ม
+                else:
+                    status = "มีไม่เพียงพอ"
+                    partial_match_count += available_amount / ing['amount']  # คะแนนถ่วงน้ำหนัก
+                    weighted_score += available_amount / ing['amount']
+            else:
+                status = "ไม่มี"
+            ingredient_details.append(
+                f"{ing['name']} {ing['amount']} {ing['unit']} ({status})"
+            )
+
+        # ปรับคะแนน Cosine Similarity ให้สัมพันธ์กับ weighted_score
+        similarity = (similarity_scores[i] * weighted_score / total_count) * 100
+
+        if similarity > 0.0:  # ไม่แสดงเมนูที่มีคะแนน 0.0
+            results.append({
+                'name': recipe['name'],
+                'category': categories.get(recipe['category_id'], f"ประเภท {recipe['category_id']}"),
+                'similarity': similarity,
+                'match': match_count + partial_match_count,
+                'total': total_count,
+                'ingredients': ingredient_details,
+            })
+
+    # จัดกลุ่มผลลัพธ์ตามหมวดหมู่
+    categorized_results = {}
+    for result in results:
+        category = result['category']
+        if category not in categorized_results:
+            categorized_results[category] = []
+        categorized_results[category].append(result)
+
+    # จัดเรียงภายในแต่ละหมวดหมู่
+    for category in categorized_results:
+        categorized_results[category] = sorted(
+            categorized_results[category],
+            key=lambda x: (-x['similarity'], -x['match'])
+        )
+
+    # เรียงหมวดหมู่ตามคะแนนสูงสุดของเมนูในแต่ละหมวด
+    sorted_categories = sorted(
+        categorized_results.items(),
+        key=lambda x: max(recipe['similarity'] for recipe in x[1]),
+        reverse=True
+    )
+
+    # รูปแบบผลลัพธ์ที่แสดง
+    formatted_results = []
+    for category, recipes in sorted_categories:
+        formatted_results.append(Markup(f"อาหารประเภท {escape(category)}"))
+        max_similarity = max(recipe['similarity'] for recipe in recipes)  # ค้นหาคะแนนสูงสุดในหมวด
+        for recipe in recipes:
+            ingredients_text = []
+            for ing in recipe['ingredients']:
+                if "(ครบ)" in ing:
+                    icon = '<i class="fa-solid fa-check-circle text-success"></i>'
+                elif "(มีไม่เพียงพอ)" in ing:
+                    icon = '<i class="fa-solid fa-exclamation-circle text-warning"></i>'
+                elif "(ไม่มี)" in ing:
+                    icon = '<i class="fa-solid fa-times-circle text-danger"></i>'
+                else:
+                    icon = ""
+
+                ingredients_text.append(f"{icon} {escape(ing)}")
+
+            ingredients_text_html = ", ".join(ingredients_text)
+
+            if recipe['similarity'] == max_similarity:  # เมนูที่มีคะแนนสูงสุด
+                formatted_results.append(
+                    Markup(
+                        f"""
+                            <p>"{escape(recipe['name'])}" (คะแนนความใกล้เคียง: {recipe['similarity']:.2f}%, มีวัตถุดิบ {recipe['match']:.1f}/{recipe['total']})</p>
+                            <p>วัตถุดิบที่ต้องใช้: {ingredients_text_html}</p>
+                        """
+                    )
+                )
+            else:
+                formatted_results.append(
+                    Markup(
+                        f"""
+                            <p>"{escape(recipe['name'])}" (คะแนนความใกล้เคียง: {recipe['similarity']:.2f}%, มีวัตถุดิบ {recipe['match']:.1f}/{recipe['total']})</p>
+                            <p>วัตถุดิบที่ต้องใช้: {ingredients_text_html}</p>
+                        """
+                    )
+                )
+    if not formatted_results:
+        formatted_results = [Markup("<p>ไม่มีเมนูที่ตรงกับวัตถุดิบที่มี</p>")]
+    return {"recommendations": formatted_results}
+
+
+# ฟังก์ชันหลักสำหรับการทดสอบ
+if __name__ == "__main__":
+    try:
+        # ฝึกโมเดลจากข้อมูลในฐานข้อมูล
+        print("Training model...")
+        model, mlb = train_model()
+
+        # ตัวอย่างข้อมูลวัตถุดิบที่มี (กรอกข้อมูลตามที่ต้องการ)
+        available_ingredients = [
+            {"name": "ไก่", "amount": 500},
+            {"name": "พริกแกงเขียวหวาน", "amount": 100},
+            {"name": "มะเขือเปราะ", "amount": 150},
+            {"name": "ใบมะกรูด", "amount": 10}
+        ]
+
+        # แสดงวัตถุดิบที่มี
+        print("\nAvailable Ingredients:")
+        for ing in available_ingredients:
+            print(f"- {ing['name']}: {ing['amount']}")
+
+        # เรียกใช้ฟังก์ชันแนะนำเมนู
+        print("\nRecommending recipes...")
+        recommendations = recommend_recipes(available_ingredients, model, mlb)
+
+        # แสดงผลลัพธ์
+        print("\nRecommended Recipes:")
+        for rec in recommendations["recommendations"]:
+            print(rec)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")

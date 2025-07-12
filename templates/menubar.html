@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}แถบเมนู{% endblock %}</title>
+    
+    <link rel="stylesheet" href="/static/css/menu.css" type="text/css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <script src="/static/js/menu.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="textlogo">MealMatch AI</span>
+        </div>
+        <div class="menu" id="menu">
+            <button class="close-menu" id="close-menu">&times;</button>
+            <a href="{{ url_for('users.homeuser') }}">
+                <i class="fas fa-home"></i>
+                <span class="menu-label">หน้าแรก</span>
+            </a>
+            <a href="{{ url_for('users.general_menus') }}">
+                <i class="fas fa-vials"></i>
+                <span class="menu-label">เมนูอาหารทั่วไป</span>
+            </a>
+            <a href="{{ url_for('users.about') }}">
+                <i class="fas fa-users"></i>
+                <span class="menu-label">ผู้จัดทำ</span>
+            </a>
+            <a href="{{ url_for('auth.logout') }}" class="logout-button2">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="menu-label">ออกจากระบบ</span>
+            </a>
+        </div>
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+    </nav>
+    {% block content %}{% endblock %}
+</body>
+</html>

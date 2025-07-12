@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <!-- เพิ่ม meta viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>{{ recipe.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view-menu.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <div class="view-menu-container">
+        <h1><i class="fas fa-utensils text-main"></i> {{ recipe.name }}</h1>
+
+        <!-- ✅ รูปภาพ -->
+        <div class="image-box">
+            <img src="{{ url_for('static', filename='images/' + recipe.image_url) }}" alt="{{ recipe.name }}">
+        </div>
+
+        <!-- ✅ แสดงจำนวนที่แบ่งทานได้ -->
+        <p class="serving-info">
+            <i class="fas fa-utensils"></i> เมนูนี้สามารถแบ่งทานได้สูงสุด {{ recipe.servings }} หน่วยบริโภคตามสูตรอาหาร
+        </p>
+
+       <!-- ✅ วัตถุดิบหลัก -->
+        <div class="section">
+            <h2><i class="fas fa-carrot text-main"></i> วัตถุดิบหลัก</h2>
+            <ul>
+                {% for ing in recipe.primary_ingredients %}
+                <li>
+                    {{ ing.name }} {{ ing.converted_display }}<br>
+                    <small class="{% if ing.stock >= ing.amount %}text-success
+                                {% elif ing.stock > 0 %}text-warning
+                                {% else %}text-danger{% endif %}">
+                        {% if ing.stock >= ing.amount %}
+                            ✅ มีวัตถุดิบในคลัง {{ ing.stock }}/{{ ing.amount }} {{ ing.unit }}
+                        {% elif ing.stock > 0 %}
+                            ❗ มีวัตถุดิบในคลัง {{ ing.stock }}/{{ ing.amount }} {{ ing.unit }}
+                        {% else %}
+                            ❌ ไม่มีวัตถุดิบในคลัง
+                        {% endif %}
+                    </small>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- ✅ วัตถุดิบเสริม -->
+        <div class="section">
+            <h2><i class="fas fa-pepper-hot text-danger"></i> วัตถุดิบเสริม / เครื่องปรุง</h2>
+
+            {% if recipe.secondary_ingredients and recipe.secondary_ingredients|length > 0 %}
+                <ul>
+                    {% for ing in recipe.secondary_ingredients %}
+                    <li>
+                        {{ ing.name }} {{ ing.converted_display }}<br>
+                        <small class="{% if ing.stock >= ing.amount %}text-success
+                                    {% elif ing.stock > 0 %}text-warning
+                                    {% else %}text-danger{% endif %}">
+                            {% if ing.stock >= ing.amount %}
+                                ✅ มีวัตถุดิบในคลัง {{ ing.stock }}/{{ ing.amount }} {{ ing.unit }}
+                            {% elif ing.stock > 0 %}
+                                ❗ มีวัตถุดิบในคลัง {{ ing.stock }}/{{ ing.amount }} {{ ing.unit }}
+                            {% else %}
+                                ❌ ไม่มีวัตถุดิบในคลัง
+                            {% endif %}
+                        </small>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">
+                    <i class="fas fa-ban text-danger"></i> ไม่มีการใช้วัตถุดิบเสริมหรือเครื่องปรุง
+                </p>
+            {% endif %}
+        </div>
+
+        <!-- ✅ วิธีทำ -->
+        <div class="section">
+            <h2><i class="fas fa-list-ol text-primary"></i> วิธีทำ</h2>
+            {% if recipe.instructions and recipe.instructions|length > 0 %}
+                <ol>
+                    {% for step in recipe.instructions %}
+                    <li>{{ step }}</li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p class="text-muted">
+                    <i class="fas fa-info-circle text-secondary"></i> ไม่มีขั้นตอนการทำอาหารสำหรับเมนูนี้
+                </p>
+            {% endif %}
+            <!-- ✅ แหล่งที่มาของเมนู (source) -->
+            <div class="section">
+                <h2><i class="fas fa-book text-info"></i> แหล่งที่มาของเมนู</h2>
+                {% if recipe.source %}
+                    <ul class="source-list">
+                        {% if recipe.source.url %}
+                            <li><i class="fas fa-link text-success"></i>
+                                <a href="{{ recipe.source.url }}" target="_blank">URL : {{ recipe.source.url }}</a>
+                            </li>
+                        {% endif %}
+                        {% if recipe.source.facebook %}
+                            <li><i class="fab fa-facebook text-primary"></i>
+                                {{ recipe.source.facebook }}
+                            </li>
+                        {% endif %}
+                        {% if recipe.source.youtube %}
+                            <li><i class="fab fa-youtube text-danger"></i>
+                                {{ recipe.source.youtube }}
+                            </li>
+                        {% endif %}
+                        {% if recipe.source.note %}
+                            <li><i class="fas fa-comment text-primary"></i> {{ recipe.source.note }}</li>
+                        {% endif %}
+                    </ul>
+                {% else %}
+                    <p>ไม่ระบุแหล่งที่มา</p>
+                {% endif %}
+            </div>
+
+            <h2><i class="fas fa-apple-alt text-danger"></i> ข้อมูลโภชนาการ</h2>
+            <div class="nutrition-box">
+                <h3><i class="fas fa-utensils text-success"></i> พลังงานและสารอาหารรวมจากวัตถุดิบทั้งหมด</h3>
+                <ul>
+                    <li><i class="fas fa-fire-alt text-danger"></i> <strong>แคลอรี่:</strong> {{ recipe.nutrition.total.calories | round(2) }} kcal</li>
+                    <li><i class="fas fa-drumstick-bite text-primary"></i> <strong>โปรตีน:</strong> {{ recipe.nutrition.total.protein | round(2) }} g</li>
+                    <li><i class="fas fa-bacon text-warning"></i> <strong>ไขมัน:</strong> {{ recipe.nutrition.total.fat | round(2) }} g</li>
+                    <li><i class="fas fa-bread-slice text-info"></i> <strong>คาร์โบไฮเดรต:</strong> {{ recipe.nutrition.total.carbs | round(2) }} g</li>
+                    <li><i class="fas fa-candy-cane text-pink"></i> <strong>น้ำตาล:</strong> {{ recipe.nutrition.total.sugar | round(2) }} g</li>
+                    <li><i class="fas fa-prescription-bottle-alt text-secondary"></i> <strong>โซเดียม:</strong> {{ recipe.nutrition.total.sodium | round(2) }} mg</li>
+                </ul>
+                
+                <h3><i class="fas fa-utensils text-success"></i> พลังงานและสารอาหารต่อการแบ่งทาน 1 หน่วยบริโภค</h3>
+                <ul>
+                    <li><i class="fas fa-fire-alt text-danger"></i> <strong>แคลอรี่:</strong> {{ recipe.nutrition.per_serving.calories }} kcal</li>
+                    <li><i class="fas fa-drumstick-bite text-primary"></i> <strong>โปรตีน:</strong> {{ recipe.nutrition.per_serving.protein }} g</li>
+                    <li><i class="fas fa-bacon text-warning"></i> <strong>ไขมัน:</strong> {{ recipe.nutrition.per_serving.fat }} g</li>
+                    <li><i class="fas fa-bread-slice text-info"></i> <strong>คาร์โบไฮเดรต:</strong> {{ recipe.nutrition.per_serving.carbs }} g</li>
+                    <li><i class="fas fa-candy-cane text-pink"></i> <strong>น้ำตาล:</strong> {{ recipe.nutrition.per_serving.sugar }} g</li>
+                    <li><i class="fas fa-prescription-bottle-alt text-secondary"></i> <strong>โซเดียม:</strong> {{ recipe.nutrition.per_serving.sodium }} mg</li>
+                </ul>
+            </div>
+
+            <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
+                <i class="fas fa-info-circle text-info icon-inline"></i>
+                หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
+            </p>
+        </div>
+
+        <div class="action-buttons">
+            <a href="{{ url_for('users.homeuser') }}" class="back-button">
+                <i class="fas fa-arrow-left"></i> ย้อนกลับ
+            </a>
+            <a href="{{ url_for('users.menu_detail', recipe_id=recipe.id) }}" class="save-menu-button">
+                <i class="fas fa-check-circle"></i> บันทึกเมนู
+            </a>
+        </div>
+    </div>
+</body>
+</html>

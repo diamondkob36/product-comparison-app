@@ -1,0 +1,149 @@
+/* แถบเมนูหลัก */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
+    height: 50px; /* ⬅ เปลี่ยนจาก 43px เป็น 50px */
+    background-color: rgba(0, 0, 0, 0.4); /* เพิ่มความเข้มจาก 0.1 → 0.4 */
+}
+
+/* โลโก้ (แสดงเฉพาะหน้าจอเล็ก) */
+.logo .textlogo {
+    display: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* ปุ่มเมนู */
+.menu {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.menu a {
+    height: 50px;               /* ⬅ กำหนดความสูงเท่ากัน */
+    line-height: 50px;          /* ⬅ จัดข้อความให้อยู่กลางแนวดิ่ง */
+    padding: 0 20px;            /* ⬅ ลบ padding บนล่าง เหลือซ้ายขวา */
+    color: #ffffff;                  /* ขาวชัด */
+    text-decoration: none;      /* มีเส้นใต้ */
+    font-weight: 500;                /* ข้อความเด่นขึ้น */
+    border-radius: 8px;
+    transition: background-color 0.3s;
+    font-size: 16px;
+}
+
+.menu a i {
+    margin-right: 8px;
+    color: #ffffff; 
+}
+
+.menu-label {
+    display: none; /* ซ่อนข้อความเริ่มต้น */
+    white-space: nowrap;
+}
+
+.menu a:not(.logout-button2):hover {
+    background-color: #1a73e8;
+}
+
+.logout-button2 {
+    background-color: transparent; /* พื้นหลังปกติ */
+    color: #fff;                   /* สีตัวอักษรปกติ */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logout-button2:hover {
+    background-color: #e53935;     /* สีแดงเมื่อ hover */
+    color: #fff;
+}
+
+/* ปุ่มเปิดเมนู ☰ */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* ปุ่มปิดเมนู */
+.close-menu {
+    display: none;
+}
+
+/* ✅ แสดงข้อความเมื่อ hover (เฉพาะ desktop) */
+@media (min-width: 1025px) {
+    .menu a:hover .menu-label {
+        display: inline-block;
+        margin-left: 8px;
+        color: #fff;
+    }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .logo .textlogo {
+        display: block;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .menu-label {
+        display: contents;
+    }
+
+    .menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .menu.show {
+        transform: translateX(0);
+    }
+
+    .menu a {
+        width: 80%;
+        text-align: center;
+        font-size: 18px;
+        background-color: #222;
+        margin: 5px 0;
+    }
+
+    .close-menu {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
+        color: #fff;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .close-menu:hover {
+        color: #1a73e8;
+    }
+}

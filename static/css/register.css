@@ -1,0 +1,190 @@
+/* ตั้งค่าพื้นฐานของหน้า */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a, #3b82f6);
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* กล่องฟอร์ม */
+.login-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+/* กล่องฟอร์มแถวเดียวกัน */
+.form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+/* ฟอร์มครึ่งหน้าจอ */
+.form-group.half {
+    width: 48%;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input{
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-group.half input{
+    width: 91%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* ปุ่มสมัครสมาชิก */
+.login-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+.register-link {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.register-link a,
+.register-link a:visited {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* ✅ ปรับ container ของ select2 */
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 4px;
+    font-size: 1rem;
+    min-height: 38px;
+}
+
+/* ✅ ป้าย (Tag) แบบ Flex ชัดเจน */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #e7f3ff !important;
+    border: 1px solid #66aaff !important;
+    color: #004080 !important;
+    font-weight: 500;
+    padding: 5px 10px 5px 20px;
+    border-radius: 20px;
+    margin: 5px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px; /* ✅ ระยะห่างไอคอนกับข้อความ */
+    position: relative;
+}
+
+/* ✅ ลบเส้นกั้นหน้าข้อความ */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove::before {
+    content: none !important;
+}
+
+/* ✅ ปุ่มลบ สีแดง ขนาดเหมาะ */
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #e74c3c;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    margin-right: 4px;
+    margin-left: 0;
+    padding-top: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #c0392b;
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 9999;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.custom-alert.show {
+    opacity: 1;
+}
+
+.custom-alert.hidden {
+    display: none;
+}
+
+.custom-alert.success {
+    background-color: #28a745;
+}
+
+.custom-alert.error {
+    background-color: #dc3545;
+}

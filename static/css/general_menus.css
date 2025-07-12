@@ -1,0 +1,355 @@
+/* ✅ เพิ่มสีไอคอนตามสถานะวัตถุดิบ */
+.text-danger {color: red;}
+.text-warning {color: orange;}
+.text-success {color: green;}
+.text-neutral  { color: #6b7280; }   /* เทาอ่อนกลางๆ */
+/* 🎨 สีตัวอักษรหลัก */
+.text-main        { color: #f97316; } /* ส้มสุขภาพสดใส */
+.text-primary     { color: #1d4ed8; } /* น้ำเงินสด */
+.text-secondary   { color: #374151; } /* เทาเข้มใช้งานทั่วไป */
+.text-info        { color: #06b6d4; } /* ฟ้าไบร์ท = เนื้อหา / บาร์ */
+.text-pink        { color: #ec4899; } /* ชมพูหวาน */
+.text-gold        { color: #eab308; } /* เหลืองทอง */
+
+.text-energy    { color: #fb923c; }   /* พลังงาน */
+.text-protein   { color: #3b82f6; }   /* โปรตีน */
+.text-fat       { color: #facc15; }   /* ไขมัน */
+.text-carb      { color: #06b6d4; }   /* คาร์โบฯ */
+.text-sugar     { color: #f472b6; }   /* น้ำตาล */
+.text-sodium    { color: #9ca3af; }   /* โซเดียม */
+
+.text-lime         { color: #65a30d; }
+.text-teal         { color: #14b8a6; }
+.text-indigo       { color: #6366f1; }
+.text-soft-pink    { color: #f472b6; }
+.text-soft-blue    { color: #3b82f6; }
+.text-soft-green   { color: #22c55e; }
+.text-soft-yellow  { color: #fde047; }
+.text-soft-purple  { color: #c084fc; }
+
+/* ✅ โทนเข้มสมดุล */
+.text-dark-blue    { color: #1e3a8a; }
+.text-dark-green   { color: #15803d; }
+.text-brown        { color: #7c3f1d; }
+.text-steel        { color: #475569; }
+.text-charcoal     { color: #111827; }
+
+.centered-box {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 40px;
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    color: black;
+}
+
+.page-title {
+    text-align: center;
+    color: black;
+    font-size: 26px;
+    margin-bottom: 24px;
+}
+
+.page-intro {
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.8;
+    text-align: center;
+    color: black;
+}
+
+.menu-search-box {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.menu-search-box input {
+    padding: 8px 14px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 240px;
+    transition: border-color 0.3s ease;
+}
+
+.menu-search-box input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+#no-results-message {
+  margin-top: 20px;
+  font-size: 18px;
+  color: #6b7280;
+}
+
+.iconsearch i{
+    font-size: 20px;
+}
+
+.category-jump-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.category-jump-btn {
+  background-color: #72a8ff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.category-jump-btn:hover {
+  background-color: #3b82f6;
+}
+
+
+.btn-clear-search {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #f87171;
+    padding: 4px;
+    transition: color 0.2s ease;
+}
+
+.btn-clear-search:hover {
+    color: red;
+}
+
+.menu-grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-grid {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.menu-card.single-column {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 0 calc((100% - 60px) / 4); /* ✅ 4 ใบ + ช่องว่าง 20px × 3 */
+    max-width: calc((100% - 60px) / 4);
+    height: 100%;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-colo 0.2s ease;
+}
+
+.menu-card.single-column:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    background-color: #c3e6cb;
+}
+
+.menu-card.placeholder {
+    background: #f9fafb;
+    border: 1px dashed #d1d5db;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 380px;
+    text-align: center;
+    box-shadow: none;
+}
+
+.menu-card.placeholder i {
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #cbd5e1;
+}
+
+.menu-card.placeholder p {
+    font-size: 15px;
+    margin: 0;
+}
+
+.menu-card.single-column img {
+    width: 230px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.menu-card.single-column h3 {
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.nutrition-info {
+    margin-bottom: 12px;
+}
+
+.nutrition-info ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 10px;
+    font-size: 15px;
+    text-align: left;
+    display: inline-block;
+}
+
+.ingredient-list li{
+    margin-top: 8px;
+    font-size: 16px;
+    line-height: 1.4;
+    word-wrap: break-word;
+    color: black;
+}
+
+.category-tag {
+    display: inline-block;
+    background-color: #1d4ed8;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+.category-block {
+    margin-bottom: 40px;
+}
+
+.category-title {
+    background-color: #f0f7ff;
+    color: black;
+    padding: 12px 20px;
+    border-left: 6px solid #3b82f6;
+    border-radius: 8px;
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
+.menu-actions {
+    text-align: center;  /* ✅ ปุ่มตรงกลาง */
+    margin-top: 10px;
+}
+
+.btn-save-menu {
+    background-color: #10b981;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-save-menu:hover {
+    background-color: #059669;
+    transform: translateY(-2px);
+}
+
+.flash-popup {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #10b981;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+.flash-popup.error {
+    background-color: #ef4444;
+}
+
+/* ✅ Responsive สำหรับจอแท็บเล็ตแนวนอนหรือแนวตั้ง */
+@media (max-width: 1024px) {
+    .menu-card.single-column {
+        flex: 0 0 calc((100% - 20px) / 2);
+        max-width: calc((100% - 20px) / 2);
+    }
+
+    .menu-card.single-column img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .ingredient-list li {
+        font-size: 15px;
+    }
+
+    .menu-actions {
+        margin-top: 16px;
+        text-align: center;
+    }
+
+    .btn-save-menu {
+        width: 90%;
+        max-width: 300px;
+        font-size: 16px;
+    }
+}
+
+/* ✅ Responsive สำหรับมือถือ */
+@media (max-width: 600px) {
+    .menu-card.single-column {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .menu-card.single-column h3 {
+        font-size: 18px;
+    }
+
+    .ingredient-list li {
+        font-size: 14px;
+    }
+
+    .nutrition-info ul {
+        font-size: 14px;
+        display: block;
+        text-align: left;
+    }
+
+    .menu-card.single-column {
+        padding: 16px;
+    }
+
+    .btn-save-menu {
+        width: 100%;
+        font-size: 15px;
+    }
+
+    .category-title {
+        font-size: 16px;
+        padding: 10px 16px;
+    }
+
+    .centered-box {
+        padding: 20px;
+    }
+}

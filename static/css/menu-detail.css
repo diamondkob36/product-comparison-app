@@ -1,0 +1,501 @@
+/* พื้นหลัง */
+body {
+    background: linear-gradient(135deg, #001f3f, #0074D9);
+    background-attachment: fixed; /* พื้นหลังคงที่ */
+    color: black; /* สีข้อความ */
+    font-family: 'Orbitron', sans-serif; /* ฟอนต์แนว Sci-Fi */
+    min-height: 100vh; /* ความสูงขั้นต่ำของ body เท่ากับหน้าจอ */
+    margin: 0; /* ลบ margin ค่าเริ่มต้น */
+    overflow-x: hidden;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ✅ ปรับขนาด container ให้อยู่ตรงกลางและรองรับหลายหน้าจอ */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* ✅ ปรับขนาดหัวข้อ */
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* ✅ แสดงรูปภาพเมนู */
+.image-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.menu-image {
+    width: 250px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.servings-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #e8f4ff;
+    border-left: 4px solid #007bff;
+    padding: 10px 16px;
+    font-size: 16px;
+    color: #333;
+    border-radius: 8px;
+    margin-top: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.servings-info i {
+    color: #007bff;
+    font-size: 18px;
+}
+
+/* ✅ ปรับส่วนวัตถุดิบให้เป็นระเบียบ */
+.ingredient-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    text-align: left;
+}
+
+/* ✅ ปรับ label ให้ดูดีขึ้น */
+.ingredient-section label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* ✅ ปรับ Dropdown, Input, และปุ่มเพิ่มอยู่แถวเดียวกัน */
+.ingredient-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 5px;
+}
+
+/* ✅ ปรับขนาด Dropdown และ Input */
+.ingredient-row select,
+.ingredient-row input {
+    flex: 2;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+/* ✅ ปรับขนาดปุ่มเพิ่มวัตถุดิบ */
+.ingredient-row button {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ingredient-row button:hover {
+    background: #218838;
+}
+
+/* ✅ ปรับปรุงกล่องวัตถุดิบ */
+.ingredient-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f0f8ff;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #333;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.ingredient-box small {
+    display: block;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.ingredient-box:hover {
+    background: #e6f7ff;
+    transform: scale(1.02);
+}
+
+.stock-ok {
+    color: #28a745; /* เขียว */
+    font-weight: bold;
+}
+
+.stock-warning {
+    color: #ff8800; /* ส้ม */
+    font-weight: bold;
+}
+
+.stock-none {
+    color: #dc3545; /* แดง */
+    font-weight: bold;
+}
+
+/* ✅ ปรับขนาดไอคอนถังขยะ */
+.remove-ingredient {
+    cursor: pointer;
+    color: #dc3545;
+    font-size: 22px;
+    transition: color 0.3s, transform 0.2s;
+}
+
+.remove-ingredient:hover {
+    color: #b22222;
+    transform: scale(1.2);
+}
+
+/* ✅ ปรับขนาดช่องกรอก "จำนวนที่แบ่งทาน" */
+#user-servings {
+    width: 100%;
+    max-width: 150px;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s;
+    display: block;
+    margin: 10px auto;
+}
+
+#user-servings:focus {
+    border: 1px solid #007bff;
+    outline: none;
+}
+
+/* ✅ ปรับขนาดปุ่มบันทึกและรีเซ็ตให้อยู่แถวเดียวกัน */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-save {
+    flex: 1;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-save:hover {
+    background: #0056b3;
+}
+
+.btn-reset {
+    flex: 1;
+    background: #ffc107;
+    color: black;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-reset:hover {
+    background: #e0a800;
+}
+
+/* ✅ ปุ่มย้อนกลับ */
+.btn-back {
+    display: block;
+    margin-top: 15px;
+    padding: 12px;
+    font-size: 16px;
+    background: #6c757d;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn-back:hover {
+    background: #5a6268;
+}
+
+/* ✅ ปรับไอคอนปากกา (แก้ไขวัตถุดิบหลัก) ให้แยกจากถังขยะ */
+.remove-ingredient.fa-pen-to-square {
+    color: #007bff;
+}
+
+.remove-ingredient.fa-pen-to-square:hover {
+    color: #0056b3;
+    transform: scale(1.2);
+}
+
+.nutrition-box {
+    background-color: #f9f9f9;
+    border-left: 5px solid #4caf50;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    margin-top: 10px;
+}
+
+.nutrition-box h3 {
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nutrition-box ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.nutrition-box li {
+    padding: 4px 0;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 🎨 สีตัวอักษร */
+.text-danger { color: #dc3545; }
+.text-primary { color: #007bff; }
+.text-warning { color: #ffc107; }
+.text-info { color: #17a2b8; }
+.text-secondary { color: #6c757d; }
+.text-pink { color: #e83e8c; }
+.text-success { color: #28a745; }
+.text-main { color: orange; }
+.text-neutral  { color: #6b7280; }   /* เทาอ่อนกลางๆ */
+/* 🎨 สีตัวอักษรหลัก */
+.text-gold        { color: #eab308; } /* เหลืองทอง */
+
+.text-energy    { color: #fb923c; }   /* พลังงาน */
+.text-protein   { color: #3b82f6; }   /* โปรตีน */
+.text-fat       { color: #facc15; }   /* ไขมัน */
+.text-carb      { color: #06b6d4; }   /* คาร์โบฯ */
+.text-sugar     { color: #f472b6; }   /* น้ำตาล */
+.text-sodium    { color: #9ca3af; }   /* โซเดียม */
+
+.text-lime         { color: #65a30d; }
+.text-teal         { color: #14b8a6; }
+.text-indigo       { color: #6366f1; }
+.text-soft-pink    { color: #f472b6; }
+.text-soft-blue    { color: #3b82f6; }
+.text-soft-green   { color: #22c55e; }
+.text-soft-yellow  { color: #fde047; }
+.text-soft-purple  { color: #c084fc; }
+
+/* ✅ โทนเข้มสมดุล */
+.text-dark-blue    { color: #1e3a8a; }
+.text-dark-green   { color: #15803d; }
+.text-brown        { color: #7c3f1d; }
+.text-steel        { color: #475569; }
+.text-charcoal     { color: #111827; }
+
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px); /* ✅ พื้นหลังเบลอ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px 30px 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.popup-content h4 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+.popup-content p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.popup-content input {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.popup-buttons button {
+    padding: 10px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.popup-buttons .popup-btn.save {
+    background-color: #28a745;
+    color: white;
+}
+.popup-buttons .popup-btn.save:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.popup-buttons .popup-btn.cancel {
+    background-color: #ffc107;
+    color: #333;
+}
+.popup-buttons .popup-btn.cancel:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ✅ เพิ่ม Media Queries สำหรับหน้าจอกลาง (Tablet แนวนอน) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .container {
+        max-width: 700px; /* อาจปรับเป็น 80% ก็ได้ */
+        margin: auto;
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 22px;
+    }
+    
+    /* ตัวอย่าง: กลับเป็น row อีกครั้ง */
+    .ingredient-row {
+        flex-direction: row;
+        gap: 10px;
+    }
+    
+    .ingredient-row select,
+    .ingredient-row button,
+    .ingredient-row input {
+        width: auto;
+    }
+}
+
+/* ✅ ทำให้รองรับ **มือถือ (ต่ำกว่า 768px)** */
+@media (max-width: 768px) {
+    .container {
+        max-width: 85%;
+        padding: 15px;
+    }
+
+    /* ✅ ปรับขนาดฟอนต์ในมือถือให้เหมาะสม */
+    h1 {
+        font-size: 20px;
+    }
+
+    .ingredient-section label {
+        font-size: 16px;
+    }
+
+    .ingredient-box {
+        font-size: 16px;
+    }
+
+    /* ✅ จัดให้ปุ่มและอินพุตเป็นแนวตั้ง */
+    .ingredient-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .ingredient-row select,
+    .ingredient-row button {
+        width: 100%;
+    }
+
+    .ingredient-row input{
+        width: 95%;
+    }
+
+    /* ✅ ปรับให้ปุ่มอยู่เต็มแถวในมือถือ */
+    .button-group {
+        flex-direction: column;
+    }
+
+    .btn-save,
+    .btn-reset {
+        width: 100%;
+    }
+
+    .popup-content {
+        width: 95%;
+        padding: 20px 15px;
+    }
+
+    .popup-content h4 {
+        font-size: 18px;
+    }
+
+    .popup-content input {
+        font-size: 15px;
+    }
+
+    .popup-buttons button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}

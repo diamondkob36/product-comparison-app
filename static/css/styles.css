@@ -1,0 +1,155 @@
+.container {
+    max-width: 700px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* หัวข้อ */
+h2, h3 {
+    color: #333333;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+/* Dropdown และปุ่ม */
+.tags-input-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+#ingredient-dropdown {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+#ingredient-amount {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 5px;
+    text-align: center;
+}
+
+/* ปุ่ม */
+button {
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+/* รายการวัตถุดิบที่เพิ่มแล้ว */
+.tags-input {
+    display: flex;
+    flex-wrap: wrap; /* ให้ tag ขึ้นบรรทัดใหม่เมื่อพื้นที่ไม่พอ */
+    gap: 10px;
+}
+
+.ingredient-tag {
+    display: flex;
+    align-items: center;
+    background: #e9ecef;
+    color: #495057;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.ingredient-tag button {
+    margin-left: 10px;
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.ingredient-tag button:hover {
+    color: #c82333;
+}
+
+/* กล่องผลลัพธ์ */
+#results {
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 14px;
+    color: #495057;
+}
+
+/* ไฮไลต์เมนูที่มีคะแนนสูงสุดในแต่ละหมวดหมู่ */
+.highlight {
+    background-color: #d4edda;
+    border: 2px solid #28a745;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.category-title {
+    font-weight: bold; /* เน้นตัวหนา */
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #333; /* สีตัวอักษร */
+}
+
+.recipe-item {
+    padding: 10px; /* เพิ่มระยะห่างรอบเนื้อหา */
+    margin: 5px 0; /* เพิ่มช่องว่างระหว่างแต่ละรายการ */
+    border: 1px solid #ddd; /* กรอบบางสีเทา */
+    border-radius: 5px; /* มุมโค้ง */
+    background-color: #f9f9f9; /* สีพื้นหลังอ่อน */
+    font-size: 14px; /* ขนาดตัวอักษร */
+    line-height: 1.5; /* ระยะห่างระหว่างบรรทัด */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* เพิ่มเอฟเฟกต์เวลา hover */
+}
+
+.recipe-item:hover {
+    background-color: #d6eaf8; /* สีฟ้าเข้มขึ้น (Light Blue) เมื่อ hover */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* เพิ่มเงาเข้มขึ้นเล็กน้อยเมื่อ hover */
+}
+
+.recipe-item.highlight {
+    border: 2px solid #4caf50; /* กรอบสีเขียวเข้มสำหรับ highlight */
+    background-color: #d0f0c0; /* สีพื้นหลังอ่อนสำหรับ highlight */
+    font-weight: bold; /* ข้อความหนา */
+}
+
+/* การตอบสนองหน้าจอเล็ก */
+@media (max-width: 768px) {
+    .tags-input-container .d-flex {
+        flex-direction: column; /* เปลี่ยนเป็นแนวตั้ง */
+        gap: 10px;
+    }
+
+    #ingredient-dropdown, #ingredient-amount, #add-ingredient {
+        width: 100%; /* ขยายให้เต็มหน้าจอ */
+    }
+}

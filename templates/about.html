@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ผู้จัดทำ</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/body.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/about.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script src="{{ url_for('static', filename='js/about.js') }}"></script>
+
+
+</head>
+<body>
+    {% include 'menubar.html' %}
+
+    {% include 'header-box.html' %}
+
+    {% include 'user-left-box.html' %}
+
+    <div class="main-content">
+        <div class="creator-section">
+            <h2 class="title"><i class="fas fa-users text-teal"></i> ผู้จัดทำ</h2>
+            <div class="creator-grid">
+                <!-- ผู้จัดทำคนที่ 1 -->
+                <div class="creator-card">
+                    <img src="/static/images/user1.jpg" alt="User 1">
+                    <h3>นางสาวมินตรา สุขสมปรารถนา</h3>
+                    <p>รหัสนักศึกษา: 1654052410XX</p>
+                    <p>สาขา: วิทยาการคอมพิวเตอร์</p>
+                </div>
+
+                <!-- ผู้จัดทำคนที่ 2 -->
+                <div class="creator-card">
+                    <img src="/static/images/user2.jpg" alt="User 2">
+                    <h3>นายอนุวรรตน์ เอนก</h3>
+                    <p>รหัสนักศึกษา: 165405241021</p>
+                    <p>สาขา: วิทยาการคอมพิวเตอร์</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<canvas id="snow-canvas"></canvas>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เมนูอาหารทั่วไป</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/body.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/general_menus.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script src="{{ url_for('static', filename='js/general_menus.js') }}"></script>
+
+
+</head>
+<body>
+    {% include 'menubar.html' %}
+
+    {% include 'header-box.html' %}
+
+    {% include 'user-left-box.html' %}
+
+    <div class="main-content">
+        <div class="centered-box">
+            <h2 class="page-title"><i class="fas fa-utensils text-main"></i> เมนูอาหารทั่วไป</h2>
+            <div class="page-intro">
+                <i class="fas fa-calculator text-soft-green"></i> คุณสามารถใช้เมนูเหล่านี้เพื่อคำนวณพลังงานและสารอาหารที่ได้รับในแต่ละวันได้อย่างสะดวก เหมาะสำหรับผู้ที่ไม่ได้ทำอาหารทานเอง
+                <p class="text-neutral" style="font-size: 16px; margin-top: 10px;">
+                    <i class="fas fa-info-circle text-main"></i> ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
+                </p>                
+            </div>
+            <div class="menu-search-box">
+                <div class="iconsearch"><i class="fas fa-search text-primary"></i></div>
+                <input type="text" id="menu-search-name" placeholder="ค้นหาชื่อเมนู...">
+                <input type="text" id="menu-search-category" placeholder="ค้นหาหมวดหมู่อาหาร...">
+                <button id="clear-search" class="btn-clear-search" title="ล้างคำค้นหา">
+                    ล้างคำค้นหา <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+            <p id="search-summary" class="text-neutral text-center" style="margin-top: -10px;"></p>
+            <div id="category-jump-buttons" class="category-jump-buttons" style="margin-top: 10px; margin-bottom: 20px;"></div>
+
+            {% if recipes %}
+                <div class="menu-grid">
+                    {% set grouped = {} %}
+                    {% for recipe in recipes %}
+                        {% set category = recipe.category or 'ไม่มีหมวดหมู่' %}
+                        {% if category not in grouped %}
+                            {% set _ = grouped.update({category: []}) %}
+                        {% endif %}
+                        {% set _ = grouped[category].append(recipe) %}
+                    {% endfor %}
+
+                    {% for category, items in grouped.items() %}
+                        <div class="category-block">
+                            <h3 class="category-title">
+                                <i class="fas fa-tags text-primary"></i> อาหารประเภท: {{ category }}
+                            </h3>
+
+                            <div class="category-grid {% if items|length <= 2 %}few-items{% endif %}">
+                                {% for recipe in items %}
+                                    <div class="menu-card single-column">
+                                        <div class="menu-top">
+                                            <img src="{{ url_for('static', filename='images/' ~ recipe.image_url) }}" alt="{{ recipe.name }}">
+                                            <h3>{{ recipe.name }}</h3>
+                                            <p class="text-charcoal"><i class="fas fa-fire-alt text-danger"></i> พลังงานรวม: <strong>{{ recipe.calories_per_serving }} kcal</strong></p>
+                                        </div>
+
+                                        <div class="nutrition-info">
+                                            <h4 class="text-soft-blue"><i class="fas fa-apple-alt text-danger"></i> สารอาหารที่ได้รับจากเมนูนี้</h4>
+                                            <ul class="ingredient-list">
+                                                <li><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: {{ recipe.protein }} กรัม</li>
+                                                <li><i class="fas fa-tint text-warning"></i> ไขมัน: {{ recipe.fat }} กรัม</li>
+                                                <li><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: {{ recipe.carbs }} กรัม</li>
+                                                <li><i class="fas fa-cube text-pink"></i> น้ำตาล: {{ recipe.sugar }} กรัม</li>
+                                                <li><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: {{ recipe.sodium }} มิลลิกรัม</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="menu-actions">
+                                            <button type="button" class="btn-save-menu"
+                                                data-id="{{ recipe.id }}"
+                                                data-servings="{{ recipe.servings }}"
+                                                data-primary='{{ recipe.primary_ingredients | tojson | safe }}'
+                                                data-secondary='{{ recipe.secondary_ingredients | tojson | safe }}'>
+                                                <i class="fas fa-check-circle"></i> บันทึกเมนู
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                {# ✅ เติมการ์ดว่าง พร้อมข้อความ #}
+                                {% set count = items|length %}
+                                {% set remainder = 4 - (count % 4) if count % 4 != 0 else 0 %}
+                                {% for i in range(remainder) %}
+                                    <div class="menu-card single-column placeholder js-removable">
+                                        <div class="placeholder-content">
+                                            <i class="fas fa-utensils"></i>
+                                            <p>รอการอัปเดต</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-neutral text-center"><i class="fas fa-box-open text-main"></i> ไม่มีเมนูอาหารทั่วไป</p>
+            {% endif %}
+        </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if category == "menu" %}
+            <div id="flash-message">
+            {% for category, message in messages %}
+                <i class="fas fa-check-circle"></i> {{ message }}
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

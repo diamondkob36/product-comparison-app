@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แก้ไขเมนูที่เลือก</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/menu-detail.css') }}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1><i class="fas fa-edit text-primary"></i> แก้ไขเมนู</h1>
+    <h2><i class="fas fa-utensils text-main"></i> {{ recipe.name }}</h1>    
+
+    <!-- ✅ รูปภาพเมนู -->
+    <div class="image-container">
+      <img src="{{ url_for('static', filename='images/' + recipe.image_url) }}" alt="{{ recipe.name }}" class="menu-image">
+    </div>
+
+    <!-- ✅ จำนวนที่เมนูนี้แบ่งทานได้ -->
+    <p class="servings-info">
+      <i class="fas fa-utensils"></i> เมนูนี้สามารถแบ่งทานได้ <strong>{{ recipe.servings }}</strong> หน่วยบริโภคตามสูตรอาหาร
+    </p>
+
+    <form id="save-menu-form" method="POST" action="{{ url_for('users.edit_selected_menu', selected_id=recipe.id) }}">
+      <!-- ✅ วัตถุดิบหลัก -->
+      <div class="ingredient-section">
+        <label><i class="fas fa-carrot text-dark-green icon-inline"></i> วัตถุดิบหลัก :</label>
+        <ul id="primary-ingredients-list">
+          {% if recipe.primary_ingredients %}
+            {% for ing in recipe.primary_ingredients %}
+              <li class="ingredient-box"
+                  data-name="{{ ing.name }}"
+                  data-amount="{{ ing.amount }}"
+                  data-unit="{{ ing.unit }}">
+                  <strong>{{ ing.name }} {{ ing.converted_display }}</strong>
+                  <i class="fas fa-pen-to-square remove-ingredient" data-name="{{ ing.name }}" title="แก้ไขวัตถุดิบ"></i>
+              </li>
+            {% endfor %}
+          {% else %}
+            <p id="no-primary-ingredients">ไม่มีวัตถุดิบหลัก</p>
+          {% endif %}
+        </ul>
+      </div>
+
+      <!-- ✅ วัตถุดิบเสริม -->
+      <div class="ingredient-section">
+        <label><i class="fas fa-pepper-hot text-danger icon-inline"></i> วัตถุดิบเสริม / เครื่องปรุง :</label>
+        <ul id="secondary-ingredients-list">
+          {% if recipe.secondary_ingredients %}
+            {% for ing in recipe.secondary_ingredients %}
+              <li class="ingredient-box"
+                  data-name="{{ ing.name }}"
+                  data-amount="{{ ing.amount }}"
+                  data-unit="{{ ing.unit }}">
+                  <strong>{{ ing.name }} {{ ing.converted_display }}</strong>
+                  <i class="fas fa-trash remove-ingredient" data-name="{{ ing.name }}"></i>
+              </li>
+            {% endfor %}        
+          {% else %}
+            <p id="no-secondary-ingredients">ไม่มีวัตถุดิบรองหรือเครื่องปรุง</p>
+          {% endif %}
+        </ul>
+        <label><i class="fas fa-plus-circle text-soft-green icon-inline"></i> เพิ่มวัตถุดิบเสริม / เครื่องปรุง :</label>
+        <div class="ingredient-row">
+          <select id="secondary-ingredient-dropdown" class="select2"></select>
+          <input type="number" id="secondary-ingredient-amount" placeholder="จำนวน">
+          <button type="button" id="add-secondary-ingredient">
+            <i class="fas fa-plus"></i> เพิ่ม
+          </button>
+        </div>
+      </div>
+
+      <!-- ✅ จำนวนที่เมนูนี้แบ่งทานได้ -->
+      <p class="servings-info">
+        <i class="fas fa-utensils"></i> เมนูนี้สามารถแบ่งทานได้สูงสุด <strong>{{ recipe.servings }}</strong> หน่วยบริโภคตามสูตรอาหาร
+      </p>
+
+      <br>
+
+      <!-- ✅ หน่วยที่ผู้ใช้เลือก -->
+      <label><i class="fas fa-utensils text-main icon-inline"></i> เปลี่ยนจำนวนหน่วยที่คุณทาน :</label>
+      <input type="number" name="user_servings" id="user-servings" value="{{ recipe.user_servings }}" min="1" max="{{ recipe.servings }}">
+
+      <!-- ✅ กล่องแสดงโภชนาการ -->
+      <div id="nutrition-preview" class="nutrition-box" style="margin-top: 1rem;">
+      </div>
+
+      <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
+        <i class="fas fa-info-circle text-info icon-inline"></i>
+        หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
+      </p>
+
+      <div class="button-group">
+        <button type="submit" class="btn-save">
+          <i class="fas fa-check-circle icon-inline"></i> บันทึกการแก้ไข
+        </button>
+        <button type="button" id="reset-form" class="btn-reset">
+          <i class="fas fa-undo icon-inline"></i> รีเซ็ต
+        </button>
+      </div>
+    </form>
+
+    <!-- ปุ่มย้อนกลับ -->
+    <a href="{{ url_for('users.selected_menu_detail', selected_id=recipe.id) }}" class="btn-back">
+      <i class="fas fa-arrow-left icon-inline"></i> ย้อนกลับ
+    </a>
+  </div>
+
+  <!-- ✅ Popup แก้ไขปริมาณวัตถุดิบ -->
+  <div id="edit-popup" class="popup hidden">
+    <div class="popup-content">
+        <h4><i class="fas fa-edit text-primary icon-inline"></i> แก้ไขปริมาณวัตถุดิบ</h4>
+        <p id="popup-ingredient-name" style="font-weight: bold; color: black;"></p>
+        <input type="number" id="popup-ingredient-amount" min="0.1" step="0.1">
+        <div class="popup-buttons">
+          <button id="popup-save" class="popup-btn save">
+            <i class="fas fa-check-circle icon-inline"></i> บันทึก
+          </button>
+          <button id="popup-cancel" class="popup-btn cancel">
+            <i class="fas fa-times-circle icon-inline"></i> ยกเลิก
+          </button>
+        </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  <script src="{{ url_for('static', filename='js/edit-selected-menu.js') }}"></script>
+</body>
+</html>

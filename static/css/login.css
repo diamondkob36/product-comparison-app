@@ -1,0 +1,139 @@
+/* การตั้งค่าพื้นฐาน */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a, #3b82f6);
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.text-login{
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.login-logo {
+    max-width: 100px;   /* หรือขนาดที่เหมาะสม */
+    display: block;
+    margin: 0 auto 20px auto;
+}
+
+.login-container {
+    background: #ffffff;
+    padding: 20px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 93%;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    outline: none;
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #0d47a1;
+}
+
+.register-link {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #475569;
+    text-align: center;
+}
+
+.register-link a {  
+    color: #2563eb;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 9999;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* สถานะพื้นฐาน */
+.custom-alert.hidden {
+    display: none;
+}
+
+.custom-alert.show {
+    opacity: 1;
+}
+
+.custom-alert.success { background: #16a34a; }
+.custom-alert.error   { background: #dc2626; }
+.custom-alert.info    { background: #2563eb; }
+
+.field-error {
+    color: #dc3545; /* สีแดงแบบ Bootstrap */
+    font-size: 13px;
+    margin-top: 5px;
+}
+
