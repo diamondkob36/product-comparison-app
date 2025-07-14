@@ -108,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         setupPagination(data);
-        recommendMenu();
     }
 
     function setupPagination(data) {

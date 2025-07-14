@@ -44,13 +44,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 recommendMenu();
             } else {
                 ingredients = [];
+
                 resultsContainer.innerHTML = `
                     <div class="empty-ingredient-box">
                         <i class="fas fa-box-open fa-2x text-muted"></i>
                         <p>ไม่มีวัตถุดิบในคลัง</p>
                     </div>
                 `;
+
+                // ✅ ล้างข้อความสรุป
+                const summaryContainer = document.getElementById("summary-container");
+                if (summaryContainer) {
+                    summaryContainer.innerHTML = "";
+                }
+
+                // ✅ ล้างปุ่มหมวดหมู่ (แค่ปุ่ม ไม่ต้องลบหัวข้อ)
+                const fullButtonsContainer = document.getElementById("category-buttons-full");
+                if (fullButtonsContainer) {
+                    fullButtonsContainer.innerHTML = "";
+                }
+                const partialButtonsContainer = document.getElementById("category-buttons-partial");
+                if (partialButtonsContainer) {
+                    partialButtonsContainer.innerHTML = "";
+                }
             }
+
         } catch (error) {
             console.error("Error loading user ingredients for recommendation:", error);
             resultsContainer.innerHTML = "<p>เกิดข้อผิดพลาดในการโหลดวัตถุดิบ</p>";
