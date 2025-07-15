@@ -83,7 +83,19 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener("click", async (event) => {
                 const ingredientId = event.target.closest("button").getAttribute("data-id");
 
-                if (confirm("คุณต้องการลบวัตถุดิบนี้ใช่หรือไม่?")) {
+                const result = await Swal.fire({
+                    title: 'คุณแน่ใจหรือไม่?',
+                    text: "คุณต้องการลบวัตถุดิบนี้ใช่หรือไม่?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'ลบ',
+                    cancelButtonText: 'ยกเลิก',
+                    heightAuto: false
+                });
+
+                if (result.isConfirmed) {
                     try {
                         const response = await fetch(`/users/delete_ingredient/${ingredientId}`, {
                             method: "DELETE",
@@ -92,16 +104,37 @@ document.addEventListener("DOMContentLoaded", function () {
                             },
                         });
 
+                        const data = await response.json();
+
                         if (response.ok) {
-                            alert("ลบวัตถุดิบสำเร็จ!");
-                            loadUserIngredients(); // โหลดตารางวัตถุดิบใหม่
-                            loadUserIngredientsForRecommendation(); // อัปเดตการแนะนำเมนู
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'สำเร็จ!',
+                                text: data.message || "ลบวัตถุดิบสำเร็จ!",
+                            timer: 1000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            heightAuto: false
+                            });
+
+                            loadUserIngredients();
+                            loadUserIngredientsForRecommendation();
                         } else {
-                            const errorData = await response.json();
-                            alert(errorData.error || "เกิดข้อผิดพลาดในการลบวัตถุดิบ");
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'เกิดข้อผิดพลาด',
+                                text: data.error || "เกิดข้อผิดพลาดในการลบวัตถุดิบ",
+                            heightAuto: false
+                            });
                         }
                     } catch (error) {
                         console.error("Error deleting ingredient:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'เกิดข้อผิดพลาด',
+                            text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+                        heightAuto: false
+                        });
                     }
                 }
             });
@@ -129,13 +162,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ตัวเลือกเปลี่ยนจำนวนแถวต่อหน้า
-    document.getElementById("ingredient-rows-per-page").addEventListener("change", (event) => {
-        rowsPerPage = parseInt(event.target.value, 10);
-        currentPage = 1;
-        loadUserIngredients();
-    });
-
-    // ฟังก์ชันเพิ่มวัตถุดิบใหม่
     addIngredientForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
@@ -143,7 +169,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const amount = parseFloat(ingredientAmount.value);
 
         if (!ingredientId || isNaN(amount) || amount <= 0) {
-            alert("กรุณาเลือกวัตถุดิบและระบุจำนวนให้ถูกต้อง");
+            Swal.fire({
+                icon: 'warning',
+                title: 'ข้อมูลไม่ถูกต้อง',
+                text: 'กรุณาเลือกวัตถุดิบและระบุจำนวนให้ถูกต้อง',
+                heightAuto: false
+            });
             return;
         }
 
@@ -160,18 +191,39 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const data = await response.json();
+
             if (response.ok) {
-                alert(data.message || "เพิ่มวัตถุดิบสำเร็จ!");
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: data.message || "เพิ่มวัตถุดิบสำเร็จ!",
+                    timer: 1000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    heightAuto: false
+                });
+
                 ingredientAmount.value = "";
                 ingredientDropdown.val(null).trigger('change');
-                loadUserIngredients(); // อัปเดตวัตถุดิบ
+                loadUserIngredients(); 
                 loadUserIngredientsForRecommendation();
-                recommendMenu(); // เรียกฟังก์ชันแนะนำเมนู
+                recommendMenu();
             } else {
-                alert(data.error || "เกิดข้อผิดพลาดในการเพิ่มวัตถุดิบ");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: data.error || "เกิดข้อผิดพลาดในการเพิ่มวัตถุดิบ",
+                    heightAuto: false
+                });
             }
         } catch (error) {
             console.error("Error adding ingredient:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+                heightAuto: false
+            });
         }
     });
 

@@ -104,15 +104,32 @@ document.addEventListener("DOMContentLoaded", function () {
         const unit = dropdown.find(":selected").data("unit");
 
         if (!name) {
-            alert("กรุณาเลือกวัตถุดิบก่อนเพิ่ม");
+            await Swal.fire({
+                icon: 'warning',
+                title: 'ข้อมูลไม่ถูกต้อง',
+                text: 'กรุณาเลือกวัตถุดิบก่อนเพิ่ม',
+                heightAuto: false
+            });
             return;
         }
+
         if (isNaN(amount)) {
-            alert("กรุณากรอกจำนวนวัตถุดิบ");
+            await Swal.fire({
+                icon: 'warning',
+                title: 'ข้อมูลไม่ถูกต้อง',
+                text: 'กรุณากรอกจำนวนวัตถุดิบ',
+                heightAuto: false
+            });
             return;
         }
+
         if (amount <= 0) {
-            alert("กรุณากรอกจำนวนมากกว่า 0");
+            await Swal.fire({
+                icon: 'warning',
+                title: 'ข้อมูลไม่ถูกต้อง',
+                text: 'กรุณากรอกจำนวนมากกว่า 0',
+                heightAuto: false
+            });
             return;
         }
 
@@ -120,14 +137,22 @@ document.addEventListener("DOMContentLoaded", function () {
         if (existingItem) {
             const currentAmount = parseFloat(existingItem.dataset.amount || 0);
             const newAmount = currentAmount + amount;
-        
-            const confirmMerge = confirm(`วัตถุดิบนี้ถูกเพิ่มไปแล้ว\n\nต้องการรวมปริมาณเป็น ${newAmount} หรือไม่?`);
-            if (!confirmMerge) return;
-        
+
+            const result = await Swal.fire({
+                title: 'วัตถุดิบนี้ถูกเพิ่มไปแล้ว',
+                text: `ต้องการรวมปริมาณเป็น ${newAmount} หรือไม่?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'รวม',
+                cancelButtonText: 'ยกเลิก',
+                heightAuto: false
+            });
+
+            if (!result.isConfirmed) return;
+
             existingItem.dataset.amount = newAmount;
-        
-            const converted = await fetchConvertedDisplay(name, newAmount, unit);  // ✅ ใช้ newAmount ที่เพิ่งอัปเดต
-        
+
+            const converted = await fetchConvertedDisplay(name, newAmount, unit);
             existingItem.innerHTML = `<strong>${name} ${converted}</strong> <i class="fas fa-trash remove-ingredient" data-name="${name}"></i>`;
             input.value = "";
             return;
@@ -135,8 +160,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const isPrimary = list.id === "primary-ingredients-list";
         const otherList = isPrimary ? secondaryList : primaryList;
+
         if ([...otherList.children].some(li => li.dataset.name === name)) {
-            alert("วัตถุดิบนี้ถูกเพิ่มในวัตถุดิบหลักแล้ว กรุณาเลือกวัตถุดิบอื่น");
+            await Swal.fire({
+                icon: 'error',
+                title: 'ไม่สามารถเพิ่มได้',
+                text: 'วัตถุดิบนี้ถูกเพิ่มในวัตถุดิบหลักแล้ว กรุณาเลือกวัตถุดิบอื่น',
+                heightAuto: false
+            });
             return;
         }
 
@@ -197,10 +228,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const servingsInput = document.getElementById("user-servings");
     const maxServings = parseInt(servingsInput?.getAttribute("max"));
-    servingsInput?.addEventListener("input", () => {
+    servingsInput?.addEventListener("input", async () => {
         const val = parseInt(servingsInput.value);
         if (val > maxServings) {
-            alert(`สามารถเลือกได้ไม่เกิน ${maxServings} หน่วย`);
+            await Swal.fire({
+                icon: 'warning',
+                title: 'จำนวนเกินกำหนด',
+                text: `สามารถเลือกได้ไม่เกิน ${maxServings} หน่วย`,
+                scrollbarPadding: false,
+                heightAuto: false
+            });
             servingsInput.value = maxServings;
         }
         updateNutritionPreview();
@@ -231,36 +268,78 @@ document.addEventListener("DOMContentLoaded", function () {
             }));
 
             if (primary.length === 0) {
-                alert("กรุณาเพิ่มวัตถุดิบหลักอย่างน้อย 1 รายการ");
+                await Swal.fire({
+                    icon: 'warning',
+                    title: 'ข้อมูลไม่ถูกต้อง',
+                    text: 'กรุณาเพิ่มวัตถุดิบหลักอย่างน้อย 1 รายการ',
+                    heightAuto: false
+                });
                 return;
             }
 
             if (!primary.some(ing => ing.amount > 0)) {
-                alert("วัตถุดิบหลักต้องมีปริมาณมากกว่า 0");
+                await Swal.fire({
+                    icon: 'warning',
+                    title: 'ข้อมูลไม่ถูกต้อง',
+                    text: 'วัตถุดิบหลักต้องมีปริมาณมากกว่า 0',
+                    heightAuto: false
+                });
                 return;
             }
 
-            if (!confirm("คุณต้องการบันทึกการแก้ไขหรือไม่?")) return;
+            const confirmResult = await Swal.fire({
+                title: 'ยืนยันการบันทึก',
+                text: 'คุณต้องการบันทึกการแก้ไขหรือไม่?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'บันทึก',
+                cancelButtonText: 'ยกเลิก',
+                heightAuto: false
+            });
+            if (!confirmResult.isConfirmed) return;
 
             const formData = new FormData(form);
             formData.append("primary_ingredients", JSON.stringify(primary));
             formData.append("secondary_ingredients", JSON.stringify(secondary));
 
-            const res = await fetch(form.action, {
-                method: "POST",
-                body: formData
-            });
-            const data = await res.json();
+            try {
+                const res = await fetch(form.action, {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await res.json();
 
-            if (data.success) {
-                alert("บันทึกการแก้ไขสำเร็จ");
-                location.href = `/users/selected-menu-detail/${form.action.split('/').pop()}`;
-            } else {
-                alert("เกิดข้อผิดพลาดในการบันทึก: " + (data.error || "ไม่ทราบสาเหตุ"));
+                if (data.success) {
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'สำเร็จ!',
+                        text: 'บันทึกการแก้ไขสำเร็จ',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        heightAuto: false
+                    });
+                    location.href = `/users/selected-menu-detail/${form.action.split('/').pop()}`;
+                } else {
+                    await Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: "เกิดข้อผิดพลาดในการบันทึก: " + (data.error || "ไม่ทราบสาเหตุ"),
+                        heightAuto: false
+                    });
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+                    heightAuto: false
+                });
             }
         });
     }
-    
+ 
     async function updateNutritionPreview() {
         const primaryIngredients = [...document.querySelectorAll("#primary-ingredients-list .ingredient-box")].map(item => ({
             name: item.dataset.name,
@@ -332,7 +411,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const newAmount = parseFloat(popupAmount.value);
             if (isNaN(newAmount) || newAmount <= 0) {
-                alert("กรุณากรอกจำนวนมากกว่า 0");
+                await Swal.fire({
+                    icon: 'warning',
+                    title: 'ข้อมูลไม่ถูกต้อง',
+                    text: 'กรุณากรอกจำนวนมากกว่า 0',
+                    heightAuto: false
+                });
                 return;
             }
 
@@ -350,9 +434,17 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
 
             updateNutritionPreview();
-
             popup.classList.add("hidden");
-            alert("แก้ไขปริมาณวัตถุดิบสำเร็จ!");
+
+            await Swal.fire({
+                icon: 'success',
+                title: 'สำเร็จ!',
+                text: 'แก้ไขปริมาณวัตถุดิบสำเร็จ!',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                heightAuto: false
+            });
         });
 
         popup.addEventListener("click", (e) => {

@@ -359,28 +359,57 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // ✅ อัปเดตฟังก์ชัน deleteSelectedMenu ให้ถามก่อนลบ
     window.deleteSelectedMenu = async function deleteSelectedMenu(menuId) {
-        // ✅ แสดงหน้าต่างยืนยันก่อนลบ
-        const confirmDelete = confirm("คุณแน่ใจหรือไม่ว่าต้องการลบเมนูนี้?");
-        if (!confirmDelete) {
-            return; // ถ้าผู้ใช้กด "ยกเลิก" จะไม่ทำอะไร
-        }
+        // ✅ แสดง SweetAlert2 แบบยืนยัน
+        const result = await Swal.fire({
+            title: 'คุณแน่ใจหรือไม่?',
+            text: "คุณต้องการลบเมนูนี้ใช่หรือไม่?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'ลบ',
+            cancelButtonText: 'ยกเลิก',
+            heightAuto: false
+        });
+
+        if (!result.isConfirmed) return;
 
         try {
-            const response = await fetch(`/users/delete_selected_menu/${menuId}`, { method: "DELETE" });
+            const response = await fetch(`/users/delete_selected_menu/${menuId}`, {
+                method: "DELETE",
+            });
             const data = await response.json();
 
             if (data.error) {
                 console.error("Error deleting menu:", data.error);
-                alert("เกิดข้อผิดพลาด: " + data.error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: data.error,
+                    heightAuto: false
+                });
             } else {
-                alert(data.message); // แสดงข้อความสำเร็จ
-                loadSelectedMenus(); // โหลดข้อมูลใหม่
-                window.loadNutritionChart(); // ✅ อัปเดตกราฟหลังลบเมนู
-                window.loadNutritionData();  
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: data.message,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    heightAuto: false
+                });
+                loadSelectedMenus();
+                window.loadNutritionChart();
+                window.loadNutritionData();
             }
         } catch (error) {
             console.error("เกิดข้อผิดพลาดในการลบเมนู:", error);
-            alert("เกิดข้อผิดพลาดในการลบเมนู");
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+                heightAuto: false
+            });
         }
     };
 

@@ -113,6 +113,5 @@ def api_login():
 # 🔹 ออกจากระบบ
 @auth_bp.route('/logout')
 def logout():
-    session.clear()
-    flash('ออกจากระบบสำเร็จ!', 'success')
     return redirect(url_for('main.home'))
+

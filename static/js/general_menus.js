@@ -2,13 +2,24 @@ document.addEventListener("DOMContentLoaded", function () {
   const buttons = document.querySelectorAll(".btn-save-menu");
 
   buttons.forEach(button => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       const id = button.dataset.id;
       const servings = button.dataset.servings;
       const primary = JSON.parse(button.dataset.primary || "[]");
       const secondary = JSON.parse(button.dataset.secondary || "[]");
 
-      if (!confirm("คุณต้องการบันทึกเมนูนี้หรือไม่?")) return;
+      // ✅ แทน confirm ด้วย SweetAlert2
+      const result = await Swal.fire({
+        title: 'ยืนยันการบันทึก',
+        text: 'คุณต้องการบันทึกเมนูนี้หรือไม่?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'บันทึก',
+        cancelButtonText: 'ยกเลิก',
+        scrollbarPadding: false,
+        heightAuto: false
+      });
+      if (!result.isConfirmed) return;
 
       fetch("/users/save-menu-no-deduct", {
         method: "POST",
@@ -23,13 +34,33 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            showFlashPopup("บันทึกเมนูสำเร็จ", "success");
+            Swal.fire({
+              icon: 'success',
+              title: 'สำเร็จ!',
+              text: 'บันทึกเมนูสำเร็จ',
+              timer: 1000,
+              timerProgressBar: true,
+              showConfirmButton: false,
+              heightAuto: false
+            });
           } else {
-            showFlashPopup("เกิดข้อผิดพลาด", "error");
+            Swal.fire({
+              icon: 'error',
+              title: 'เกิดข้อผิดพลาด',
+              text: 'ไม่สามารถบันทึกเมนูได้',
+              scrollbarPadding: false,
+              heightAuto: false
+            });
           }
         })
         .catch(() => {
-          showFlashPopup("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์", "error");
+          Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+            scrollbarPadding: false,
+            heightAuto: false
+          });
         });
     });
   });
