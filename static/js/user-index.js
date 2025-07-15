@@ -183,18 +183,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 }
                             }
                         },
-                        // ✅ เพิ่มเส้นแดงที่ 100%
-                        annotation: {
-                            annotations: {
-                                line100: {
-                                    type: "line",
-                                    yMin: 100,
-                                    yMax: 100,
-                                    borderColor: "red",
-                                    borderWidth: 2
-                                }
-                            }
-                        }
                     },
                     scales: {
                         y: {
@@ -216,17 +204,36 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }    
     
-    // ✅ บันทึกข้อมูลเมื่อส่งฟอร์มแก้ไขข้อมูลผู้ใช้
     editUserForm.addEventListener("submit", async function (event) {
         event.preventDefault();
-    
+
+        // ✅ ดึงค่าจาก input
+        const weight = parseFloat(document.getElementById("weight").value) || 0;
+        const height = parseFloat(document.getElementById("height").value) || 0;
+        const age = parseInt(document.getElementById("age").value) || 0;
+
+        // ✅ ตรวจสอบค่าก่อนส่ง
+        if (weight <= 0 || height <= 0 || age <= 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'ข้อมูลไม่ถูกต้อง',
+                text: 'กรุณากรอกน้ำหนัก ส่วนสูง และอายุที่มากกว่า 0',
+            scrollbarPadding: false,
+            heightAuto: false,
+            timer: 1500,
+            timerProgressBar: true,
+            showConfirmButton: false
+            });
+            return;
+        }
+
         const formData = new FormData(editUserForm);
         const payload = Object.fromEntries(formData);
-    
+
         // ✅ ดึงค่าเป้าหมายรองแบบหลายตัวเลือก
-        const subgoals = $('#subgoal').val();  // array of selected values
+        const subgoals = $('#subgoal').val();
         payload.subgoal = subgoals;
-    
+
         try {
             const response = await fetch("/users/update_user_info", {
                 method: "POST",
@@ -235,14 +242,33 @@ document.addEventListener("DOMContentLoaded", async function () {
                 },
                 body: JSON.stringify(payload),
             });
-    
+
             const data = await response.json();
             if (data.error) {
-                alert(data.error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: data.error,
+                scrollbarPadding: false,
+                heightAuto: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+                });
                 return;
             }
-    
-            alert("อัปเดตข้อมูลสำเร็จ!");
+
+            Swal.fire({
+                icon: 'success',
+                title: 'สำเร็จ!',
+                text: 'อัปเดตข้อมูลสำเร็จ',
+            scrollbarPadding: false,
+            heightAuto: false,
+            timer: 1000,
+            showConfirmButton: false,
+            timerProgressBar: true
+            });
+
             await loadUserInfo();
             await renderBarChart();
             window.loadBmrTdee();
@@ -251,6 +277,16 @@ document.addEventListener("DOMContentLoaded", async function () {
             editFormContainer.style.display = "none";
         } catch (error) {
             console.error("Error updating user info:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'ไม่สามารถอัปเดตข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+            scrollbarPadding: false,
+            heightAuto: false,
+            timer: 1000,
+            showConfirmButton: false,
+            timerProgressBar: true
+            });
         }
     });
 

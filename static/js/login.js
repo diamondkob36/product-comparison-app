@@ -1,26 +1,64 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const flashEl = document.getElementById("flash-data");
-    const alertBox = document.getElementById("custom-alert");
+  const loginForm = document.getElementById("login-form");
 
-    if (flashEl && alertBox) {
-        const category = flashEl.dataset.category; // success / error / info
-        const message = flashEl.dataset.message;
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-        // ใส่ข้อความ
-        alertBox.textContent = message;
+      const formData = new FormData(loginForm);
+      const payload = Object.fromEntries(formData);
 
-        // ลบคลาสเดิมก่อน
-        alertBox.className = "custom-alert hidden";
+      try {
+        const response = await fetch("/auth/api/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
 
-        // ใส่คลาสตามประเภท
-        alertBox.classList.add(category); // เช่น .success
-        alertBox.classList.remove("hidden");
-        alertBox.classList.add("show");
+        const data = await response.json();
 
-        // หายไปเองใน 3 วินาที
-        setTimeout(() => {
-            alertBox.classList.remove("show");
-            alertBox.classList.add("hidden");
-        }, 3000);
-    }
+        if (!response.ok) {
+            Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: data.error || 'เกิดข้อผิดพลาด ไม่สามารถเข้าสู่ระบบได้',
+            scrollbarPadding: false,
+            heightAuto: false,
+            timer: 1000,
+            showConfirmButton: false,
+            timerProgressBar: true
+          });
+          return;
+        }
+
+        Swal.fire({
+          icon: 'success',
+          title: 'สำเร็จ!',
+          text: data.message,
+        scrollbarPadding: false,
+        heightAuto: false,
+        timer: 1000,
+        timerProgressBar: true,
+        showConfirmButton: false
+        }).then(() => {
+          window.location.href = "/users/index"; // หรือ path ที่คุณใช้จริง
+        });
+
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+        scrollbarPadding: false,
+        heightAuto: false,
+        timer: 1500,
+        showConfirmButton: false,
+        timerProgressBar: true
+        });
+      }
+    });
+  }
 });

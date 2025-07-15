@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session, flash
+from flask import Blueprint, render_template, redirect, url_for, request, session, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 import mysql.connector
 
@@ -42,63 +42,73 @@ def get_user_by_username(username):
             conn.close()
     return user
 
-# 🔹 สมัครสมาชิก
-@auth_bp.route('/register', methods=['GET', 'POST'])
+# 🔹 หน้า Register (แค่เสิร์ฟฟอร์ม)
+@auth_bp.route('/register', methods=['GET'])
 def register():
-    if request.method == 'POST':
-        name = request.form['name']
-        username = request.form['username']
-        password = request.form['password']
-        weight = request.form['weight']
-        height = request.form['height']
-        age = request.form['age']
-        gender = request.form['gender']
-        activity_level = request.form['activity_level']
-        goal = request.form['goal']
-
-        # ✅ รับค่าจาก <select multiple> ด้วย getlist()
-        subgoal_list = request.form.getlist('subgoal')
-        subgoal = ','.join(subgoal_list) if subgoal_list else None
-
-        # 🔍 ตรวจสอบว่าชื่อผู้ใช้ซ้ำหรือไม่
-        user = get_user_by_username(username)
-        if user:
-            flash("ชื่อผู้ใช้นี้ถูกใช้ไปแล้ว!", "register-username-error")
-            return redirect(url_for('auth.register'))
-
-        # ✅ แฮชรหัสผ่านก่อนบันทึก
-        hashed_password = generate_password_hash(password)
-        add_user_to_db(username, name, hashed_password, weight, height, age,
-                       gender, activity_level, goal, subgoal)
-
-        flash("สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ", "register-success")
-        return render_template('register.html')
-
     return render_template('register.html')
+
+# 🔹 API Register (รับ JSON)
+@auth_bp.route('/api/register', methods=['POST'])
+def api_register():
+    data = request.get_json()
+
+    name = data.get('name')
+    username = data.get('username')
+    password = data.get('password')
+    weight = data.get('weight')
+    height = data.get('height')
+    age = data.get('age')
+    gender = data.get('gender')
+    activity_level = data.get('activity_level')
+    goal = data.get('goal')
+    subgoal_list = data.get('subgoal') or []
+    subgoal = ','.join(subgoal_list) if subgoal_list else None
+
+    # ✅ ตรวจสอบค่าห้าม <= 0
+    try:
+        weight_val = float(weight)
+        height_val = float(height)
+        age_val = int(age)
+        if weight_val <= 0 or height_val <= 0 or age_val <= 0:
+            return jsonify({"error": "น้ำหนัก ส่วนสูง และอายุ ต้องมากกว่า 0"}), 400
+    except ValueError:
+        return jsonify({"error": "กรุณากรอกข้อมูลน้ำหนัก ส่วนสูง และอายุให้ถูกต้อง"}), 400
+
+    # 🔍 ตรวจสอบชื่อผู้ใช้ซ้ำ
+    user = get_user_by_username(username)
+    if user:
+        return jsonify({"error": "ชื่อผู้ใช้นี้ถูกใช้ไปแล้ว!"}), 400
+
+    # ✅ แฮชรหัสผ่าน
+    hashed_password = generate_password_hash(password)
+    add_user_to_db(username, name, hashed_password, weight, height, age,
+                   gender, activity_level, goal, subgoal)
+
+    return jsonify({"message": "สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ"}), 200
 
 # 🔹 ล็อกอิน
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        user = get_user_by_username(username)
-
-        # 🔐 ตรวจสอบรหัสผ่านแบบแฮช
-        if user and check_password_hash(user['password'], password):
-            session["user"] = {
-                "id": user["id"],
-                "username": user["username"],
-                "name": user["name"],
-            }
-            flash('เข้าสู่ระบบสำเร็จ!', 'login-success')
-            return redirect(url_for('users.homeuser'))
-        else:
-            flash('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', 'login-error')
-            return redirect(url_for('auth.login'))
-
     return render_template('login.html')
+
+@auth_bp.route('/api/login', methods=['POST'])
+def api_login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    user = get_user_by_username(username)
+
+    if user and check_password_hash(user['password'], password):
+        session["user"] = {
+            "id": user["id"],
+            "username": user["username"],
+            "name": user["name"],
+        }
+        return jsonify({"message": "เข้าสู่ระบบสำเร็จ!"}), 200
+
+    return jsonify({"error": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"}), 401
+
 
 # 🔹 ออกจากระบบ
 @auth_bp.route('/logout')

@@ -344,6 +344,14 @@ def update_user_info():
     data = request.json
 
     try:
+        # ✅ ตรวจสอบค่า: ต้องมากกว่า 0
+        weight = float(data.get('weight', 0))
+        height = float(data.get('height', 0))
+        age = int(data.get('age', 0))
+
+        if weight <= 0 or height <= 0 or age <= 0:
+            return jsonify({"error": "น้ำหนัก ส่วนสูง และอายุ ต้องมากกว่า 0"}), 400
+
         conn = mysql.connector.connect(
             host='localhost',
             user='root',
@@ -352,7 +360,7 @@ def update_user_info():
         )
         cursor = conn.cursor()
 
-        # ✅ ถ้า subgoal เป็น list → แปลงเป็น string (comma-separated)
+        # ✅ แปลง subgoal เป็น string
         subgoal = data.get('subgoal')
         if isinstance(subgoal, list):
             subgoal_str = ",".join(subgoal)
@@ -366,7 +374,7 @@ def update_user_info():
             WHERE id = %s
         '''
         cursor.execute(query, (
-            data['name'], data['weight'], data['height'], data['age'],
+            data['name'], weight, height, age,
             data['gender'], data['activity-level'], data['goal'], subgoal_str, user_id
         ))
         conn.commit()

@@ -1,31 +1,88 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // ✅ ทำให้ select เป้าหมายรองรองรับ Select2
     $('#subgoal').select2({
         placeholder: "เลือกเป้าหมายรอง",
         closeOnSelect: false,
         width: '100%'
     });
 
-    // ✅ ตรวจสอบว่ามี flash message เพื่อแสดง popup
-    const flashEl = document.getElementById("flash-data");
-    const alertBox = document.getElementById("custom-alert");
+    const registerForm = document.getElementById("register-form");
+    if (registerForm) {
+        registerForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
 
-    if (flashEl && alertBox) {
-        const category = flashEl.dataset.category;  // เช่น 'success', 'error'
-        const message = flashEl.dataset.message;
-        const redirectURL = flashEl.dataset.redirect; // 👈 new!
+            // ✅ ดึงค่าจาก input
+            const weight = parseFloat(document.getElementById("weight").value) || 0;
+            const height = parseFloat(document.getElementById("height").value) || 0;
+            const age = parseInt(document.getElementById("age").value) || 0;
 
-        alertBox.textContent = message;
-        alertBox.className = "custom-alert " + category + " show";
-
-        setTimeout(() => {
-            alertBox.classList.remove("show");
-            alertBox.classList.add("hidden");
-
-            // ✅ ถ้ามี redirect ให้เปลี่ยนหน้าอัตโนมัติ
-            if (redirectURL) {
-                window.location.href = redirectURL;
+            if (weight <=0 || height <=0 || age <=0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'ข้อมูลไม่ถูกต้อง',
+                    text: 'กรุณากรอกน้ำหนัก ส่วนสูง และอายุที่มากกว่า 0',
+                scrollbarPadding: false,
+                heightAuto: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+                });
+                return;
             }
-        }, 1500); // หรือ 3000 ก็ได้ตามต้องการ
+
+            const formData = new FormData(registerForm);
+            const payload = Object.fromEntries(formData);
+            payload.subgoal = $('#subgoal').val();
+
+            try {
+                const response = await fetch("/auth/api/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: data.error,
+                    scrollbarPadding: false,
+                    heightAuto: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                    });
+                    return;
+                }
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: data.message,
+                scrollbarPadding: false,
+                heightAuto: false,
+                timer: 1000,
+                timerProgressBar: true,
+                showConfirmButton: false
+                }).then(() => {
+                    window.location.href = "/auth/login";
+                });
+            } catch (error) {
+                console.error("Error registering user:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถสมัครสมาชิกได้ กรุณาลองใหม่อีกครั้ง',
+                scrollbarPadding: false,
+                heightAuto: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+                });
+            }
+        });
     }
 });
