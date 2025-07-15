@@ -274,6 +274,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             window.loadBmrTdee();
             await loadNutritionChart();
             await loadBMI();
+            window.loadNutritionData();
             editFormContainer.style.display = "none";
         } catch (error) {
             console.error("Error updating user info:", error);
@@ -455,32 +456,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     };
 
-    window.loadNutritionData = async function loadNutritionData() {
-    try {
-        const response = await fetch('/users/nutrition_chart');
-        const data = await response.json();
-
-        if (data.error) {
-            console.error("Error fetching nutrition data:", data.error);
-            return;
-        }
-
-        // อัปเดตข้อมูลใน HTML
-        document.getElementById("total-energy2").textContent = data.tdee.toFixed(2);
-        document.getElementById("intake-protein2").textContent = data.protein.toFixed(2);
-        document.getElementById("intake-fat2").textContent = data.fat.toFixed(2);
-        document.getElementById("intake-carb2").textContent = data.carbohydrate.toFixed(2);
-        document.getElementById("intake-sugar2").textContent = data.sugar.toFixed(2);
-        document.getElementById("intake-sodium2").textContent = data.sodium.toFixed(0); // ปัดค่าทศนิยมออก
-    } catch (error) {
-        console.error("Error loading nutrition data:", error);
-    }
-};
-
     // โหลดข้อมูลผู้ใช้และกราฟเมื่อหน้าเว็บโหลดเสร็จ
     await loadUserInfo();
     await renderBarChart();
     await loadNutritionChart();
-    await loadNutritionData();
     await loadBMI();
 });

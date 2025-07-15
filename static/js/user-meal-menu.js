@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const resultsContainer = document.getElementById("results");
 
     let ingredients = []; // เก็บรายการวัตถุดิบของผู้ใช้
+    let userDailyIntake = {};
+    let userRecommendedTdee = 0;
 
     // ฟังก์ชันโหลดวัตถุดิบของผู้ใช้จาก API
     window.loadUserIngredientsForRecommendation = async function loadUserIngredientsForRecommendation() {
@@ -272,8 +274,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error("Error calculating BMR and TDEE:", data.error);
                 document.getElementById("daily-intake").innerHTML = `<p>${data.error}</p>`;
             } else {
+                // ✅ เก็บไว้ใช้ทีหลัง
+                userDailyIntake = data.daily_intake || {};
+
                 // ตรวจสอบและอัปเดต TDEE ที่ปรับตามเป้าหมาย
                 const adjustedTdee = data.daily_intake?.tdee || data.tdee;
+                userRecommendedTdee = adjustedTdee;
                 document.getElementById("total-energy").innerText = adjustedTdee;
     
                 // แสดงเป้าหมายปัจจุบัน
@@ -442,8 +448,56 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedRows = parseInt(this.value);
         loadSelectedMenus(selectedRows, 1);
     });
+
+    window.loadNutritionData = async function loadNutritionData() {
+        try {
+            const response = await fetch('/users/nutrition_chart');
+            const data = await response.json();
+
+            if (data.error) {
+                console.error("Error fetching nutrition data:", data.error);
+                return;
+            }
+
+            // ✅ พลังงานรวม
+            let energyText = `${data.tdee.toFixed(2)} kcal`;
+            if (userRecommendedTdee) {
+                energyText += ` / ค่าแนะนำต่อวัน ${userRecommendedTdee}`;
+            }
+            document.getElementById("total-energy2").textContent = energyText;
+
+            // ✅ แสดงสารอาหารพร้อมค่าแนะนำ
+            const nutrients = [
+                { key: "protein", unit: "กรัม", id: "intake-protein2" },
+                { key: "fat", unit: "กรัม", id: "intake-fat2" },
+                { key: "carb", unit: "กรัม", id: "intake-carb2" },
+                { key: "sugar", unit: "กรัม", id: "intake-sugar2" },
+                { key: "sodium", unit: "มิลลิกรัม", id: "intake-sodium2" }
+            ];
+
+            nutrients.forEach(n => {
+                const value = data[n.key]?.toFixed(2) || "0";
+                let recommended = "";
+                
+                if (userDailyIntake[n.key] !== undefined) {
+                    // ✅ แยกข้อความสำหรับน้ำตาล / โซเดียม
+                    if (n.key === "sugar" || n.key === "sodium") {
+                        recommended = ` / ไม่ควรเกินต่อวัน ${userDailyIntake[n.key]}`;
+                    } else {
+                        recommended = ` / ค่าแนะนำต่อวัน ${userDailyIntake[n.key]}`;
+                    }
+                }
+
+                document.getElementById(n.id).textContent = `${value} ${n.unit}${recommended}`;
+            });
+
+        } catch (error) {
+            console.error("Error loading nutrition data:", error);
+        }
+    };
         
     // เรียกฟังก์ชันโหลดข้อมูลทันที
     window.loadBmrTdee();
+    window.loadNutritionData();
     window.loadSelectedMenus();
 });
