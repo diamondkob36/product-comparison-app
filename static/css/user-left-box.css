@@ -4,7 +4,7 @@
     left: 0; /* ชิดด้านซ้าย */
     transform: translateY(-50%); /* จัดให้อยู่ตรงกลางในแนวตั้ง */
     width: 20px; /* ความกว้างของกล่อง */
-    padding: 30px 30px 30px 15px; /* เพิ่มพื้นที่ภายในกล่อง */
+    padding: 50px 30px 50px 15px; /* เพิ่มพื้นที่ภายในกล่อง */
     background-color: rgba(255, 255, 255, 0.2); /* สีพื้นหลัง */
     clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%); /* ปรับมุมขวาบนและล่างให้ทะแยง */
     text-align: left; /* จัดข้อความให้อยู่ชิดซ้าย */
@@ -12,7 +12,6 @@
     color: white; /* สีข้อความ */
     font-size: 18px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* เพิ่มเงา */
-    border: 2px solid rgba(255, 255, 255, 0.3); /* ขอบกรอบโปร่งใส */
     animation: slide-in 1s ease-out forwards; /* เพิ่มแอนิเมชัน */
 }
 

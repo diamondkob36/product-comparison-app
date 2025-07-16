@@ -639,24 +639,81 @@ button.delete-ingredient i {
     display: flex;
     gap: 20px;
     margin-top: 20px;
-    justify-content: space-between; /* จัดให้เว้นระยะเท่าๆ กัน */
 }
 
 /* ส่วนแสดงข้อมูลผู้ใช้ */
 .user-display-info {
-    flex: 1;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    flex: 6;
+    border-radius: 20px;
     background-color: #f9f9f9;
     color: black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
 }
 
+.head-display-info{
+    display: flex;
+    justify-content: space-between;
+    background-color: #15803d;
+    align-items: center;
+    border-radius: 20px 20px 0px 0px;
+    padding: 0px 10px 0px 10px;
+}
+
 .user-display-info h3 {
-    margin-bottom: 20px;
     font-size: 20px;
-    text-align: center;
+    margin-left: 20px;
+}
+
+.box-display-info{
+    display: flex;
+    gap: 10px;
+    margin: 20px;
+}
+
+.box-info-1{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #007BFF;
+    border-radius: 20px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0 20px 0;
+}
+
+.box-info-1 span p{
+    display: flex;
+}
+
+.box-info-1 span{
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.box-info-2{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #15803d;
+    border-radius: 20px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0 20px 0;
+}
+
+.box-info-2 span p{
+    display: flex;
+}
+
+.box-info-2 span{
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.box-info-2 .bmi-level{
+    font-size: 16px;
 }
 
 .user-display-info p {
@@ -688,7 +745,7 @@ button.delete-ingredient i {
     border-radius: 6px; /* ทำให้ปุ่มมีมุมโค้ง */
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
-    margin: 20px auto; /* ✅ จัดให้อยู่ตรงกลางแนวนอน */
+    margin: 10px; /* ✅ จัดให้อยู่ตรงกลางแนวนอน */
     text-align: center;
 }
 
@@ -710,8 +767,7 @@ button.delete-ingredient i {
 }
 
 .daily-intake-container {
-    flex: 1; /* ขนาดเท่ากัน */
-    padding: 20px;
+    flex: 4; /* ขนาดเท่ากัน */
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #ffffff;

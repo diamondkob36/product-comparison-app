@@ -42,22 +42,32 @@
         <div class="user-edit-display-container">
             <!-- พื้นที่ซ้าย: แสดงข้อมูล User -->
             <div class="user-display-info">
-                <h3><i class="fas fa-user-circle text-primary"></i> ข้อมูลผู้ใช้</h3>
+                <div class="head-display-info">
+                    <h3><i class="fas fa-user-circle text-primary"></i> ข้อมูลผู้ใช้</h3>
+                    <button class="edit-button" id="edit-button">
+                        <i class="fas fa-user-edit"></i> แก้ไขข้อมูล
+                    </button>
+                </div>
+                <div class="box-display-info">
+                    <div class="box-info-1">
+                        <span id="display-age">-</span>
+                        <p><i class="fas fa-birthday-cake text-soft-pink"></i> อายุ (ปี)</p>
+                    </div>
+                    <div class="box-info-2">
+                        <span id="bmi-value">-</span>
+                        <p><i class="fas fa-heart text-danger"></i> BMI (ดัชนีมวลกาย) <span class="bmi-level" id="bmi-level">-</span></p>
+                    </div>
+                </div>
                 <div id="user-info">
                   <p><i class="fas fa-user text-primary"></i> ชื่อ: <span id="display-name">-</span></p>
                   <p><i class="fas fa-weight text-energy"></i> น้ำหนัก: <span id="display-weight">-</span> กก.</p>
                   <p><i class="fas fa-ruler-vertical text-teal"></i> ส่วนสูง: <span id="display-height">-</span> ซม.</p>
-                  <p><i class="fas fa-birthday-cake text-soft-pink"></i> อายุ: <span id="display-age">-</span> ปี</p>
                   <p><i class="fas fa-venus-mars text-indigo"></i> เพศ: <span id="display-gender">-</span></p>
                   <p><i class="fas fa-running text-success"></i> ระดับกิจกรรม: <span id="display-activity-level">-</span></p>
                   <p><i class="fas fa-bullseye text-gold"></i> เป้าหมายหลัก: <span id="display-goal">-</span></p>
                   <p><i class="fas fa-tasks text-soft-blue"></i> เป้าหมายรอง: <span id="display-subgoal">-</span></p>
-                  <p><i class="fas fa-heart text-danger"></i> BMI (ดัชนีมวลกาย) : <span id="bmi-value">-</span> ( <span id="bmi-level">-</span> )</p>
                   <p class="text-bmi" id="bmi-advice">-</p>
                 </div>
-                <button class="edit-button" id="edit-button">
-                    <i class="fas fa-user-edit"></i> แก้ไขข้อมูล
-                </button>
             </div>    
             <!-- พื้นที่ขวา: แสดงพลังงานที่ควรได้รับ User -->
             <div class="daily-intake-container">
