@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriPlan - Meal & Nutrition Planner</title>
+    <style>
+        :root {
+            --primary-green: #2E7D32;
+            --secondary-green: #4CAF50;
+            --accent-orange: #FF9800;
+            --accent-yellow: #FFC107;
+            --light-green: #E8F5E8;
+            --dark-text: #2E2E2E;
+            --light-text: #666;
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --border-color: #E0E0E0;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --error-color: #F44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E8F5E8 0%, #F1F8E9 100%);
+            color: var(--dark-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: var(--primary-green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));
+            border-radius: 2px;
+        }
+
+        .row {
+            display: flex;
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        .col-left, .col-right {
+            flex: 1;
+        }
+
+        .user-info {
+            background: var(--light-green);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--secondary-green);
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--primary-green);
+        }
+
+        .info-value {
+            background: var(--white);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-container {
+            background: var(--light-gray);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        .energy-chart {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+            background: conic-gradient(
+                var(--secondary-green) 0deg 120deg,
+                var(--accent-orange) 120deg 240deg,
+                var(--accent-yellow) 240deg 360deg
+            );
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .energy-center {
+            width: 120px;
+            height: 120px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .energy-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+
+        .energy-label {
+            font-size: 0.9em;
+            color: var(--light-text);
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+        }
+
+        .meal-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .meal-table th,
+        .meal-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .meal-table th {
+            background: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .meal-table tr:hover {
+            background: var(--light-gray);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--secondary-green), var(--primary-green));
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-small {
+            padding: 5px 15px;
+            font-size: 0.9em;
+        }
+
+        .btn-remove {
+            background: linear-gradient(135deg, var(--error-color), #D32F2F);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: var(--primary-green);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--secondary-green);
+        }
+
+        .nutrient-display {
+            background: var(--light-green);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .nutrient-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nutrient-item:last-child {
+            border-bottom: none;
+        }
+
+        .nutrient-bar {
+            width: 100%;
+            height: 20px;
+            background: var(--light-gray);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .nutrient-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary-green), var(--accent-orange));
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .ingredient-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .ingredient-card {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .ingredient-card:hover {
+            border-color: var(--secondary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .ingredient-card.selected {
+            border-color: var(--secondary-green);
+            background: var(--light-green);
+        }
+
+        .recipe-recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .recipe-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--secondary-green), var(--accent-orange));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 3em;
+        }
+
+        .recipe-content {
+            padding: 20px;
+        }
+
+        .recipe-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+        }
+
+        .recipe-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: var(--light-text);
+        }
+
+        .recipe-nutrients {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .nutrient-tag {
+            background: var(--light-green);
+            color: var(--primary-green);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🥗 NutriPlan</h1>
+        <p class="subtitle">Your Personal Meal & Nutrition Planner</p>
+    </header>
+
+    <div class="container">
+        <!-- User Info & Daily Energy Section -->
+        <div class="section">
+            <h2 class="section-title">👤 User Profile & Daily Energy Needs</h2>
+            <div class="row">
+                <div class="col-left">
+                    <div class="user-info">
+                        <div class="info-item">
+                            <span class="info-label">Name:</span>
+                            <span class="info-value" id="userName">Alex Johnson</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Age:</span>
+                            <span class="info-value" id="userAge">28 years</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Weight:</span>
+                            <span class="info-value" id="userWeight">70 kg</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Height:</span>
+                            <span class="info-value" id="userHeight">175 cm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Activity Level:</span>
+                            <span class="info-value" id="userActivity">Moderate</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Goal:</span>
+                            <span class="info-value" id="userGoal">Maintain Weight</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-right">
+                    <div class="chart-container">
+                        <h3>Daily Energy Requirement</h3>
+                        <div class="energy-chart">
+                            <div class="energy-center">
+                                <div class="energy-value" id="dailyCalories">2,200</div>
+                                <div class="energy-label">kcal/day</div>
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: var(--secondary-green);"></div>
+                                <span>Carbs (45%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: var(--accent-orange);"></div>
+                                <span>Protein (25%)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: var(--accent-yellow);"></div>
+                                <span>Fat (30%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Selected Meals & Nutrition Analysis -->
+        <div class="section">
+            <h2 class="section-title">🍽️ Selected Meals & Nutrition Analysis</h2>
+            <div class="row">
+                <div class="col-left">
+                    <h3>Today's Meal Plan</h3>
+                    <table class="meal-table">
+                        <thead>
+                            <tr>
+                                <th>Meal</th>
+                                <th>Food Item</th>
+                                <th>Portion</th>
+                                <th>Calories</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mealTableBody">
+                            <tr>
+                                <td>Breakfast</td>
+                                <td>Oatmeal with Berries</td>
+                                <td>1 cup</td>
+                                <td>350</td>
+                                <td><button class="btn btn-small btn-remove">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>Lunch</td>
+                                <td>Grilled Chicken Salad</td>
+                                <td>1 serving</td>
+                                <td>450</td>
+                                <td><button class="btn btn-small btn-remove">Remove</button></td>
+                            </tr>
+                            <tr>
+                                <td>Dinner</td>
+                                <td>Salmon with Quinoa</td>
+                                <td>1 serving</td>
+                                <td>520</td>
+                                <td><button class="btn btn-small btn-remove">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-right">
+                    <div class="nutrient-display">
+                        <h3>Nutrition Summary</h3>
+                        <div class="nutrient-item">
+                            <span><strong>Total Calories:</strong></span>
+                            <span id="totalCalories">1,320 / 2,200 kcal</span>
+                        </div>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-fill" style="width: 60%;"></div>
+                        </div>
+                        
+                        <div class="nutrient-item">
+                            <span><strong>Protein:</strong></span>
+                            <span>85g / 138g</span>
+                        </div>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-fill" style="width: 62%;"></div>
+                        </div>
+                        
+                        <div class="nutrient-item">
+                            <span><strong>Carbohydrates:</strong></span>
+                            <span>120g / 248g</span>
+                        </div>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-fill" style="width: 48%;"></div>
+                        </div>
+                        
+                        <div class="nutrient-item">
+                            <span><strong>Fat:</strong></span>
+                            <span>45g / 73g</span>
+                        </div>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-fill" style="width: 62%;"></div>
+                        </div>
+                        
+                        <div class="nutrient-item">
+                            <span><strong>Fiber:</strong></span>
+                            <span>28g / 25g</span>
+                        </div>
+                        <div class="nutrient-bar">
+                            <div class="nutrient-fill" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Ingredients & Ingredient Database -->
+        <div class="section">
+            <h2 class="section-title">🥬 Ingredient Management</h2>
+            <div class="row">
+                <div class="col-left">
+                    <h3>Add New Ingredient</h3>
+                    <div class="input-group">
+                        <label for="ingredientName">Ingredient Name:</label>
+                        <input type="text" id="ingredientName" placeholder="Enter ingredient name">
+                    </div>
+                    <div class="input-group">
+                        <label for="ingredientCategory">Category:</label>
+                        <select id="ingredientCategory">
+                            <option value="vegetables">Vegetables</option>
+                            <option value="fruits">Fruits</option>
+                            <option value="grains">Grains</option>
+                            <option value="proteins">Proteins</option>
+                            <option value="dairy">Dairy</option>
+                            <option value="spices">Spices</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="ingredientCalories">Calories per 100g:</label>
+                        <input type="number" id="ingredientCalories" placeholder="Enter calories">
+                    </div>
+                    <div class="input-group">
+                        <label for="ingredientProtein">Protein per 100g (g):</label>
+                        <input type="number" id="ingredientProtein" placeholder="Enter protein">
+                    </div>
+                    <button class="btn" onclick="addIngredient()">Add Ingredient</button>
+                </div>
+                <div class="col-right">
+                    <h3>Available Ingredients</h3>
+                    <div class="ingredient-grid" id="ingredientGrid">
+                        <div class="ingredient-card" onclick="selectIngredient(this)">
+                            <div style="font-size: 2em; margin-bottom: 10px;">🥕</div>
+                            <strong>Carrots</strong>
+                            <div>41 kcal/100g</div>
+                            <div>Vegetables</div>
+                        </div>
+                        <div class="ingredient-card" onclick="selectIngredient(this)">
+                            <div style="font-size: 2em; margin-bottom: 10px;">🍎</div>
+                            <strong>Apple</strong>
+                            <div>52 kcal/100g</div>
+                            <div>Fruits</div>
+                        </div>
+                        <div class="ingredient-card" onclick="selectIngredient(this)">
+                            <div style="font-size: 2em; margin-bottom: 10px;">🐟</div>
+                            <strong>Salmon</strong>
+                            <div>208 kcal/100g</div>
+                            <div>Proteins</div>
+                        </div>
+                        <div class="ingredient-card" onclick="selectIngredient(this)">
+                            <div style="font-size: 2em; margin-bottom: 10px;">🌾</div>
+                            <strong>Quinoa</strong>
+                            <div>368 kcal/100g</div>
+                            <div>Grains</div>
+                        </div>
+                        <div class="ingredient-card" onclick="selectIngredient(this)">
+                            <div style="font-size: 2em; margin-bottom: 10px;">🥛</div>
+                            <strong>Greek Yogurt</strong>
+                            <div>100 kcal/100g</div>
+                            <div>Dairy</div>
+                        </div>
+                        <div class="ingredient-card" onclick="selectIngredient(this)">
+                            <div style="font-size: 2em; margin-bottom: 10px;">🥬</div>
+                            <strong>Spinach</strong>
+                            <div>23 kcal/100g</div>
+                            <div>Vegetables</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Recommendations -->
+        <div class="section">
+            <h2 class="section-title">🍳 Recommended Recipes</h2>
+            <div class="recipe-recommendations">
+                <div class="recipe-card">
+                    <div class="recipe-image">🥗</div>
+                    <div class="recipe-content">
+                        <div class="recipe-title">Rainbow Quinoa Bowl</div>
+                        <div class="recipe-stats">
+                            <span>⏱️ 25 min</span>
+                            <span>👥 2 servings</span>
+                            <span>🔥 420 kcal</span>
+                        </div>
+                        <div class="recipe-nutrients">
+                            <span class="nutrient-tag">High Protein</span>
+                            <span class="nutrient-tag">Fiber Rich</span>
+                            <span class="nutrient-tag">Antioxidants</span>
+                        </div>
+                        <p style="color: var(--light-text); margin-bottom: 15px;">
+                            A colorful and nutritious bowl packed with quinoa, roasted vegetables, and a tahini dressing.
+                        </p>
+                        <button class="btn">Add to Meal Plan</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card">
+                    <div class="recipe-image">🐟</div>
+                    <div class="recipe-content">
+                        <div class="recipe-title">Herb-Crusted Salmon</div>
+                        <div class="recipe-stats">
+                            <span>⏱️ 20 min</span>
+                            <span>👥 1 serving</span>
+                            <span>🔥 350 kcal</span>
+                        </div>
+                        <div class="recipe-nutrients">
+                            <span class="nutrient-tag">Omega-3</span>
+                            <span class="nutrient-tag">Low Carb</span>
+                            <span class="nutrient-tag">Heart Healthy</span>
+                        </div>
+                        <p style="color: var(--light-text); margin-bottom: 15px;">
+                            Fresh salmon fillet with herbs, served with steamed broccoli and sweet potato.
+                        </p>
+                        <button class="btn">Add to Meal Plan</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card">
+                    <div class="recipe-image">🥣</div>
+                    <div class="recipe-content">
+                        <div class="recipe-title">Overnight Oats Parfait</div>
+                        <div class="recipe-stats">
+                            <span>⏱️ 5 min</span>
+                            <span>👥 1 serving</span>
+                            <span>🔥 290 kcal</span>
+                        </div>
+                        <div class="recipe-nutrients">
+                            <span class="nutrient-tag">High Fiber</span>
+                            <span class="nutrient-tag">Probiotics</span>
+                            <span class="nutrient-tag">Quick Prep</span>
+                        </div>
+                        <p style="color: var(--light-text); margin-bottom: 15px;">
+                            Creamy overnight oats with Greek yogurt, berries, and a drizzle of honey.
+                        </p>
+                        <button class="btn">Add to Meal Plan</button>
+                    </div>
+                </div>
+
+                <div class="recipe-card">
+                    <div class="recipe-image">🥙</div>
+                    <div class="recipe-content">
+                        <div class="recipe-title">Mediterranean Wrap</div>
+                        <div class="recipe-stats">
+                            <span>⏱️ 10 min</span>
+                            <span>👥 1 serving</span>
+                            <span>🔥 380 kcal</span>
+                        </div>
+                        <div class="recipe-nutrients">
+                            <span class="nutrient-tag">Balanced</span>
+                            <span class="nutrient-tag">Portable</span>
+                            <span class="nutrient-tag">Fresh</span>
+                        </div>
+                        <p style="color: var(--light-text); margin-bottom: 15px;">
+                            Whole wheat wrap filled with hummus, grilled chicken, and fresh vegetables.
+                        </p>
+                        <button class="btn">Add to Meal Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data and functionality
+        let selectedIngredients = [];
+        let mealPlan = [];
+        let ingredients = [
+            { name: 'Carrots', category: 'vegetables', calories: 41, protein: 0.9, emoji: '🥕' },
+            { name: 'Apple', category: 'fruits', calories: 52, protein: 0.3, emoji: '🍎' },
+            { name: 'Salmon', category: 'proteins', calories: 208, protein: 25.4, emoji: '🐟' },
+            { name: 'Quinoa', category: 'grains', calories: 368, protein: 14.1, emoji: '🌾' },
+            { name: 'Greek Yogurt', category: 'dairy', calories: 100, protein: 10, emoji: '🥛' },
+            { name: 'Spinach', category: 'vegetables', calories: 23, protein: 2.9, emoji: '🥬' }
+        ];
+
+        // Add new ingredient
+        function addIngredient() {
+            const name = document.getElementById('ingredientName').value;
+            const category = document.getElementById('ingredientCategory').value;
+            const calories = document.getElementById('ingredientCalories').value;
+            const protein = document.getElementById('ingredientProtein').value;
+
+            if (name && calories && protein) {
+                const categoryEmojis = {
+                    vegetables: '🥬',
+                    fruits: '🍎',
+                    grains: '🌾',
+                    proteins: '🥩',
+                    dairy: '🥛',
+                    spices: '🌶️'
+                };
+
+                const newIngredient = {
+                    name: name,
+                    category: category,
+                    calories: parseInt(calories),
+                    protein: parseFloat(protein),
+                    emoji: categoryEmojis[category]
+                };
+
+                ingredients.push(newIngredient);
+                renderIngredients();
+                
+                // Clear form
+                document.getElementById('ingredientName').value = '';
+                document.getElementById('ingredientCalories').value = '';
+                document.getElementById('ingredientProtein').value = '';
+            }
+        }
+
+        // Render ingredients grid
+        function renderIngredients() {
+            const grid = document.getElementById('ingredientGrid');
+            grid.innerHTML = '';
+
+            ingredients.forEach((ingredient, index) => {
+                const card = document.createElement('div');
+                card.className = 'ingredient-card';
+                card.onclick = () => selectIngredient(card);
+                card.innerHTML = `
+                    <div style="font-size: 2em; margin-bottom: 10px;">${ingredient.emoji}</div>
+                    <strong>${ingredient.name}</strong>
+                    <div>${ingredient.calories} kcal/100g</div>
+                    <div>${ingredient.category}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Select ingredient
+        function selectIngredient(card) {
+            card.classList.toggle('selected');
+            
+            // Add some visual feedback
+            if (card.classList.contains('selected')) {
+                card.style.transform = 'scale(1.05)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }
+
+        // Remove meal from table
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-remove')) {
+                const row = e.target.closest('tr');
+                row.remove();
+                updateNutritionSummary();
+            }
+        });
+
+        // Update nutrition summary
+        function updateNutritionSummary() {
+            const rows = document.querySelectorAll('#mealTableBody tr');
+            let totalCalories = 0;
+            
+            rows.forEach(row => {
+                const calorieCell = row.cells[3];
+                if (calorieCell) {
+                    totalCalories += parseInt(calorieCell.textContent) || 0;
+                }
+            });
+            
+            document.getElementById('totalCalories').textContent = `${totalCalories} / 2,200 kcal`;
+            
+            // Update progress bars
+            const calorieProgress = Math.min((totalCalories / 2200) * 100, 100);
+            document.querySelector('.nutrient-bar .nutrient-fill').style.width = calorieProgress + '%';
+        }
+
+        // Add recipe to meal plan
+        document.addEventListener('click', function(e) {
+            if (e.target.textContent === 'Add to Meal Plan') {
+                const recipeCard = e.target.closest('.recipe-card');
+                const recipeName = recipeCard.querySelector('.recipe-title').textContent;
+                const recipeCalories = recipeCard.querySelector('.recipe-stats').textContent.match(/(\d+) kcal/)[1];
+                
+                // Add to meal table
+                const tableBody = document.getElementById('mealTableBody');
+                const newRow = tableBody.insertRow();
+                newRow.innerHTML = `
+                    <td>Snack</td>
+                    <td>${recipeName}</td>
+                    <td>1 serving</td>
+                    <td>${recipeCalories}</td>
+                    <td><button class="btn btn-small btn-remove">Remove</button></td>
+                `;
+                
+                // Update nutrition summary
+                updateNutritionSummary();
+                
+                // Visual feedback
+                e.target.textContent = 'Added!';
+                e.target.style.background = 'var(--success-color)';
+                setTimeout(() => {
+                    e.target.textContent = 'Add to Meal Plan';
+                    e.target.style.background = 'linear-gradient(135deg, var(--secondary-green), var(--primary-green))';
+                }, 2000);
+            }
+        });
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            renderIngredients();
+            updateNutritionSummary();
+            
+            // Add some animations
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.5s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+
+        // Update daily energy chart based on user data
+        function updateEnergyChart() {
+            // This would normally calculate based on user's BMR and activity level
+            const baseCalories = 2200;
+            document.getElementById('dailyCalories').textContent = baseCalories.toLocaleString();
+        }
+
+        // Interactive features for better user experience
+        document.addEventListener('mouseover', function(e) {
+            if (e.target.classList.contains('recipe-card')) {
+                e.target.style.transform = 'translateY(-8px)';
+            }
+        });
+
+        document.addEventListener('mouseout', function(e) {
+            if (e.target.classList.contains('recipe-card')) {
+                e.target.style.transform = 'translateY(0)';
+            }
+        });
+    </script>
+</body>
+</html>

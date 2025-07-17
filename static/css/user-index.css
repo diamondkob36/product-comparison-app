@@ -639,6 +639,8 @@ button.delete-ingredient i {
     display: flex;
     gap: 20px;
     margin-top: 20px;
+    background-color: red;
+    padding: 20px;
 }
 
 /* ส่วนแสดงข้อมูลผู้ใช้ */
@@ -670,16 +672,18 @@ button.delete-ingredient i {
     margin: 20px;
 }
 
-.box-info-1{
+.box-info-1 {
     display: flex;
     flex-direction: column;
+    flex: 1;
     width: 100%;
-    background-color: #007BFF;
-    border-radius: 20px;
     height: 150px;
+    background-color: #F8F8FF;
+    border-radius: 20px;
     justify-content: center;
     align-items: center;
-    padding: 20px 0 20px 0;
+    padding: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
 }
 
 .box-info-1 span p{
@@ -694,13 +698,15 @@ button.delete-ingredient i {
 .box-info-2{
     display: flex;
     flex-direction: column;
+    flex: 1;
     width: 100%;
-    background-color: #15803d;
+    background-color: #F8F8FF;
     border-radius: 20px;
     height: 150px;
     justify-content: center;
     align-items: center;
-    padding: 20px 0 20px 0;
+    padding: 20px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
 }
 
 .box-info-2 span p{
