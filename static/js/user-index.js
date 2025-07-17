@@ -183,6 +183,18 @@ document.addEventListener("DOMContentLoaded", async function () {
                                 }
                             }
                         },
+                         // ✅ เพิ่มเส้นแดงที่ 100%
+                        annotation: {
+                            annotations: {
+                                line100: {
+                                    type: "line",
+                                    yMin: 100,
+                                    yMax: 100,
+                                    borderColor: "red",
+                                    borderWidth: 2
+                                }
+                            }
+                        }
                     },
                     scales: {
                         y: {

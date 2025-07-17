@@ -34,60 +34,74 @@
 <body>
     {% include 'header-box.html' %}
 
-    {% include 'user-left-box.html' %}
-
     {% include 'menubar.html' %}
 
     <div class="main-content">
         <div class="user-edit-display-container">
             <!-- พื้นที่ซ้าย: แสดงข้อมูล User -->
-            <h3><i class="fas fa-user-circle text-primary"></i> ข้อมูลผู้ใช้</h3>
-            <div class="user-display-info">
-                <h3><i class="fas fa-user-circle text-primary"></i> ข้อมูลผู้ใช้</h3>
-                <div class="box-display-info">
-                    <div class="box-info-1">
-                        <span id="display-age">-</span>
-                        <p><i class="fas fa-birthday-cake text-soft-pink"></i> อายุ (ปี)</p>
+            <div class="head-user-info">
+                <h2><i class="fas fa-user-circle text-white"></i> ข้อมูลผู้ใช้และปริมาณพลังงานและสารอาหารที่ควรได้รับต่อวัน</h3>
+            </div>
+            <div class="user-two-column">
+                <div class="user-display-info">
+                    <h3><i class="fas fa-user-circle text-primary"></i> ข้อมูลผู้ใช้</h3>
+                    <div class="box-display-info">
+                        <div class="box-info-1">
+                            <span id="display-age">-</span>
+                            <p><i class="fas fa-birthday-cake text-soft-pink"></i> อายุ (ปี)</p>
+                        </div>
+                        <div class="box-info-2">
+                            <span id="bmi-value">-</span>
+                            <p><i class="fas fa-heart text-danger"></i> BMI (ดัชนีมวลกาย) <span class="bmi-level" id="bmi-level">-</span></p>
+                        </div>
                     </div>
-                    <div class="box-info-2">
-                        <span id="bmi-value">-</span>
-                        <p><i class="fas fa-heart text-danger"></i> BMI (ดัชนีมวลกาย) <span class="bmi-level" id="bmi-level">-</span></p>
+                    <div class="user-info-column" id="user-info">
+                        <div class="info-column-1">
+                            <p><i class="fas fa-user text-primary"></i> ชื่อ: <span id="display-name">-</span></p>
+                            <p><i class="fas fa-venus-mars text-indigo"></i> เพศ: <span id="display-gender">-</span></p>
+                            <p><i class="fas fa-bullseye text-gold"></i> เป้าหมายหลัก: <span id="display-goal">-</span></p>
+                        </div>
+                        <div class="info-column-2">
+                            <p><i class="fas fa-ruler-vertical text-teal"></i> ส่วนสูง: <span id="display-height">-</span> ซม.</p>
+                            <p><i class="fas fa-weight text-energy"></i> น้ำหนัก: <span id="display-weight">-</span> กก.</p>
+                            <p><i class="fas fa-tasks text-soft-blue"></i> เป้าหมายรอง: <span id="display-subgoal">-</span></p>
+                        </div>
                     </div>
-                </div>
-                <div id="user-info">
-                  <p><i class="fas fa-user text-primary"></i> ชื่อ: <span id="display-name">-</span></p>
-                  <p><i class="fas fa-weight text-energy"></i> น้ำหนัก: <span id="display-weight">-</span> กก.</p>
-                  <p><i class="fas fa-ruler-vertical text-teal"></i> ส่วนสูง: <span id="display-height">-</span> ซม.</p>
-                  <p><i class="fas fa-venus-mars text-indigo"></i> เพศ: <span id="display-gender">-</span></p>
-                  <p><i class="fas fa-running text-success"></i> ระดับกิจกรรม: <span id="display-activity-level">-</span></p>
-                  <p><i class="fas fa-bullseye text-gold"></i> เป้าหมายหลัก: <span id="display-goal">-</span></p>
-                  <p><i class="fas fa-tasks text-soft-blue"></i> เป้าหมายรอง: <span id="display-subgoal">-</span></p>
-                  <p class="text-bmi" id="bmi-advice">-</p>
-                </div>
-                <button class="edit-button" id="edit-button">
-                    <i class="fas fa-user-edit"></i> แก้ไขข้อมูล
-                </button>
-            </div>    
-            <!-- พื้นที่ขวา: แสดงพลังงานที่ควรได้รับ User -->
-            <div class="daily-intake-container">
-                <h3><i class="fas fa-utensils text-dark-green"></i> ปริมาณพลังงานและสารอาหารที่แนะนำต่อวัน</h3>
+                    <div class="end-info">
+                        <p class="activity-level"><i class="fas fa-running text-success"></i> ระดับกิจกรรม: <span id="display-activity-level">-</span></p>
+                        <button class="edit-button" id="edit-button">
+                            <i class="fas fa-user-edit"></i> แก้ไขข้อมูล
+                        </button>
+                        <p class="text-bmi" id="bmi-advice">-</p>
+                    </div>
+                </div>    
+                <!-- พื้นที่ขวา: แสดงพลังงานที่ควรได้รับ User -->
+                <div class="daily-intake-container">
+                    <h3><i class="fas fa-utensils text-dark-green"></i> ปริมาณพลังงานและสารอาหารที่แนะนำต่อวัน</h3>
 
-                <div class="chart-container">
-                    <canvas id="dailyIntakeChart"></canvas>
-                </div>
-                
-                <h4>ปริมาณสารอาหารที่เหมาะสมกับเป้าหมายของคุณในแต่ละวัน</h4>
+                    <div class="chart-container">
+                        <canvas id="dailyIntakeChart"></canvas>
 
-                <div id="daily-intake">
-                    <p><i class="fas fa-burn text-danger"></i> พลังงานรวม: <span id="total-energy">-</span> kcal</p>
-                    <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein">-</span> กรัม</p>
-                    <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat">-</span> กรัม</p>
-                    <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb">-</span> กรัม</p>
-                    <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar">-</span> กรัม (ไม่ควรเกินต่อวัน)</p>
-                    <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium">-</span> มิลลิกรัม (ไม่ควรเกินต่อวัน)</p>
+                        <div class="custom-legend">
+                            <span class="legend-box red-line"></span> เส้นแสดงค่าที่ควรได้รับต่อวัน (ทั่วไป)
+                        </div>
+                    </div>
+                    <div class="info-daily-intake" id="daily-intake">
+                        <div class="box-daily-1">
+                            <p><i class="fas fa-burn text-danger"></i> พลังงานรวม: <span id="total-energy">-</span> kcal</p>
+                            <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein">-</span> กรัม</p>
+                        </div>
+                        <div class="box-daily-2">
+                            <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb">-</span> กรัม</p>
+                            <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat">-</span> กรัม</p>
+                        </div>
+                        <div class="box-daily-3">
+                            <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar">-</span> กรัม (ไม่ควรเกินต่อวัน)</p>
+                            <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium">-</span> มิลลิกรัม (ไม่ควรเกินต่อวัน)</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
         </div>
 
         <div class="content-chart-container">

@@ -8,7 +8,7 @@
     align-items: center;
     padding: 0 20px;
     height: 50px; /* ⬅ เปลี่ยนจาก 43px เป็น 50px */
-    background-color: rgba(0, 0, 0, 0.4); /* เพิ่มความเข้มจาก 0.1 → 0.4 */
+    background-color: rgba(0, 0, 0, 0.3); /* เพิ่มความเข้มจาก 0.1 → 0.4 */
 }
 
 /* โลโก้ (แสดงเฉพาะหน้าจอเล็ก) */
@@ -21,7 +21,7 @@
 
 /* ปุ่มเมนู */
 .menu {
-    display: none;
+    display: flex;
     gap: 10px;
     align-items: center;
 }
