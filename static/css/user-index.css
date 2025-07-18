@@ -328,6 +328,8 @@
 .text-charcoal     { color: #111827; }
 .text-white        { color: white;}
 
+.text-power {color: #FF3300;}
+
 .results-container .recipe i.text-success {
     color: #28a745; /* สีเขียว */
 }
@@ -687,13 +689,13 @@ button.delete-ingredient i {
     flex: 1;
     width: 100%;
     height: 100px;
-    background-color: #F8F8FF;
+    background: linear-gradient(135deg, #009900, #009966);
+    color: #fff;
     border-radius: 20px;
     justify-content: center;
     align-items: center;
     padding: 20px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    border-left: 4px  solid #15803d;
 }
 
 .box-info-1 span p{
@@ -710,14 +712,14 @@ button.delete-ingredient i {
     flex-direction: column;
     flex: 1;
     width: 100%;
-    background-color: #F8F8FF;
+    background: linear-gradient(135deg, #009900, #009966);
+    color: #fff;
     border-radius: 20px;
     height: 100px;
     justify-content: center;
     align-items: center;
     padding: 20px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    border-left: 4px  solid #15803d;
 }
 
 .box-info-2 span p{
@@ -731,7 +733,7 @@ button.delete-ingredient i {
 
 .box-info-2 .bmi-level{
     font-size: 16px;
-    color: black;
+    color: white;
 }
 
 .user-info-column{
@@ -822,12 +824,6 @@ button.delete-ingredient i {
     transform: scale(0.95); /* ลดขนาดลงเล็กน้อยเมื่อกด */
 }
 
-/* ฟอร์มแก้ไขข้อมูลผู้ใช้ */
-.chart-container{
-    width: 100%; /* ทำให้คอนเทนเนอร์ของกราฟเต็มความกว้าง */
-    height: 250px;
-}
-
 .daily-intake-container {
     flex: 4; /* ขนาดเท่ากัน */
     border-radius: 20px;
@@ -863,22 +859,51 @@ button.delete-ingredient i {
     align-items: center;
     padding: 20px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    border-left: 4px  solid #15803d;
 }
 
 .box-daily-1 i{
+    margin-bottom: 10px;
+}
+
+.box-daily-1 span{
     margin-bottom: 5px;
 }
 
 .box-number{
     font-size: 20px;
     font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.box-power {
+  background: linear-gradient(135deg, #FF3300, #FF9900);
+  color: #fff;
+}
+.box-protein {
+  background: linear-gradient(135deg, #92400E, #C2410C);
+  color: #fff;
+}
+.box-fat {
+  background: linear-gradient(135deg, #F59E0B, #FACC15);
+  color: #fff;
+}
+.box-carb {
+  background: linear-gradient(135deg, #FB923C, #FDBA74);
+  color: #fff;
+}
+.box-sugar {
+  background: linear-gradient(135deg, #EC4899, #F472B6);
+  color: #fff;
+}
+.box-sodium {
+  background: linear-gradient(135deg, #3B82F6, #60A5FA);
+  color: #fff;
 }
 
 .total_nutrition-default{
     padding: 20px;
     border-radius: 20px;
-    background-color: #F8F8FF;
+    background-color: #d3d3d3;
 }
 
 .total_nutrition-column{
@@ -886,11 +911,6 @@ button.delete-ingredient i {
     grid-template-columns: 1fr 1fr;
     padding: 0px 10px 0px 10px;
     gap: 10px;
-}
-
-.total_nutrition-display{
-    display: flex;
-    flex-direction: column;
 }
 
 .total_nutrition-default p{

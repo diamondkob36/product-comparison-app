@@ -3,676 +3,487 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meal/Nutrition Planner Dashboard</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Select2 CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">
-    <!-- SweetAlert2 CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.7.12/sweetalert2.min.css" rel="stylesheet">
-    
+    <title>แดชบอร์ดสุขภาพ</title>
     <style>
-        :root {
-            --primary-color: #2ecc71;
-            --secondary-color: #34495e;
-            --success-color: #27ae60;
-            --info-color: #3498db;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --light-bg: #ecf0f1;
-            --dark-text: #2c3e50;
-            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
+        
         body {
+            font-family: 'Prompt', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--dark-text);
             min-height: 100vh;
+            padding: 20px;
+            color: #333;
         }
-
-        .main-container {
-            background: var(--light-bg);
-            min-height: 100vh;
-            padding: 2rem 0;
-        }
-
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
-            box-shadow: var(--card-shadow);
-        }
-
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        .card-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
-            color: white;
-            border-radius: 15px 15px 0 0 !important;
-            padding: 1.2rem 1.5rem;
-            font-weight: 600;
-        }
-
-        .health-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
+        
+        .header {
             text-align: center;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 1.5rem;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '🔥';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -15px;
+            font-size: 2.5em;
+            animation: pulse 2s infinite;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-weight: 700;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-color), var(--bg-color-light));
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
             position: relative;
             overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
         }
-
-        .health-card::before {
+        
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
         }
-
-        .health-card .stat-number {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
+        
+        .stat-card:hover::before {
+            transform: translateX(100%);
         }
-
-        .health-card .stat-label {
-            color: var(--secondary-color);
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        
+        .stat-card.energy {
+            --bg-color: #ff6b35;
+            --bg-color-light: #ff8c42;
+        }
+        
+        .stat-card.carbs {
+            --bg-color: #f39c12;
+            --bg-color-light: #f1c40f;
+        }
+        
+        .stat-card.sugar {
+            --bg-color: #e74c3c;
+            --bg-color-light: #ff6b9d;
+        }
+        
+        .stat-card.protein {
+            --bg-color: #8b4513;
+            --bg-color-light: #a0522d;
+        }
+        
+        .stat-card.fat {
+            --bg-color: #f39c12;
+            --bg-color-light: #f1c40f;
+        }
+        
+        .stat-card.sodium {
+            --bg-color: #3498db;
+            --bg-color-light: #5dade2;
+        }
+        
+        .stat-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            opacity: 0.9;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
             font-weight: 500;
         }
-
-        .bmi-status {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+        
+        .progress-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
         }
-
-        .bmi-normal { background: #d4edda; color: #155724; }
-        .bmi-overweight { background: #fff3cd; color: #856404; }
-        .bmi-underweight { background: #cce5ff; color: #004085; }
-        .bmi-obese { background: #f8d7da; color: #721c24; }
-
-        .ingredient-item {
+        
+        .progress-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            margin-bottom: 0.8rem;
-            border-left: 4px solid var(--primary-color);
-            transition: all 0.3s ease;
+            gap: 10px;
         }
-
-        .ingredient-item:hover {
-            background: rgba(255, 255, 255, 0.95);
+        
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .progress-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .progress-item:hover {
             transform: translateX(5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
-
-        .meal-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--success-color);
-            transition: all 0.3s ease;
-            cursor: pointer;
+        
+        .progress-item.energy { --accent-color: #ff6b35; }
+        .progress-item.carbs { --accent-color: #3498db; }
+        .progress-item.protein { --accent-color: #8b4513; }
+        .progress-item.sugar { --accent-color: #e74c3c; }
+        .progress-item.fat { --accent-color: #f39c12; }
+        .progress-item.sodium { --accent-color: #3498db; }
+        
+        .progress-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
         }
-
-        .meal-card.partial-match {
-            border-left-color: var(--warning-color);
+        
+        .progress-icon {
+            font-size: 1.5em;
         }
-
-        .meal-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
-            border: none;
-            border-radius: 25px;
-            padding: 0.7rem 2rem;
+        
+        .progress-label {
             font-weight: 600;
-            transition: all 0.3s ease;
+            color: #2c3e50;
         }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--success-color), var(--primary-color));
-            transform: translateY(-2px);
+        
+        .progress-value {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--accent-color);
         }
-
-        .btn-outline-primary {
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            border-radius: 25px;
-            padding: 0.5rem 1.5rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-primary:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .modal-content {
-            border-radius: 20px;
-            border: none;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .modal-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
-            color: white;
-            border-radius: 20px 20px 0 0;
-        }
-
-        .progress {
-            height: 12px;
-            border-radius: 10px;
-            background-color: #e9ecef;
-            overflow: hidden;
-        }
-
+        
         .progress-bar {
-            border-radius: 10px;
-            transition: width 0.6s ease;
-        }
-
-        .select2-container--default .select2-selection--single {
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
-            height: 45px;
-            transition: all 0.3s ease;
-        }
-
-        .select2-container--default .select2-selection--single:focus {
-            border-color: var(--primary-color);
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            line-height: 41px;
-            padding-left: 15px;
-        }
-
-        .table-responsive {
-            border-radius: 15px;
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: var(--card-shadow);
+            margin-top: 10px;
         }
-
-        .table thead th {
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
-            color: white;
-            border: none;
-            font-weight: 600;
-            padding: 1rem;
-        }
-
-        .table tbody td {
-            padding: 1rem;
-            vertical-align: middle;
-            border-bottom: 1px solid #f8f9fa;
-        }
-
-        .badge {
-            border-radius: 20px;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .nav-pills .nav-link {
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .nav-pills .nav-link.active {
-            background: linear-gradient(135deg, var(--primary-color), var(--success-color));
-        }
-
-        .nutrition-summary {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: var(--card-shadow);
-        }
-
-        .nutrition-item {
-            margin-bottom: 1.5rem;
-        }
-
-        .nutrition-label {
-            font-weight: 600;
-            color: var(--secondary-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .health-tip {
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(52, 152, 219, 0.1));
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-top: 1rem;
-            border-left: 4px solid var(--info-color);
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .health-card .stat-number {
-                font-size: 2.5rem;
-            }
-            
-            .card {
-                margin-bottom: 1rem;
-            }
-            
-            .meal-card {
-                padding: 1rem;
-            }
-
-            .main-container {
-                padding: 1rem 0;
-            }
-        }
-
-        .chart-container {
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light));
+            border-radius: 4px;
+            transition: width 1s ease;
             position: relative;
-            height: 300px;
-            margin: 1rem 0;
         }
-
-        .ingredient-match {
-            font-size: 0.8rem;
-            color: var(--secondary-color);
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
         }
-
-        .match-full {
-            color: var(--success-color);
-            font-weight: 600;
+        
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.1); }
         }
-
-        .match-partial {
-            color: var(--warning-color);
-            font-weight: 600;
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            border-radius: 15px;
+            font-size: 1.1em;
+        }
+        
+        .footer-icon {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .stat-card {
+                padding: 25px;
+            }
+            
+            .progress-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-heart me-2"></i>
-                HealthyEats Planner
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-calendar-alt me-1"></i>Meal Plans</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-chart-line me-1"></i>Progress</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-book me-1"></i>Recipes</a>
-                    </li>
-                </ul>
+    <div class="container">
+        <div class="header">
+            <h1>ค่าพื้นฐานสุขภาพประจำวัน</h1>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card energy" onclick="animateCard(this)">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value">2430.86</div>
+                <div class="stat-label">พลังงานรวม kcal</div>
+            </div>
+            
+            <div class="stat-card carbs" onclick="animateCard(this)">
+                <div class="stat-icon">🍞</div>
+                <div class="stat-value">364.63</div>
+                <div class="stat-label">คาร์โบไฮเดรต กรัม</div>
+            </div>
+            
+            <div class="stat-card sugar" onclick="animateCard(this)">
+                <div class="stat-icon">🍬</div>
+                <div class="stat-value">30.39</div>
+                <div class="stat-label">น้ำตาล กรัม<br>(ไม่เกิน 6 ช้อนชา)</div>
+            </div>
+            
+            <div class="stat-card protein" onclick="animateCard(this)">
+                <div class="stat-icon">🥩</div>
+                <div class="stat-value">91.16</div>
+                <div class="stat-label">โปรตีน กรัม</div>
+            </div>
+            
+            <div class="stat-card fat" onclick="animateCard(this)">
+                <div class="stat-icon">🥑</div>
+                <div class="stat-value">67.52</div>
+                <div class="stat-label">ไขมัน กรัม</div>
+            </div>
+            
+            <div class="stat-card sodium" onclick="animateCard(this)">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value">1500</div>
+                <div class="stat-label">โซเดียม มิลลิกรัม<br>(ไม่เกิน 6 กรัมต่อวัน)</div>
             </div>
         </div>
-    </nav>
-
-    <div class="main-container">
-        <div class="container">
-            <!-- User Info Section -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-user-circle me-2"></i>ข้อมูลผู้ใช้
-                            <button class="btn btn-sm btn-light float-end" onclick="showEditUserModal()">
-                                <i class="fas fa-edit me-1"></i>แก้ไข
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="health-card">
-                                        <div class="stat-number" id="userAge">28</div>
-                                        <div class="stat-label">อายุ (ปี)</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="health-card">
-                                        <div class="stat-number" id="userBMI">22.5</div>
-                                        <div class="stat-label">BMI</div>
-                                        <div class="bmi-status" id="bmiStatus">ปกติ</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-md-4">
-                                    <p><strong><i class="fas fa-user me-2"></i>ชื่อ:</strong> <span id="userName">สมชาย ใจดี</span></p>
-                                    <p><strong><i class="fas fa-venus-mars me-2"></i>เพศ:</strong> <span id="userGender">ชาย</span></p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p><strong><i class="fas fa-weight me-2"></i>น้ำหนัก:</strong> <span id="userWeight">70</span> กก.</p>
-                                    <p><strong><i class="fas fa-ruler-vertical me-2"></i>ส่วนสูง:</strong> <span id="userHeight">175</span> ซม.</p>
-                                </div>
-                                <div class="col-md-4">
-                                    <p><strong><i class="fas fa-running me-2"></i>กิจกรรม:</strong> <span id="userActivity">ปานกลาง</span></p>
-                                    <p><strong><i class="fas fa-bullseye me-2"></i>เป้าหมาย:</strong> <span id="userGoal">รักษาน้ำหนัก</span></p>
-                                </div>
-                            </div>
-                            <div class="health-tip">
-                                <i class="fas fa-lightbulb me-2"></i>
-                                <strong>คำแนะนำ:</strong> <span id="healthTip">คุณมีค่า BMI ในเกณฑ์ปกติ ควรดูแลรักษาน้ำหนักให้คงที่และออกกำลังกายสม่ำเสมอ</span>
-                            </div>
-                        </div>
+        
+        <div class="progress-section">
+            <div class="progress-title">
+                <span>🎯</span>
+                <span>ค่าพลังงานและสารอาหารของคุณในช่วงนี้</span>
+            </div>
+            
+            <div class="progress-grid">
+                <div class="progress-item energy">
+                    <div class="progress-header">
+                        <div class="progress-icon">🔥</div>
+                        <div class="progress-label">พลังงานรวม</div>
+                        <div class="progress-value">2430.86 kcal</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%; --accent-color: #ff6b35; --accent-color-light: #ff8c42;"></div>
                     </div>
                 </div>
-
-                <!-- TDEE & Daily Intake Chart -->
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-chart-pie me-2"></i>เป้าหมายโภชนาการรายวัน
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-container">
-                                <canvas id="tdeeChart"></canvas>
-                            </div>
-                            <div class="text-center mt-3">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <small class="text-muted">BMR</small>
-                                        <div class="fw-bold text-primary" id="bmrValue">1680</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <small class="text-muted">TDEE</small>
-                                        <div class="fw-bold text-success" id="tdeeValue">2100</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                
+                <div class="progress-item carbs">
+                    <div class="progress-header">
+                        <div class="progress-icon">🍞</div>
+                        <div class="progress-label">คาร์โบไฮเดรต</div>
+                        <div class="progress-value">364.63 กรัม</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 70%; --accent-color: #3498db; --accent-color-light: #5dade2;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item protein">
+                    <div class="progress-header">
+                        <div class="progress-icon">🥩</div>
+                        <div class="progress-label">โปรตีน</div>
+                        <div class="progress-value">91.16 กรัม</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 90%; --accent-color: #8b4513; --accent-color-light: #a0522d;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item sugar">
+                    <div class="progress-header">
+                        <div class="progress-icon">🍬</div>
+                        <div class="progress-label">น้ำตาล</div>
+                        <div class="progress-value">30.39 กรัม</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 60%; --accent-color: #e74c3c; --accent-color-light: #ff6b9d;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item fat">
+                    <div class="progress-header">
+                        <div class="progress-icon">🥑</div>
+                        <div class="progress-label">ไขมัน</div>
+                        <div class="progress-value">67.52 กรัม</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%; --accent-color: #f39c12; --accent-color-light: #f1c40f;"></div>
+                    </div>
+                </div>
+                
+                <div class="progress-item sodium">
+                    <div class="progress-header">
+                        <div class="progress-icon">📊</div>
+                        <div class="progress-label">โซเดียม</div>
+                        <div class="progress-value">1500 มิลลิกรัม</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 50%; --accent-color: #3498db; --accent-color-light: #5dade2;"></div>
                     </div>
                 </div>
             </div>
-
-            <!-- Ingredients & Recommendations -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-warehouse me-2"></i>วัตถุดิบในคลัง
-                            <button class="btn btn-sm btn-light float-end" onclick="showAddIngredientModal()">
-                                <i class="fas fa-plus me-1"></i>เพิ่มวัตถุดิบ
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div id="ingredientsList">
-                                <div class="text-center">
-                                    <div class="loading-spinner me-2"></div>
-                                    กำลังโหลด...
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Meal Recommendations -->
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-magic me-2"></i>เมนูแนะนำ
-                            <button class="btn btn-sm btn-light float-end" onclick="generateRecommendations()">
-                                <i class="fas fa-sync-alt me-1"></i>สร้างใหม่
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <ul class="nav nav-pills" id="recommendationTabs">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#fullMatch" data-bs-toggle="pill">
-                                            <i class="fas fa-check-circle me-1"></i>Full Match <span class="badge bg-success ms-1" id="fullMatchCount">0</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#partialMatch" data-bs-toggle="pill">
-                                            <i class="fas fa-exclamation-triangle me-1"></i>Partial Match <span class="badge bg-warning ms-1" id="partialMatchCount">0</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="fullMatch">
-                                    <div id="fullMatchMeals">
-                                        <div class="text-center">
-                                            <div class="loading-spinner me-2"></div>
-                                            กำลังค้นหาเมนู...
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="partialMatch">
-                                    <div id="partialMatchMeals">
-                                        <div class="text-center">
-                                            <div class="loading-spinner me-2"></div>
-                                            กำลังค้นหาเมนู...
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Today's Selected Meals -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-calendar-check me-2"></i>เมนูที่เลือกวันนี้
-                            <span class="badge bg-info ms-2" id="todayDate"></span>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th><i class="fas fa-clock me-1"></i>มื้อ</th>
-                                                    <th><i class="fas fa-utensils me-1"></i>เมนู</th>
-                                                    <th><i class="fas fa-fire me-1"></i>แคลอรี่</th>
-                                                    <th><i class="fas fa-drumstick-bite me-1"></i>โปรตีน</th>
-                                                    <th><i class="fas fa-bread-slice me-1"></i>คาร์บ</th>
-                                                    <th><i class="fas fa-tint me-1"></i>ไฟต์</th>
-                                                    <th><i class="fas fa-cogs me-1"></i>การจัดการ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="selectedMealsTable">
-                                                <tr>
-                                                    <td colspan="7" class="text-center">
-                                                        <div class="loading-spinner me-2"></div>
-                                                        กำลังโหลด...
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="nutrition-summary">
-                                        <h5 class="text-center mb-3">
-                                            <i class="fas fa-chart-bar me-2"></i>สรุปโภชนาการวันนี้
-                                        </h5>
-                                        
-                                        <div class="nutrition-item">
-                                            <div class="nutrition-label d-flex justify-content-between">
-                                                <span><i class="fas fa-fire me-1"></i>แคลอรี่:</span>
-                                                <span><span id="totalCalories">0</span> / <span id="targetCalories">2100</span></span>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-success" id="caloriesProgress" style="width: 0%"></div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="nutrition-item">
-                                            <div class="nutrition-label d-flex justify-content-between">
-                                                <span><i class="fas fa-drumstick-bite me-1"></i>โปรตีน:</span>
-                                                <span><span id="totalProtein">0</span> / <span id="targetProtein">126</span> g</span>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-info" id="proteinProgress" style="width: 0%"></div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="nutrition-item">
-                                            <div class="nutrition-label d-flex justify-content-between">
-                                                <span><i class="fas fa-bread-slice me-1"></i>คาร์บ:</span>
-                                                <span><span id="totalCarbs">0</span> / <span id="targetCarbs">262</span> g</span>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-warning" id="carbsProgress" style="width: 0%"></div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="nutrition-item">
-                                            <div class="nutrition-label d-flex justify-content-between">
-                                                <span><i class="fas fa-tint me-1"></i>ไฟต์:</span>
-                                                <span><span id="totalFat">0</span> / <span id="targetFat">70</span> g</span>
-                                            </div>
-                                            <div class="progress">
-                                                <div class="progress-bar bg-danger" id="fatProgress" style="width: 0%"></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="text-center mt-3">
-                                            <div class="chart-container" style="height: 200px;">
-                                                <canvas id="nutritionChart"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-icon">💪</div>
+            <div>ติดตามสุขภาพของคุณอย่างต่อเนื่อง เพื่อชีวิตที่ดีขึ้น</div>
         </div>
     </div>
-
-    <!-- Edit User Modal -->
-    <div class="modal fade" id="editUserModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fas fa-user-edit me-2"></i>แก้ไขข้อมูลผู้ใช้
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editUserForm">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label"><i class="fas fa-user me-1"></i>ชื่อ</label>
-                                    <input type="text" class="form-control" id="editName" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label"><i class="fas fa-birthday-cake me-1"></i>อายุ</label>
-                                    <input type="number" class="form-control" id="editAge" min="1" max="120" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label"><i class="fas fa-venus-mars me-1"></i>เพศ</label>
-                                    <select class="form-select" id="editGender" required>
-                                        <option value="">-- เลือกเพศ --</option>
-                                        <option value="ชาย">ชาย</option>
-                                        <option value="หญิง">หญิง</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label"><i class="fas fa-weight me-1"></i>น้ำหนัก (กก.)</label>
-                                    <input type="number" class="form-control" id="editWeight" step="0.1" min="30" max="300" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label"><i class="fas fa-ruler-vertical me-1"></i>ส่วนสูง (ซม.)</label>
-                                    <input type="number" class="form-control" id="editHeight" min="100" max="250" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label"><i class="fas fa-running me-1"></i>ระดับกิจกรรม</label>
-                                    <select class="form-select" id="editActivity" required>
-                                        <option value="">-- เลือกระดับกิจกรรม --</option>
-                                        <option value="น้อย">น้อย (นั่งทำงาน)</option>
-                                        <option value="เบา">เบา (ออกกำลังกาย 1-3 วัน/สัปดาห์)</option>
-                                        <option value="ปานกลาง">ปานกลาง (ออกกำลังกาย 3-5 วัน/สัปดาห์)</option>
-                                        <option value="หนัก">หนัก (ออกกำลังกาย 6-7 วัน/สัปดาห์)</option>
-                                        <option value="หนักมาก">หนักมาก (ออกกำลังกาย 2 ครั้ง/วัน)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+    
+    <script>
+        function animateCard(card) {
+            card.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Add sparkle effect
+            createSparkles(card);
+        }
+        
+        function createSparkles(element) {
+            for (let i = 0; i < 6; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.style.position = 'absolute';
+                sparkle.style.width = '4px';
+                sparkle.style.height = '4px';
+                sparkle.style.background = '#fff';
+                sparkle.style.borderRadius = '50%';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.zIndex = '1000';
+                
+                const rect = element.getBoundingClientRect();
+                sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
+                sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
+                
+                document.body.appendChild(sparkle);
+                
+                sparkle.animate([
+                    { transform: 'scale(0) translateY(0)', opacity: 1 },
+                    { transform: 'scale(1) translateY(-20px)', opacity: 0 }
+                ], {
+                    duration: 800,
+                    easing: 'ease-out'
+                }).onfinish = () => sparkle.remove();
+            }
+        }
+        
+        // Add loading animation for progress bars
+        window.addEventListener('load', () => {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach((bar, index) => {
+                setTimeout(() => {
+                    const targetWidth = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = targetWidth;
+                    }, 100);
+                }, index * 200);
+            });
+        });
+        
+        // Add subtle parallax effect
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const cards = document.querySelectorAll('.stat-card');
+            
+            cards.forEach((card, index) => {
+                const speed = 0.1 + (index * 0.02);
+                card.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

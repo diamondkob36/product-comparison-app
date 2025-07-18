@@ -48,17 +48,17 @@
                     <div class="box-display-info">
                         <div class="box-info-1">
                             <span id="display-age">-</span>
-                            <p><i class="fas fa-birthday-cake text-soft-pink"></i> อายุ (ปี)</p>
+                            <p><i class="fas fa-birthday-cake"></i> อายุ (ปี)</p>
                         </div>
                         <div class="box-info-2">
                             <span id="bmi-value">-</span>
-                            <p><i class="fas fa-heart text-danger"></i> BMI (ดัชนีมวลกาย) <span class="bmi-level" id="bmi-level">-</span></p>
+                            <p><i class="fas fa-heart"></i> BMI (ดัชนีมวลกาย) <span class="bmi-level" id="bmi-level">-</span></p>
                         </div>
                     </div>
                     <div class="user-info-column" id="user-info">
                         <div class="info-column-1">
                             <p><i class="fas fa-user text-primary"></i> ชื่อ: <span id="display-name">-</span></p>
-                            <p><i class="fas fa-venus-mars text-indigo"></i> เพศ: <span id="display-gender">-</span></p>
+                            <p><i class="fas fa-venus-mars text-primary"></i> เพศ: <span id="display-gender">-</span></p>
                             <p><i class="fas fa-bullseye text-gold"></i> เป้าหมายหลัก: <span id="display-goal">-</span></p>
                         </div>
                         <div class="info-column-2">
@@ -77,37 +77,35 @@
                 </div>    
                 <!-- พื้นที่ขวา: แสดงพลังงานที่ควรได้รับ User -->
                 <div class="daily-intake-container">
-                    <h3><i class="fas fa-utensils text-dark-green"></i> ปริมาณพลังงานและสารอาหารที่แนะนำต่อวัน</h3>
+                    <h3><i class="fas fa-fire text-power"></i> ค่าที่เหมาะสมตามโปรไฟล์สุขภาพของคุณ</h3>
                     <div class="info-daily-intake" id="daily-intake">
                         <div class="box-daily-1">
-                            <p><i class="fas fa-burn text-danger"></i><span class="box-number" id="total-energy">-</span> พลังงานรวม: kcal</p>
-                            <p><i class="fas fa-drumstick-bite text-primary"></i><span class="box-number" id="intake-protein">-</span> โปรตีน: กรัม</p>
+                            <p class="box-power"><i class="fas fa-fire-alt"></i><span class="box-number" id="total-energy">-</span> พลังงานรวม: kcal</p>
+                            <p class="box-protein"><i class="fas fa-drumstick-bite"></i><span class="box-number" id="intake-protein">-</span> โปรตีน: กรัม</p>
                         </div>
                         <div class="box-daily-1">
-                            <p><i class="fas fa-bread-slice text-info"></i><span class="box-number" id="intake-carb">-</span> คาร์โบไฮเดรต: กรัม</p>
-                            <p><i class="fas fa-tint text-warning"></i><span class="box-number" id="intake-fat">-</span> ไขมัน: กรัม</p>
+                            <p class="box-carb"><i class="fas fa-bread-slice"></i><span class="box-number" id="intake-carb">-</span> คาร์โบไฮเดรต: กรัม</p>
+                            <p class="box-fat"><i class="fas fa-tint"></i><span class="box-number" id="intake-fat">-</span> ไขมัน: กรัม</p>
                         </div>
                         <div class="box-daily-1">
-                            <p><i class="fas fa-cube text-pink"></i><span class="box-number" id="intake-sugar">-</span> น้ำตาล: กรัม <span>(ไม่ควรเกินต่อวัน)</span></p>
-                            <p><i class="fas fa-prescription-bottle text-secondary"></i><span class="box-number" id="intake-sodium">-</span> โซเดียม: มิลลิกรัม <span>(ไม่ควรเกินต่อวัน)</span></p>
+                            <p class="box-sugar"><i class="fas fa-cookie-bite"></i><span class="box-number" id="intake-sugar">-</span> น้ำตาล: กรัม <span>(ไม่ควรเกินต่อวัน)</span></p>
+                            <p class="box-sodium"><i class="fas fa-prescription-bottle"></i><span class="box-number" id="intake-sodium">-</span> โซเดียม: มิลลิกรัม <span>(ไม่ควรเกินต่อวัน)</span></p>
                         </div>
                     </div>
                     <div class="total_nutrition-default">
+                        <h3><i class="fas fa-utensils text-dark-green"></i> ค่าพลังงานและสารอาหารของบุลคลทั่วไปในช่วงอายุของคุณ</h3>
                         <div class="total_nutrition-column">
                             <div class="total_nutrition-display">
                                 <p><i class="fas fa-burn text-danger"></i> พลังงานรวม: <span id="total-energy-default">-</span> kcal</p>
                                 <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein-default">-</span> กรัม</p>
-                                <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat-default">-</span> กรัม</p>
+                                <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar-default">-</span> กรัม</p>
                             </div>
                             <div class="total_nutrition-display">
                                 <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb-default">-</span> กรัม</p>
-                                <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar-default">-</span> กรัม</p>
+                                <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat-default">-</span> กรัม</p>
                                 <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium-default">-</span> มิลลิกรัม</p>
                             </div>
                         </div>
-                        <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
-                            หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
-                        </p>
                     </div>
                 </div>
             </div>
