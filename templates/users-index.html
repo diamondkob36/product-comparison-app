@@ -78,27 +78,36 @@
                 <!-- พื้นที่ขวา: แสดงพลังงานที่ควรได้รับ User -->
                 <div class="daily-intake-container">
                     <h3><i class="fas fa-utensils text-dark-green"></i> ปริมาณพลังงานและสารอาหารที่แนะนำต่อวัน</h3>
-
-                    <div class="chart-container">
-                        <canvas id="dailyIntakeChart"></canvas>
-
-                        <div class="custom-legend">
-                            <span class="legend-box red-line"></span> เส้นแสดงค่าที่ควรได้รับต่อวัน (ทั่วไป)
-                        </div>
-                    </div>
                     <div class="info-daily-intake" id="daily-intake">
                         <div class="box-daily-1">
-                            <p><i class="fas fa-burn text-danger"></i> พลังงานรวม: <span id="total-energy">-</span> kcal</p>
-                            <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein">-</span> กรัม</p>
+                            <p><i class="fas fa-burn text-danger"></i><span class="box-number" id="total-energy">-</span> พลังงานรวม: kcal</p>
+                            <p><i class="fas fa-drumstick-bite text-primary"></i><span class="box-number" id="intake-protein">-</span> โปรตีน: กรัม</p>
                         </div>
-                        <div class="box-daily-2">
-                            <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb">-</span> กรัม</p>
-                            <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat">-</span> กรัม</p>
+                        <div class="box-daily-1">
+                            <p><i class="fas fa-bread-slice text-info"></i><span class="box-number" id="intake-carb">-</span> คาร์โบไฮเดรต: กรัม</p>
+                            <p><i class="fas fa-tint text-warning"></i><span class="box-number" id="intake-fat">-</span> ไขมัน: กรัม</p>
                         </div>
-                        <div class="box-daily-3">
-                            <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar">-</span> กรัม (ไม่ควรเกินต่อวัน)</p>
-                            <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium">-</span> มิลลิกรัม (ไม่ควรเกินต่อวัน)</p>
+                        <div class="box-daily-1">
+                            <p><i class="fas fa-cube text-pink"></i><span class="box-number" id="intake-sugar">-</span> น้ำตาล: กรัม <span>(ไม่ควรเกินต่อวัน)</span></p>
+                            <p><i class="fas fa-prescription-bottle text-secondary"></i><span class="box-number" id="intake-sodium">-</span> โซเดียม: มิลลิกรัม <span>(ไม่ควรเกินต่อวัน)</span></p>
                         </div>
+                    </div>
+                    <div class="total_nutrition-default">
+                        <div class="total_nutrition-column">
+                            <div class="total_nutrition-display">
+                                <p><i class="fas fa-burn text-danger"></i> พลังงานรวม: <span id="total-energy-default">-</span> kcal</p>
+                                <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein-default">-</span> กรัม</p>
+                                <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat-default">-</span> กรัม</p>
+                            </div>
+                            <div class="total_nutrition-display">
+                                <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb-default">-</span> กรัม</p>
+                                <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar-default">-</span> กรัม</p>
+                                <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium-default">-</span> มิลลิกรัม</p>
+                            </div>
+                        </div>
+                        <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
+                            หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
+                        </p>
                     </div>
                 </div>
             </div>

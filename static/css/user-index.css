@@ -760,7 +760,6 @@ button.delete-ingredient i {
     padding: 10px;
     border-radius: 10px;
     border-left: 4px solid #15803d;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .info-column-2 p{
@@ -768,7 +767,6 @@ button.delete-ingredient i {
     padding: 10px;
     border-radius: 10px;
     border-left: 4px solid #15803d;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .end-info{
@@ -868,34 +866,38 @@ button.delete-ingredient i {
     border-left: 4px  solid #15803d;
 }
 
-.box-daily-2 p{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 100%;
-    background-color: #F8F8FF;
-    border-radius: 20px;
-    height: 100px;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    border-left: 4px  solid #15803d;
+.box-daily-1 i{
+    margin-bottom: 5px;
 }
 
-.box-daily-3 p{
+.box-number{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.total_nutrition-default{
+    padding: 20px;
+    border-radius: 20px;
+    background-color: #F8F8FF;
+}
+
+.total_nutrition-column{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0px 10px 0px 10px;
+    gap: 10px;
+}
+
+.total_nutrition-display{
     display: flex;
     flex-direction: column;
-    flex: 1;
-    width: 100%;
-    background-color: #F8F8FF;
-    border-radius: 20px;
-    height: 100px;
-    justify-content: center;
-    align-items: center;
-    padding: 20px 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    border-left: 4px  solid #15803d;
+}
+
+.total_nutrition-default p{
+    background: linear-gradient(to right, #e9ecef, #F8F8FF);
+    padding: 10px;
+    border-radius: 10px;
+    border-left: 4px solid #15803d;
 }
 
 /* ✅ ซ่อน Popup เมื่อเข้าเว็บ */

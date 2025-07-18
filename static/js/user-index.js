@@ -101,121 +101,28 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.error("Error loading BMI:", error);
         }
     }
-
-    // ฟังก์ชันแสดงกราฟพลังงานที่ควรได้รับต่อวัน
-    async function renderBarChart() {
+    async function loadDefaultIntake() {
         try {
-            const [adjustedRes, defaultRes] = await Promise.all([
-                fetch("/users/calculate_bmr_tdee"),
-                fetch("/users/default_intake")
-            ]);
-    
-            const adjustedData = await adjustedRes.json();
-            const defaultData = await defaultRes.json();
-    
-            if (adjustedData.error || defaultData.error) {
-                console.error("Error loading intake data:", adjustedData.error || defaultData.error);
+            const response = await fetch("/users/default_intake");
+            const data = await response.json();
+
+            if (data.error) {
+                console.error("Error loading default intake:", data.error);
                 return;
             }
-    
-            const dailyIntake = adjustedData.daily_intake;
-            const maxValues = adjustedData.max_values;
-            const defaultIntake = defaultData;
-    
-            const units = ["แคลอรี่", "กรัม", "กรัม", "กรัม", "กรัม", "มิลลิกรัม"];
-            const nutrientLabels = ['🔥 พลังงาน', '🍗 โปรตีน', '🥓 ไขมัน', '🍞 คาร์โบไฮเดรต', '🍬 น้ำตาล', '🧂 โซเดียม'];
-            const nutrientKeys = ["tdee", "protein", "fat", "carb", "sugar", "sodium"];
-    
-            const actualValuesAdjusted = nutrientKeys.map(key => dailyIntake[key]);
-            const actualValuesDefault = nutrientKeys.map(key => defaultIntake[key]);
-    
-            const chartDataValuesAdjusted = nutrientKeys.map(key => (dailyIntake[key] / defaultIntake[key]) * 100);
-            const chartDataValuesDefault = nutrientKeys.map(() => 100);
-    
-            if (window.chartInstance) {
-                window.chartInstance.destroy();
-            }
-    
-            const chartData = {
-                labels: nutrientLabels,
-                datasets: [
-                    {
-                        label: "ค่าตามเป้าหมายของคุณ",
-                        data: chartDataValuesAdjusted,
-                        backgroundColor: "rgba(76, 175, 80, 0.7)",     // ✅ สีเขียวอ่อน
-                        borderColor: "rgba(76, 175, 80, 1)",            // ✅ สีเขียวเข้ม
-                        borderWidth: 2
-                    },
-                    {
-                        label: "ค่าที่ควรได้รับต่อวัน (ทั่วไป)",
-                        data: chartDataValuesDefault,
-                        backgroundColor: "rgba(33, 150, 243, 0.7)",     // ✅ สีฟ้าอ่อน
-                        borderColor: "rgba(33, 150, 243, 1)",            // ✅ สีฟ้าเข้ม
-                        borderWidth: 2
-                    }
-                ]
-            };
-    
-            const ctx = document.getElementById("dailyIntakeChart").getContext("2d");
-    
-            const config = {
-                type: "bar",
-                data: chartData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: "bottom",
-                            labels: { font: { size: 14 } }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function (context) {
-                                    const index = context.dataIndex;
-                                    const datasetIndex = context.datasetIndex;
-                                    const unit = units[index];
-                                    const actualValue = datasetIndex === 0
-                                        ? actualValuesAdjusted[index]
-                                        : actualValuesDefault[index];
-                                    return `${actualValue.toFixed(1)} ${unit}`;
-                                }
-                            }
-                        },
-                         // ✅ เพิ่มเส้นแดงที่ 100%
-                        annotation: {
-                            annotations: {
-                                line100: {
-                                    type: "line",
-                                    yMin: 100,
-                                    yMax: 100,
-                                    borderColor: "red",
-                                    borderWidth: 2
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            // ✅ ไม่ระบุ max เพื่อให้ auto
-                            title: {
-                                display: true,
-                                text: "เปอร์เซ็นต์ (%)"
-                            }
-                        }
-                    }
-                },
-            };
-    
-            window.chartInstance = new Chart(ctx, config);
-    
-        } catch (err) {
-            console.error("Error rendering comparison chart:", err);
+
+            // ✅ แสดงในกล่องข้อมูลเดิมแทนกราฟ
+            document.getElementById("total-energy-default").innerText = data.tdee || "-";
+            document.getElementById("intake-protein-default").innerText = data.protein || "-";
+            document.getElementById("intake-fat-default").innerText = data.fat || "-";
+            document.getElementById("intake-carb-default").innerText = data.carb || "-";
+            document.getElementById("intake-sugar-default").innerText = data.sugar || "-";
+            document.getElementById("intake-sodium-default").innerText = data.sodium || "-";
+        } catch (error) {
+            console.error("Error loading default intake:", error);
         }
-    }    
-    
+    }
+
     editUserForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 
@@ -282,8 +189,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
 
             await loadUserInfo();
-            await renderBarChart();
             window.loadBmrTdee();
+            await loadDefaultIntake();
             await loadNutritionChart();
             await loadBMI();
             window.loadNutritionData();
@@ -470,7 +377,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // โหลดข้อมูลผู้ใช้และกราฟเมื่อหน้าเว็บโหลดเสร็จ
     await loadUserInfo();
-    await renderBarChart();
+    await loadDefaultIntake();
     await loadNutritionChart();
     await loadBMI();
 });
