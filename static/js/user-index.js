@@ -84,23 +84,63 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
             const response = await fetch("/users/get_bmi");
             const data = await response.json();
-    
+
+            const bmiValueEl = document.getElementById("bmi-value");
+            const adviceBox = document.getElementById("bmi-advice");
+            const bmiBox = document.querySelector(".box-info-2"); // ✅ ดึงกล่อง BMI
+
             if (data.error) {
                 console.warn("ไม่สามารถคำนวณ BMI ได้:", data.error);
                 document.getElementById("bmi-value").textContent = "-";
                 document.getElementById("bmi-level").textContent = "-";
-                document.getElementById("bmi-advice").textContent = data.error;
+                adviceBox.textContent = data.error;
+                adviceBox.className = "text-bmi"; // ล้างคลาสสีทั้งหมด
                 return;
             }
-    
+
             document.getElementById("bmi-value").textContent = data.bmi;
             document.getElementById("bmi-level").innerHTML = `${data.icon} ${data.level}`;
-            document.getElementById("bmi-advice").innerHTML = data.advice;
-    
+            adviceBox.innerHTML = data.advice;
+
+            // ล้าง class สีเก่าออกก่อน
+            adviceBox.className = "text-bmi";
+            bmiValueEl.className = "bmi-value";
+            if (bmiBox) bmiBox.className = "box-info-2";
+
+            // เพิ่ม class ใหม่ตามระดับ BMI
+            switch (data.level) {
+                case "ผอม":
+                    adviceBox.classList.add("bmi-underweight");
+                    bmiValueEl.classList.add("bmi-val-underweight");
+                    bmiBox.classList.add("bmi-box-underweight");
+                    break;
+                case "ปกติ":
+                    adviceBox.classList.add("bmi-normal");
+                    bmiValueEl.classList.add("bmi-val-normal");
+                    bmiBox.classList.add("bmi-box-normal");
+                    break;
+                case "น้ำหนักเกิน":
+                    adviceBox.classList.add("bmi-overweight");
+                    bmiValueEl.classList.add("bmi-val-overweight");
+                    bmiBox.classList.add("bmi-box-overweight");
+                    break;
+                case "อ้วนระดับ 1":
+                    adviceBox.classList.add("bmi-obese1");
+                    bmiValueEl.classList.add("bmi-val-obese1");
+                    bmiBox.classList.add("bmi-box-obese1");
+                    break;
+                case "อ้วนระดับ 2":
+                    adviceBox.classList.add("bmi-obese2");
+                    bmiValueEl.classList.add("bmi-val-obese2");
+                    bmiBox.classList.add("bmi-box-obese2");
+                    break;
+            }
+
         } catch (error) {
             console.error("Error loading BMI:", error);
         }
     }
+
     async function loadDefaultIntake() {
         try {
             const response = await fetch("/users/default_intake");

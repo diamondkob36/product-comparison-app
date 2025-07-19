@@ -40,7 +40,7 @@
         <div class="user-edit-display-container">
             <!-- พื้นที่ซ้าย: แสดงข้อมูล User -->
             <div class="head-user-info">
-                <h2><i class="fas fa-user-circle text-white"></i> ข้อมูลผู้ใช้และปริมาณพลังงานและสารอาหารที่ควรได้รับต่อวัน</h3>
+                <h2><i class="fas fa-user-circle text-white"></i> ข้อมูลผู้ใช้และปริมาณพลังงานและสารอาหารที่ควรได้รับต่อวัน</h2>
             </div>
             <div class="user-two-column">
                 <div class="user-display-info">
@@ -93,17 +93,47 @@
                         </div>
                     </div>
                     <div class="total_nutrition-default">
-                        <h3><i class="fas fa-utensils text-dark-green"></i> ค่าพลังงานและสารอาหารของบุลคลทั่วไปในช่วงอายุของคุณ</h3>
+                        <h3><i class="fas fa-apple-whole text-power"></i> ค่าพลังงานและสารอาหารของบุลคลทั่วไปในช่วงอายุของคุณ</h3>
                         <div class="total_nutrition-column">
                             <div class="total_nutrition-display">
-                                <p><i class="fas fa-burn text-danger"></i> พลังงานรวม: <span id="total-energy-default">-</span> kcal</p>
-                                <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein-default">-</span> กรัม</p>
-                                <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar-default">-</span> กรัม</p>
+                                <div class="nutrition-card"><i class="fas fa-fire-alt text-power"></i>
+                                    <div class="nutrition-card-info">
+                                        <div class="nutrition-card-lable">พลังงานรวม</div>
+                                        <span id="total-energy-default">-</span> kcal
+                                    </div> 
+                                </div>
+                                <div class="nutrition-card"><i class="fas fa-drumstick-bite text-brown"></i>
+                                    <div class="nutrition-card-info">
+                                        <div class="nutrition-card-lable">โปรตีน</div>
+                                        <span id="intake-protein-default">-</span> กรัม
+                                    </div> 
+                                </div>
+                                <div class="nutrition-card"><i class="fas fa-cookie-bite text-pink"></i>
+                                    <div class="nutrition-card-info">
+                                        <div class="nutrition-card-lable">น้ำตาล</div>
+                                        <span id="intake-sugar-default">-</span> กรัม
+                                    </div> 
+                                </div>
                             </div>
                             <div class="total_nutrition-display">
-                                <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb-default">-</span> กรัม</p>
-                                <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat-default">-</span> กรัม</p>
-                                <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium-default">-</span> มิลลิกรัม</p>
+                                <div class="nutrition-card"><i class="fas fa-bread-slice text-gold"></i>
+                                    <div class="nutrition-card-info">
+                                        <div class="nutrition-card-lable">คาร์โบไฮเดรต</div>
+                                        <span id="intake-carb-default">-</span> กรัม
+                                    </div> 
+                                </div>
+                                <div class="nutrition-card"><i class="fas fa-tint text-warning"></i>
+                                    <div class="nutrition-card-info">
+                                        <div class="nutrition-card-lable">ไขมัน</div>
+                                        <span id="intake-fat-default">-</span> กรัม
+                                    </div> 
+                                </div>
+                                <div class="nutrition-card"><i class="fas fa-prescription-bottle text-soft-blue"></i>
+                                    <div class="nutrition-card-info">
+                                        <div class="nutrition-card-lable">โซเดียม</div>
+                                        <span id="intake-sodium-default">-</span> มิลลิกรัม
+                                    </div> 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -112,60 +142,64 @@
         </div>
 
         <div class="content-chart-container">
-            <!-- พื้นที่ว่างเปล่าด้านซ้าย -->
-            <div class="empty-space">
-                <div class="selected-menus-container">
-                    <h3><i class="fas fa-concierge-bell text-main"></i> เมนูที่คุณเลือกวันนี้</h3>
-                    <!-- ✅ ตัวเลือกจำนวนแถว -->
-                    <div class="table-controls">
-                        <label for="rows-per-page">แสดง:</label>
-                        <select id="menu-rows-per-page" class="form-control">
-                            <option value="10">10 แถว</option>
-                            <option value="20">20 แถว</option>
-                            <option value="30">30 แถว</option>
-                        </select>
-                    </div>
-                    <table id="selected-menus-table" class="selected-menus-table">
-                        <thead>
-                            <tr>
-                                <th>ชื่อเมนู</th>
-                                <th>จำนวนหน่วยที่ทาน</th>
-                                <th>ดูรายละเอียด</th>
-                                <th>ลบ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- ข้อมูลเมนูที่เลือกจะถูกเติมโดย JavaScript -->
-                        </tbody>
-                    </table>
-                    <!-- ✅ เพิ่มการแบ่งหน้า -->
-                    <div id="menu-pagination" class="pagination"></div>
-                </div>                
-            </div>
-        
-            <!-- พื้นที่สำหรับข้อมูล -->
-            <div class="empty-space2">
-                <h3><i class="fas fa-fire-alt text-danger"></i> พลังงานและสารอาหารรวมจากเมนูที่เลือกในวันนี้</h3>
-
-                <div class="chart-container2">
-                    <canvas id="nutritionChart"></canvas>
-
-                    <div class="custom-legend">
-                        <span class="legend-box red-line"></span> เส้นแสดงค่าที่แนะนำที่คุณควรได้รับต่อวัน
-                    </div>
+            <div class="column-selected-menu">
+                <div class="">
+                    
                 </div>
+                <!-- พื้นที่ด้านซ้าย -->
+                <div class="selected-menu">
+                    <div class="selected-menus-container">
+                        <h3><i class="fas fa-concierge-bell text-main"></i> เมนูที่คุณเลือกวันนี้</h3>
+                        <!-- ✅ ตัวเลือกจำนวนแถว -->
+                        <div class="table-controls">
+                            <label for="rows-per-page">แสดง:</label>
+                            <select id="menu-rows-per-page" class="form-control">
+                                <option value="10">10 แถว</option>
+                                <option value="20">20 แถว</option>
+                                <option value="30">30 แถว</option>
+                            </select>
+                        </div>
+                        <table id="selected-menus-table" class="selected-menus-table">
+                            <thead>
+                                <tr>
+                                    <th>ชื่อเมนู</th>
+                                    <th>จำนวนหน่วยที่ทาน</th>
+                                    <th>ดูรายละเอียด</th>
+                                    <th>ลบ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- ข้อมูลเมนูที่เลือกจะถูกเติมโดย JavaScript -->
+                            </tbody>
+                        </table>
+                        <!-- ✅ เพิ่มการแบ่งหน้า -->
+                        <div id="menu-pagination" class="pagination"></div>
+                    </div>                
+                </div>
+                <!-- พื้นที่สำหรับข้อมูล -->
+                <div class="nutrition">
+                    <h3><i class="fas fa-fire-alt text-danger"></i> พลังงานและสารอาหารรวมจากเมนูที่เลือกในวันนี้</h3>
 
-                <div class="total_nutrition">
-                    <p><i class="fas fa-burn text-danger"></i> พลังงานรวมที่คุณได้รับวันนี้: <span id="total-energy2">-</span> kcal</p>
-                    <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein2">-</span> กรัม</p>
-                    <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat2">-</span> กรัม</p>
-                    <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb2">-</span> กรัม</p>
-                    <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar2">-</span> กรัม</p>
-                    <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium2">-</span> มิลลิกรัม</p>
+                    <div class="chart-container2">
+                        <canvas id="nutritionChart"></canvas>
 
-                    <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
-                        หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
-                    </p>
+                        <div class="custom-legend">
+                            <span class="legend-box red-line"></span> เส้นแสดงค่าที่แนะนำที่คุณควรได้รับต่อวัน
+                        </div>
+                    </div>
+
+                    <div class="total_nutrition">
+                        <p><i class="fas fa-burn text-danger"></i> พลังงานรวมที่คุณได้รับวันนี้: <span id="total-energy2">-</span> kcal</p>
+                        <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein2">-</span> กรัม</p>
+                        <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat2">-</span> กรัม</p>
+                        <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb2">-</span> กรัม</p>
+                        <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar2">-</span> กรัม</p>
+                        <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium2">-</span> มิลลิกรัม</p>
+
+                        <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
+                            หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
