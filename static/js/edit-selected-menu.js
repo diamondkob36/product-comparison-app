@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: 'warning',
                 title: 'จำนวนเกินกำหนด',
                 text: `สามารถเลือกได้ไม่เกิน ${maxServings} หน่วย`,
-                scrollbarPadding: false,
+                scrollbarPadding: true,
                 heightAuto: false
             });
             servingsInput.value = maxServings;

@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 icon: 'warning',
                 title: 'ข้อมูลไม่ถูกต้อง',
                 text: 'กรุณากรอกน้ำหนัก ส่วนสูง และอายุที่มากกว่า 0',
-            scrollbarPadding: false,
+            scrollbarPadding: true,
             heightAuto: false,
             timer: 1500,
             timerProgressBar: true,
@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                     icon: 'error',
                     title: 'เกิดข้อผิดพลาด',
                     text: data.error,
-                scrollbarPadding: false,
+                scrollbarPadding: true,
                 heightAuto: false,
                 timer: 1500,
                 timerProgressBar: true,
@@ -221,7 +221,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 icon: 'success',
                 title: 'สำเร็จ!',
                 text: 'อัปเดตข้อมูลสำเร็จ',
-            scrollbarPadding: false,
+            scrollbarPadding: true,
             heightAuto: false,
             timer: 1000,
             showConfirmButton: false,
@@ -231,9 +231,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             await loadUserInfo();
             window.loadBmrTdee();
             await loadDefaultIntake();
-            await loadNutritionChart();
+            await loadNutritionBars();
             await loadBMI();
-            window.loadNutritionData();
             editFormContainer.style.display = "none";
         } catch (error) {
             console.error("Error updating user info:", error);
@@ -241,7 +240,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 icon: 'error',
                 title: 'เกิดข้อผิดพลาด',
                 text: 'ไม่สามารถอัปเดตข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
-            scrollbarPadding: false,
+            scrollbarPadding: true,
             heightAuto: false,
             timer: 1000,
             showConfirmButton: false,
@@ -250,174 +249,63 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-    window.loadNutritionChart = async function loadNutritionChart() {
+    window.loadNutritionBars = async function () {
         try {
-            // ดึงค่าที่ควรได้รับต่อวันจาก API /calculate_bmr_tdee
-            const tdeeResponse = await fetch('/users/calculate_bmr_tdee');
-            const tdeeData = await tdeeResponse.json();
-            const ChartAnnotation = window['chartjs-plugin-annotation'];
-    
-            if (tdeeData.error) {
-                console.error("Error fetching max values:", tdeeData.error);
-                return;
-            }
-    
-            const maxValues = tdeeData.max_values; // ค่าสูงสุดจาก API
-    
-            // ดึงข้อมูลสารอาหารของเมนูที่เลือกในวันนี้
-            const response = await fetch('/users/nutrition_chart');
-            const data = await response.json();
-    
-            if (data.error) {
-                console.error("Error fetching nutrition data:", data.error);
-                return;
-            }
-    
-            const ctx = document.getElementById('nutritionChart').getContext('2d');
-    
-            // ข้อมูลหน่วยที่ต้องการแสดง
-            const units = ["แคลอรี่", "กรัม", "กรัม", "กรัม", "กรัม", "มิลลิกรัม"];
-    
-            // ลำดับของข้อมูล
-            const nutrientLabels = ['🔥 พลังงาน','🍗 โปรตีน','🥓 ไขมัน', '🍞 คาร์โบไฮเดรต','🍬 น้ำตาล','🧂 โซเดียม'];
-            const nutrientKeys = ["tdee", "protein", "fat", "carbohydrate", "sugar", "sodium"];
-    
-            // ตรวจสอบว่ามีข้อมูลหรือไม่ หากไม่มีให้กำหนดค่าเริ่มต้นเป็น 0
-            const actualValues = nutrientKeys.map(key => (data[key] !== undefined ? data[key] : 0));
-            const maxValuesArr = nutrientKeys.map(key => maxValues[key] || 1); // ป้องกันการหารด้วย 0
-    
-            // คำนวณเป็นเปอร์เซ็นต์
-            const chartDataValues = nutrientKeys.map(key =>
-                maxValues[key] > 0 ? (data[key] / maxValues[key]) * 100 : 0
-            );
-    
-            // ตรวจสอบว่ามีค่ามากกว่าศูนย์หรือไม่ เพื่อกำหนดค่า max ของ Y
-            const maxY = Math.max(100, Math.max(...chartDataValues) + 20);
-    
-            // ลบกราฟเก่า
-            if (window.nutritionChartInstance) {
-                window.nutritionChartInstance.destroy();
+            const maxRes = await fetch("/users/calculate_bmr_tdee");
+            const intakeRes = await fetch("/users/nutrition_chart");
+
+            const maxData = await maxRes.json();
+            const intakeData = await intakeRes.json();
+
+            if (maxData.error || intakeData.error) {
+            console.error("Error loading data:", maxData.error || intakeData.error);
+            return;
             }
 
-            const backgroundColors = chartDataValues.map(value => {
-                if (value > 150) return "rgba(244, 67, 54, 0.7)";         // 🔴 แดง
-                if (value > 100) return "rgba(255, 193, 7, 0.7)";          // 🟡 เหลือง
-                return "rgba(76, 175, 80, 0.7)";                           // 🟢 เขียว
+            const nutrients = [
+            { key: "tdee", label: "🔥 พลังงาน", unit: "กิโลแคลอรี" },
+            { key: "protein", label: "🍗 โปรตีน", unit: "กรัม" },
+            { key: "fat", label: "🥓 ไขมัน", unit: "กรัม" },
+            { key: "carb", label: "🍞 คาร์โบไฮเดรต", unit: "กรัม" },
+            { key: "sugar", label: "🍬 น้ำตาล", unit: "กรัม" },
+            { key: "sodium", label: "🧂 โซเดียม", unit: "มก." }
+            ];
+
+            const container = document.getElementById("nutrition-bars-container");
+            container.innerHTML = "";
+
+            nutrients.forEach(nutri => {
+            const actual = intakeData[nutri.key] || 0;
+            const max = maxData.max_values[nutri.key] || 1;
+            const percent = (actual / max) * 100;
+            let colorClass = "green-bar";
+            if (percent > 150) colorClass = "red-bar";
+            else if (percent > 100) colorClass = "yellow-bar";
+
+            const bar = document.createElement("div");
+            bar.className = "nutrition-bar";
+            bar.innerHTML = `
+                <div class="nutrition-bar-label">
+                    <span>${nutri.label}</span>
+                    <span>${actual.toFixed(0)} / ${max.toFixed(0)} ${nutri.unit}</span>
+                </div>
+                <div class="progress-bar-outer">
+                    <div class="progress-bar-inner ${colorClass}" style="width: ${Math.min(percent, 100)}%;">
+                        <span>${Math.round(percent)}%</span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(bar);
             });
-            
-            const borderColors = chartDataValues.map(value => {
-                if (value > 150) return "rgba(244, 67, 54, 1)";            // 🔴 แดง
-                if (value > 100) return "rgba(255, 193, 7, 1)";            // 🟡 เหลือง
-                return "rgba(76, 175, 80, 1)";                             // 🟢 เขียว
-            });
-    
-            // ข้อมูลกราฟ
-            const chartData = {
-                labels: nutrientLabels,
-                datasets: [{
-                label: "สารอาหารของเมนูทั้งหมดที่คุณเลือกในวันนี้ (%)",  // ✅ ใช้ของเดิม
-                data: chartDataValues,
-                backgroundColor: backgroundColors,
-                borderColor: borderColors,
-                borderWidth: 2
-                }]
-            };
-    
-            const config = {
-                type: "bar",
-                data: chartData,
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: { duration: 0 },
-                    layout: { padding: { top: 50 } },
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: "bottom",
-                            labels: { font: { size: 14 } }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const index = context.dataIndex;
-                                    const value = context.raw || 0;
-                                    const actualValue = actualValues[index]?.toFixed(2) || "0.00";
-                                    const maxValue = maxValuesArr[index]?.toFixed(2) || "0.00";
-                                    const unit = units[index] || "";
-                                    const percentage = value.toFixed(2);
-                        
-                                    return `${actualValue} ${unit} (${percentage}%) จากค่าสูงสุด ${maxValue} ${unit}`;
-                                }
-                            }
-                        },
-                        datalabels: {
-                            anchor: "end",
-                            align: "end",
-                            formatter: (value, context) => {
-                                const screenWidth = window.innerWidth;
-                                const index = context.dataIndex;
-                                const rawValue = actualValues[index] || 0;
-                                const actualValue = rawValue.toFixed(2); // ✅ ปัดทศนิยมที่นี่
-                                const unit = units[index] || "";
-                                const percentage = value.toFixed(2);     // ปัด % ด้วย
-                        
-                                if (screenWidth <= 425) return "";
-                                if (screenWidth <= 768) return `${actualValue} ${unit}`;
-                                return `${actualValue} ${unit}\n(${percentage}%)`;
-                            },
-                            color: "#000",
-                            font: {
-                                size: window.innerWidth <= 768 ? 10 : 12,
-                                weight: "bold"
-                            }
-                        },
-                        // ✅ เพิ่มเส้นแดงที่ 100%
-                        annotation: {
-                            annotations: {
-                                targetLine: {
-                                    type: 'line',
-                                    yMin: 100,
-                                    yMax: 100,
-                                    borderColor: 'red',
-                                    borderWidth: 2
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            suggestedMax: maxY,
-                            grid: { display: true },
-                            title: {
-                                display: window.innerWidth > 768,
-                                text: "เปอร์เซ็นต์ (%)",
-                            },
-                            ticks: { display: true }
-                        }
-                    }
-                },
-                plugins: [ChartDataLabels, ChartAnnotation]
-            };
-            
-            // ฟังก์ชันปรับเปลี่ยนตามขนาดหน้าจอ
-            window.addEventListener("resize", function () {
-                const isSmallScreen = window.innerWidth <= 768;
-                nutritionChartInstance.options.scales.y.title.display = !isSmallScreen; // ซ่อนเฉพาะ title บนแกน Y
-                nutritionChartInstance.update();
-            });
-            // สร้างกราฟใหม่
-            window.nutritionChartInstance = new Chart(ctx, config);
-    
+
         } catch (error) {
-            console.error("Error loading nutrition chart:", error);
+            console.error("Error building nutrition bars:", error);
         }
     };
 
     // โหลดข้อมูลผู้ใช้และกราฟเมื่อหน้าเว็บโหลดเสร็จ
     await loadUserInfo();
     await loadDefaultIntake();
-    await loadNutritionChart();
+    await loadNutritionBars();
     await loadBMI();
 });

@@ -92,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     cancelButtonColor: '#3085d6',
                     confirmButtonText: 'ลบ',
                     cancelButtonText: 'ยกเลิก',
+                    scrollbarPadding: true,
                     heightAuto: false
                 });
 
@@ -114,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             timer: 1000,
                             timerProgressBar: true,
                             showConfirmButton: false,
+                            scrollbarPadding: true,
                             heightAuto: false
                             });
 
@@ -124,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 icon: 'error',
                                 title: 'เกิดข้อผิดพลาด',
                                 text: data.error || "เกิดข้อผิดพลาดในการลบวัตถุดิบ",
+                            scrollbarPadding: true,
                             heightAuto: false
                             });
                         }
@@ -133,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             icon: 'error',
                             title: 'เกิดข้อผิดพลาด',
                             text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+                        scrollbarPadding: true,
                         heightAuto: false
                         });
                     }
@@ -173,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: 'warning',
                 title: 'ข้อมูลไม่ถูกต้อง',
                 text: 'กรุณาเลือกวัตถุดิบและระบุจำนวนให้ถูกต้อง',
+                scrollbarPadding: true,
                 heightAuto: false
             });
             return;
@@ -200,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
+                    scrollbarPadding: true,
                     heightAuto: false
                 });
 
@@ -213,6 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     icon: 'error',
                     title: 'เกิดข้อผิดพลาด',
                     text: data.error || "เกิดข้อผิดพลาดในการเพิ่มวัตถุดิบ",
+                    scrollbarPadding: true,
                     heightAuto: false
                 });
             }
@@ -222,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: 'error',
                 title: 'เกิดข้อผิดพลาด',
                 text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+                scrollbarPadding: true,
                 heightAuto: false
             });
         }

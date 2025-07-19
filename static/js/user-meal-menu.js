@@ -322,10 +322,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 const endIndex = startIndex + rowsPerPage;
                 const paginatedMenus = data.selected_menus.slice(startIndex, endIndex);
     
-                paginatedMenus.forEach(menu => {
+                paginatedMenus.forEach((menu, index) => {
                     const row = document.createElement("tr");
-    
+                    const rowNumber = (page - 1) * rowsPerPage + index + 1;
+
                     row.innerHTML = `
+                        <td>${rowNumber}</td>
                         <td>${menu.recipe_name}</td>
                         <td>${menu.user_servings}</td>
                         <td>
@@ -334,12 +336,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             </a>
                         </td>
                         <td>
-                        <button class="delete-menu-btn" data-id="${menu.id}">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                            <button class="delete-menu-btn" data-id="${menu.id}">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </td>
                     `;
-    
+
                     tableBody.appendChild(row);
                 });
     
@@ -375,6 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
             cancelButtonColor: '#3085d6',
             confirmButtonText: 'ลบ',
             cancelButtonText: 'ยกเลิก',
+            scrollbarPadding: true,
             heightAuto: false
         });
 
@@ -392,6 +395,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     icon: 'error',
                     title: 'เกิดข้อผิดพลาด',
                     text: data.error,
+                    scrollbarPadding: true,
                     heightAuto: false
                 });
             } else {
@@ -402,11 +406,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     timer: 1000,
                     timerProgressBar: true,
                     showConfirmButton: false,
+                    scrollbarPadding: true,
                     heightAuto: false
                 });
                 loadSelectedMenus();
-                window.loadNutritionChart();
-                window.loadNutritionData();
+                window.loadNutritionBars();
             }
         } catch (error) {
             console.error("เกิดข้อผิดพลาดในการลบเมนู:", error);
@@ -414,6 +418,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 icon: 'error',
                 title: 'เกิดข้อผิดพลาด',
                 text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+                scrollbarPadding: true,
                 heightAuto: false
             });
         }
@@ -442,62 +447,7 @@ document.addEventListener("DOMContentLoaded", function () {
             paginationDiv.appendChild(pageBtn);
         }
     }
-
-    // ✅ ดักจับการเปลี่ยนค่าแถวที่ต้องการแสดง
-    document.getElementById("menu-rows-per-page").addEventListener("change", function () {
-        const selectedRows = parseInt(this.value);
-        loadSelectedMenus(selectedRows, 1);
-    });
-
-    window.loadNutritionData = async function loadNutritionData() {
-        try {
-            const response = await fetch('/users/nutrition_chart');
-            const data = await response.json();
-
-            if (data.error) {
-                console.error("Error fetching nutrition data:", data.error);
-                return;
-            }
-
-            // ✅ พลังงานรวม
-            let energyText = `${data.tdee.toFixed(2)} kcal`;
-            if (userRecommendedTdee) {
-                energyText += ` / ค่าแนะนำต่อวัน ${userRecommendedTdee}`;
-            }
-            document.getElementById("total-energy2").textContent = energyText;
-
-            // ✅ แสดงสารอาหารพร้อมค่าแนะนำ
-            const nutrients = [
-                { key: "protein", unit: "กรัม", id: "intake-protein2" },
-                { key: "fat", unit: "กรัม", id: "intake-fat2" },
-                { key: "carb", unit: "กรัม", id: "intake-carb2" },
-                { key: "sugar", unit: "กรัม", id: "intake-sugar2" },
-                { key: "sodium", unit: "มิลลิกรัม", id: "intake-sodium2" }
-            ];
-
-            nutrients.forEach(n => {
-                const value = data[n.key]?.toFixed(2) || "0";
-                let recommended = "";
-                
-                if (userDailyIntake[n.key] !== undefined) {
-                    // ✅ แยกข้อความสำหรับน้ำตาล / โซเดียม
-                    if (n.key === "sugar" || n.key === "sodium") {
-                        recommended = ` / ไม่ควรเกินต่อวัน ${userDailyIntake[n.key]}`;
-                    } else {
-                        recommended = ` / ค่าแนะนำต่อวัน ${userDailyIntake[n.key]}`;
-                    }
-                }
-
-                document.getElementById(n.id).textContent = `${value} ${n.unit}${recommended}`;
-            });
-
-        } catch (error) {
-            console.error("Error loading nutrition data:", error);
-        }
-    };
-        
     // เรียกฟังก์ชันโหลดข้อมูลทันที
     window.loadBmrTdee();
-    window.loadNutritionData();
     window.loadSelectedMenus();
 });

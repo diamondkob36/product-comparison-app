@@ -640,7 +640,7 @@ def nutrition_chart():
 
         # ค่าเริ่มต้น
         total_nutrition = {
-            'tdee': 0, 'protein': 0, 'fat': 0, 'carbohydrate': 0, 'sugar': 0, 'sodium': 0
+            'tdee': 0, 'protein': 0, 'fat': 0, 'carb': 0, 'sugar': 0, 'sodium': 0
         }
 
         for menu in menus:
@@ -666,7 +666,7 @@ def nutrition_chart():
                     total_nutrition['tdee'] += (nutri['energy_kcal'] * amount_in_grams) / 100
                     total_nutrition['protein'] += (nutri['protein_g'] * amount_in_grams) / 100
                     total_nutrition['fat'] += (nutri['fat_g'] * amount_in_grams) / 100
-                    total_nutrition['carbohydrate'] += (nutri['carbohydrate_g'] * amount_in_grams) / 100
+                    total_nutrition['carb'] += (nutri['carbohydrate_g'] * amount_in_grams) / 100
                     total_nutrition['sugar'] += (nutri['sugar_g'] * amount_in_grams) / 100 if nutri['sugar_g'] is not None else 0
                     total_nutrition['sodium'] += (nutri['sodium_mg'] * amount_in_grams) / 100 if nutri['sodium_mg'] is not None else 0
 

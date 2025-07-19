@@ -142,26 +142,19 @@
         </div>
 
         <div class="content-chart-container">
+            <div class="head-selected-menu">
+                <h2><i class="fas fa-bolt text-gold"></i>พลังงานรวมที่คุณได้รับวันนี้จากเมนูที่คุณเลือก</h2>
+            </div>
             <div class="column-selected-menu">
-                <div class="">
-                    
-                </div>
                 <!-- พื้นที่ด้านซ้าย -->
                 <div class="selected-menu">
                     <div class="selected-menus-container">
                         <h3><i class="fas fa-concierge-bell text-main"></i> เมนูที่คุณเลือกวันนี้</h3>
                         <!-- ✅ ตัวเลือกจำนวนแถว -->
-                        <div class="table-controls">
-                            <label for="rows-per-page">แสดง:</label>
-                            <select id="menu-rows-per-page" class="form-control">
-                                <option value="10">10 แถว</option>
-                                <option value="20">20 แถว</option>
-                                <option value="30">30 แถว</option>
-                            </select>
-                        </div>
                         <table id="selected-menus-table" class="selected-menus-table">
                             <thead>
                                 <tr>
+                                    <th>เมนูที่</th>
                                     <th>ชื่อเมนู</th>
                                     <th>จำนวนหน่วยที่ทาน</th>
                                     <th>ดูรายละเอียด</th>
@@ -178,26 +171,15 @@
                 </div>
                 <!-- พื้นที่สำหรับข้อมูล -->
                 <div class="nutrition">
-                    <h3><i class="fas fa-fire-alt text-danger"></i> พลังงานและสารอาหารรวมจากเมนูที่เลือกในวันนี้</h3>
+                    <h3><i class="fas fa-fire-alt text-danger"></i> พลังงานและสารอาหารรวมจากเมนูที่เลือกทั้งหมด</h3>
 
-                    <div class="chart-container2">
-                        <canvas id="nutritionChart"></canvas>
-
-                        <div class="custom-legend">
-                            <span class="legend-box red-line"></span> เส้นแสดงค่าที่แนะนำที่คุณควรได้รับต่อวัน
-                        </div>
+                    <div class="nutrition-bars-container" id="nutrition-bars-container">
+                    <!-- หลอดแต่ละสารอาหารจะถูกเติมโดย JavaScript -->
                     </div>
 
                     <div class="total_nutrition">
-                        <p><i class="fas fa-burn text-danger"></i> พลังงานรวมที่คุณได้รับวันนี้: <span id="total-energy2">-</span> kcal</p>
-                        <p><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: <span id="intake-protein2">-</span> กรัม</p>
-                        <p><i class="fas fa-tint text-warning"></i> ไขมัน: <span id="intake-fat2">-</span> กรัม</p>
-                        <p><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: <span id="intake-carb2">-</span> กรัม</p>
-                        <p><i class="fas fa-cube text-pink"></i> น้ำตาล: <span id="intake-sugar2">-</span> กรัม</p>
-                        <p><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: <span id="intake-sodium2">-</span> มิลลิกรัม</p>
-
                         <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
-                            หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุง เนื่องจากมีการเปลี่ยนแปลงจากการปรุง เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
+                            หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุงอาหาร เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
                         </p>
                     </div>
                 </div>
@@ -225,16 +207,7 @@
         
             <!-- พื้นที่แสดงวัตถุดิบในคลัง -->
             <div class="user-ingredients-container">
-                <h3><i class="fas fa-warehouse text-steel"></i> วัตถุดิบในคลัง</h3>
-                <div class="table-controls">
-                    <label for="rows-per-page">แสดง:</label>
-                    <select id="ingredient-rows-per-page" class="form-control">
-                        <option value="10">10 แถว</option>
-                        <option value="20">20 แถว</option>
-                        <option value="30">30 แถว</option>
-                    </select>
-                </div>
-        
+                <h3><i class="fas fa-warehouse text-steel"></i> วัตถุดิบในคลัง</h3>        
                 <table id="user-ingredients-table" class="ingredients-table">
                     <thead>
                         <tr>

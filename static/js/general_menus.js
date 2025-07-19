@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         showCancelButton: true,
         confirmButtonText: 'บันทึก',
         cancelButtonText: 'ยกเลิก',
-        scrollbarPadding: false,
+        scrollbarPadding: true,
         heightAuto: false
       });
       if (!result.isConfirmed) return;
@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
               timer: 1000,
               timerProgressBar: true,
               showConfirmButton: false,
+              scrollbarPadding: true,
               heightAuto: false
             });
           } else {
@@ -48,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
               icon: 'error',
               title: 'เกิดข้อผิดพลาด',
               text: 'ไม่สามารถบันทึกเมนูได้',
-              scrollbarPadding: false,
+              scrollbarPadding: true,
               heightAuto: false
             });
           }
@@ -58,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
             icon: 'error',
             title: 'เกิดข้อผิดพลาด',
             text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
-            scrollbarPadding: false,
+            scrollbarPadding: true,
             heightAuto: false
           });
         });
