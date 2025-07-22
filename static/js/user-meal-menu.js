@@ -355,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
                 updatePagination(data.selected_menus.length, rowsPerPage, page, "menu-pagination");
             } else {
-                tableBody.innerHTML = "<tr><td colspan='4'>ยังไม่มีเมนูที่เลือก</td></tr>";
+                tableBody.innerHTML = "<tr><td colspan='5'>ยังไม่มีเมนูที่เลือก</td></tr>";
                 document.getElementById("menu-pagination").innerHTML = ""; // ✅ แก้ปัญหา pagination แสดงแม้ไม่มีข้อมูล
             }
     
