@@ -493,8 +493,8 @@ def display_converted_amount(name, amount, unit):
     """
     unit = unit.strip()
 
-    convert_units = {"หัว", "ใบ", "ราก", "กลีบ", "ต้น", "เม็ด", "ผล", "ช้อนชา"}
-    excluded_units = {"ฟอง", "มิลลิลิตร"}
+    convert_units = {"หัว", "ใบ", "ราก", "กลีบ", "ต้น", "เม็ด", "ผล", "ช้อนชา","มิลลิลิตร","ฟอง"}
+    excluded_units = {}
 
     if unit == "กรัม":
         return f"{amount} กรัม"
