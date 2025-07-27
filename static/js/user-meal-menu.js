@@ -105,7 +105,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // ✅ แสดงผลรวมเมนูแบบเรียบง่าย
-            const totalFound = (data.full_match?.length || 0) + (data.partial_match?.length || 0);
+            const totalFull = data.full_match?.reduce((sum, group) => sum + group[1].length, 0) || 0;
+            const totalPartial = data.partial_match?.reduce((sum, group) => sum + group[1].length, 0) || 0;
+            const totalFound = totalFull + totalPartial;
             const totalAll = data.total_recipes || 0;
 
             const summaryContainer = document.getElementById("summary-container");
