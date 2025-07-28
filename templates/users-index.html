@@ -174,7 +174,7 @@
                     <!-- หลอดแต่ละสารอาหารจะถูกเติมโดย JavaScript -->
                     </div>
 
-                    <div class="total_nutrition">
+                    <div class="total_nutrition-warning">
                         <p class="text-neutral" style="font-size: 14px; margin-top: 10px;">
                             หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุงอาหาร เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล
                         </p>
@@ -184,42 +184,47 @@
         </div>
 
         <div class="ingredient-container">
-            <!-- พื้นที่เพิ่มวัตถุดิบ -->
-            <div class="add-ingredient-container">
-                <h3><i class="fas fa-plus-circle text-soft-green"></i> เพิ่มวัตถุดิบ</h3>
-                <form id="add-ingredient-form" novalidate>
-                    <label for="ingredient">วัตถุดิบ :</label>
-                    <select id="ingredient" name="ingredient" class="select2 form-control" style="width: 100%;">
-                        <option value="" disabled selected>กรุณาเลือกวัตถุดิบ</option>
-                    </select>
-        
-                    <label for="amount">ปริมาณ :</label>
-                    <input type="number" id="amount" name="amount" placeholder="ปริมาณ" required />
-        
-                    <button type="submit">
-                        <i class="fas fa-plus-circle"></i> เพิ่มวัตถุดิบ
-                    </button>
-                </form>
+            <div class="head-ingredient">
+                <h2><i class="fas fa-boxes text-fat"></i>รายการวัตถุดิบของคุณ</h2>
             </div>
-        
-            <!-- พื้นที่แสดงวัตถุดิบในคลัง -->
-            <div class="user-ingredients-container">
-                <h3><i class="fas fa-warehouse text-steel"></i> วัตถุดิบในคลัง</h3>        
-                <table id="user-ingredients-table" class="ingredients-table">
-                    <thead>
-                        <tr>
-                            <th>ชื่อวัตถุดิบ</th>
-                            <th>จำนวน</th>
-                            <th>หน่วย</th>
-                            <th>ลบ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- ข้อมูลวัตถุดิบจะถูกเพิ่มโดย JavaScript -->
-                    </tbody>
-                </table>
-        
-                <div id="ingredient-pagination" class="pagination"></div>
+            <div class="ingredient-grid">
+                <!-- พื้นที่เพิ่มวัตถุดิบ -->
+                <div class="add-ingredient-container">
+                    <h3><i class="fas fa-plus-circle text-soft-green"></i> เพิ่มวัตถุดิบ</h3>
+                    <form id="add-ingredient-form" novalidate>
+                        <label for="ingredient">วัตถุดิบ :</label>
+                        <select id="ingredient" name="ingredient" class="select2 form-control" style="width: 100%;">
+                            <option value="" disabled selected>กรุณาเลือกวัตถุดิบ</option>
+                        </select>
+            
+                        <label for="amount">ปริมาณ :</label>
+                        <input type="number" id="amount" name="amount" placeholder="ปริมาณ" required />
+            
+                        <button type="submit">
+                            <i class="fas fa-plus-circle"></i> เพิ่มวัตถุดิบ
+                        </button>
+                    </form>
+                </div>
+            
+                <!-- พื้นที่แสดงวัตถุดิบในคลัง -->
+                <div class="user-ingredients-container">
+                    <h3><i class="fas fa-warehouse text-warning"></i> วัตถุดิบในคลัง</h3>        
+                    <table id="user-ingredients-table" class="ingredients-table">
+                        <thead>
+                            <tr>
+                                <th>ชื่อวัตถุดิบ</th>
+                                <th>จำนวน</th>
+                                <th>หน่วย</th>
+                                <th>ลบ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- ข้อมูลวัตถุดิบจะถูกเพิ่มโดย JavaScript -->
+                        </tbody>
+                    </table>
+            
+                    <div id="ingredient-pagination" class="pagination"></div>
+                </div>
             </div>
         </div>
 

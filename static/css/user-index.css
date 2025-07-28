@@ -61,10 +61,9 @@
 .recommend{
     margin-top: 20px;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #ffffff; /* สีขาว */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    background-color: whitesmoke;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
     text-align: center;
     color: #000;
 }
@@ -73,10 +72,9 @@
 .results-container {
     margin-top: 20px;
     padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #ffffff; /* สีขาว */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #c4c4c4;
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
 }
 
 /* ✅ ปรับแต่งหัวข้อของแต่ละกลุ่มเมนู */
@@ -227,6 +225,7 @@
     background-color: #138496;
 }
 
+/* ปุ่มวาปหมวดหมู่ */
 .category-buttons-container{
     display: flex;
     flex-direction: column;
@@ -451,18 +450,47 @@
     }
 }
 
-/* ส่วนเพิ่มวัตถุดิบ */
-.add-ingredient-container {
-    flex: 1; /* ให้ขนาดเท่ากัน */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    color: black;
-    transition: all 0.3s ease-in-out;
+.ingredient-container{
+    margin-top: 20px;
+    background-color: #c4c4c4;
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
+}
+
+.ingredient-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 20px;
+}
+
+.head-ingredient{
+    display: flex;
+    background-color: #15803d;
+    align-items: center;
+    border-radius: 20px 20px 0px 0px;
+    padding: 0px 20px 0px 20px;
+    color: white;
+}
+
+.head-ingredient i{
+    margin-right: 10px;
+}
+
+/* ส่วนเพิ่มวัตถุดิบ */
+.add-ingredient-container,
+.user-ingredients-container{
+    flex: 1; /* ขนาดเท่ากัน */
+    display: flex;
+    flex-direction: column; /* จัดเรียงในแนวตั้ง */
+    padding: 20px;
+    border: 2px  solid #15803d;
+    border-radius: 20px;
+    background-color: #e9ecef;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    color: black;
 }
 
 .add-ingredient-container h3 {
@@ -476,7 +504,7 @@
     margin: 10px 0 5px;
     font-weight: bold;
     color: #000; /* สีดำ */
-    font-size: 14px; /* ขนาดตัวอักษร */
+    font-size: 16px; /* ขนาดตัวอักษร */
 }
 
 .add-ingredient-container form input{
@@ -501,18 +529,19 @@
 }
 
 .add-ingredient-container form button {
-    background-color: #007bff; /* สีฟ้า */
+    background-color: #E3A857;
     color: white;
     border: none;
     padding: 12px 20px; /* ปรับ Padding ให้ใหญ่ขึ้น */
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .add-ingredient-container form button:hover {
-    background-color: #0056b3;
+    background-color: #b87f2b; /* สีเข้มขึ้นเมื่อโฮเวอร์ */
+    transform: scale(1.05); /* ขยายเล็กน้อย */
 }
 
 .add-ingredient-container #add-ingredient-message {
@@ -522,32 +551,10 @@
 
 .form-control {
     padding: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; /**/
     border-radius: 4px;
     font-size: 14px;
     width: auto;
-}
-
-/* ส่วนพื้นที่เพิ่มวัตถุดิบและตารางวัตถุดิบ */
-.ingredient-container {
-    display: flex; /* จัดให้อยู่แถวเดียวกัน */
-    gap: 20px; /* ระยะห่างระหว่างสองส่วน */
-    align-items: stretch; /* ทำให้สูงเท่ากัน */
-}
-
-/*ส่วนแสดงข้อมูลผู้ใช้และพลังงานต่อวัน*/
-.user-ingredients-container {
-    flex: 1; /* ให้ขนาดเท่ากัน */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    color: black;
-    transition: all 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* จัดเนื้อหาให้อยู่ตรงกลาง */
 }
 
 .user-ingredients-container h3 {
@@ -555,44 +562,7 @@
     color: #333; /* สีดำเข้ม */
 }
 
-/* ตารางวัตถุดิบ */
-.table-controls {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.table-controls label {
-    margin-right: 5px;
-    font-weight: bold;
-}
-
-.ingredients-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.ingredients-table th, .ingredients-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-}
-
-.ingredients-table th {
-    background-color: #007bff; /* สีฟ้า */
-    color: white;
-    font-weight: bold;
-}
-
-.ingredients-table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.ingredients-table tbody tr:hover {
-    background-color: #e9ecef;
-}
-
-/* ปุ่มลบสไตล์ไอคอน */
+/* ปุ่มลบสไตล์ไอคอน ตารางรายการวัตถุดิบ */
 button.delete-ingredient {
     background: none;
     border: none;
@@ -611,6 +581,7 @@ button.delete-ingredient i {
     pointer-events: none; /* ป้องกันคลิกที่ไอคอนโดยตรง */
 }
 
+/* ปุ่มเลขหน้าของตารางในหน้า indax */
 .pagination {
     display: flex;
     justify-content: center;
@@ -652,12 +623,11 @@ button.delete-ingredient i {
     align-items: center;
     border-radius: 20px 20px 0px 0px;
     padding: 0px 20px 0px 20px;
+    color: white;
 }
 
-.head-user-info h2 {
-    font-size: 24px;
-    margin-left: 10px;
-    color: white;
+.head-user-info i{
+    margin-right: 10px;
 }
 
 .user-two-column{
@@ -1332,12 +1302,11 @@ button.delete-ingredient i {
 
 .head-selected-menu h2 {
     font-size: 24px;
-    margin-left: 10px;
     color: white;
 }
 
 .head-selected-menu i{
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .column-selected-menu{
@@ -1380,21 +1349,15 @@ button.delete-ingredient i {
     transition: all 0.3s ease-in-out;
 }
 
-/* ตารางเมนูที่เลือกวันนี้ */
-.selected-menus-table{
+/* ควบคุมตารางทั้งหมดในหน้า index */
+table {
     width: 100%;
     border-collapse: collapse;
     background-color: whitesmoke;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 15px;
     overflow: hidden;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 thead {
@@ -1404,7 +1367,7 @@ thead {
 th {
     color: white;
     padding: 20px 15px;
-    text-align: left;
+    text-align: center;
     font-weight: bold;
     font-size: 16px;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -1432,6 +1395,7 @@ td {
     font-weight: bold;
 }
 
+/* ปุ่มรายในตารางรายการวัตถุดิบ */
 .view-detail-btn {
     background: none;
     border: none;
@@ -1472,7 +1436,7 @@ td {
 
 .nutrition-bars-container{
     background: linear-gradient(90deg, #a8e6cf, #dcedc1);
-    padding: 5px;
+    padding: 10px 5px 10px 5px;
     border-radius: 10px;
 }
 
@@ -1541,4 +1505,17 @@ td {
 @keyframes shine {
     0% { left: -100%; }
     100% { left: 100%; }
+}
+
+.total_nutrition-warning{
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #fef3c7;
+    border-left: 5px solid #f59e0b;
+    border-radius: 8px;
+}
+
+.total_nutrition-warning p{
+    color: #92400e;
+    font-weight: bold;
 }

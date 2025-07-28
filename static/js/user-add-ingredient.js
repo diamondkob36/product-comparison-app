@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const userIngredientsTable = document.getElementById("user-ingredients-table").querySelector("tbody");
 
     let currentPage = 1;
-    let rowsPerPage = 10;
+    let rowsPerPage = 5;
 
     // ฟังก์ชันโหลดข้อมูลวัตถุดิบสำหรับ dropdown
     async function loadIngredients() {
@@ -57,14 +57,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function displayTable(data) {
         const tableBody = document.querySelector("#user-ingredients-table tbody");
-        tableBody.innerHTML = ""; // ล้างข้อมูลเก่าในตาราง
+        tableBody.innerHTML = "";
 
-        const startIndex = (currentPage - 1) * rowsPerPage; // คำนวณเริ่มต้นแถวในหน้านั้น
-        const endIndex = startIndex + rowsPerPage; // คำนวณแถวสุดท้ายในหน้านั้น
-        const paginatedData = data.slice(startIndex, endIndex); // เลือกเฉพาะข้อมูลในหน้าปัจจุบัน
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const paginatedData = data.slice(startIndex, endIndex);
 
-        paginatedData.forEach((ingredient) => {
-            const row = document.createElement("tr"); // สร้างแถวใหม่ในตาราง
+        paginatedData.forEach((ingredient, index) => {
+            const row = document.createElement("tr");
+            const rowNumber = startIndex + index + 1;
+
             row.innerHTML = `
                 <td>${ingredient.name}</td>
                 <td>${ingredient.amount}</td>
@@ -75,10 +77,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     </button>
                 </td>
             `;
-            tableBody.appendChild(row); // เพิ่มแถวลงในตาราง
+            tableBody.appendChild(row);
         });
 
-        // เพิ่ม Event Listener ให้กับปุ่มลบ
+        // เชื่อม Event กับปุ่มลบ
         document.querySelectorAll(".delete-ingredient").forEach((button) => {
             button.addEventListener("click", async (event) => {
                 const ingredientId = event.target.closest("button").getAttribute("data-id");
@@ -100,9 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     try {
                         const response = await fetch(`/users/delete_ingredient/${ingredientId}`, {
                             method: "DELETE",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
+                            headers: { "Content-Type": "application/json" },
                         });
 
                         const data = await response.json();
@@ -112,11 +112,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 icon: 'success',
                                 title: 'สำเร็จ!',
                                 text: data.message || "ลบวัตถุดิบสำเร็จ!",
-                            timer: 1000,
-                            timerProgressBar: true,
-                            showConfirmButton: false,
-                            scrollbarPadding: true,
-                            heightAuto: false
+                                timer: 1000,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                                scrollbarPadding: true,
+                                heightAuto: false
                             });
 
                             loadUserIngredients();
@@ -126,8 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                 icon: 'error',
                                 title: 'เกิดข้อผิดพลาด',
                                 text: data.error || "เกิดข้อผิดพลาดในการลบวัตถุดิบ",
-                            scrollbarPadding: true,
-                            heightAuto: false
+                                scrollbarPadding: true,
+                                heightAuto: false
                             });
                         }
                     } catch (error) {
@@ -136,14 +136,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             icon: 'error',
                             title: 'เกิดข้อผิดพลาด',
                             text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
-                        scrollbarPadding: true,
-                        heightAuto: false
+                            scrollbarPadding: true,
+                            heightAuto: false
                         });
                     }
                 }
             });
         });
 
+        // อัปเดตการแบ่งหน้า
         setupPagination(data);
     }
 
@@ -153,19 +154,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const totalPages = Math.ceil(data.length / rowsPerPage);
 
+        // ปุ่มก่อนหน้า
+        if (currentPage > 1) {
+            const prevBtn = document.createElement("button");
+            prevBtn.textContent = "ก่อนหน้า";
+            prevBtn.className = "page-btn";
+            prevBtn.addEventListener("click", () => {
+                currentPage--;
+                displayTable(data);
+                setupPagination(data);
+            });
+            pagination.appendChild(prevBtn);
+        }
+
+        // ปุ่มเลขหน้า
         for (let i = 1; i <= totalPages; i++) {
             const button = document.createElement("button");
             button.textContent = i;
-            button.className = i === currentPage ? "active" : "";
+            button.className = (i === currentPage) ? "page-btn active" : "page-btn";
             button.addEventListener("click", () => {
                 currentPage = i;
                 displayTable(data);
+                setupPagination(data);
             });
             pagination.appendChild(button);
         }
+
+        // ปุ่มถัดไป
+        if (currentPage < totalPages) {
+            const nextBtn = document.createElement("button");
+            nextBtn.textContent = "ถัดไป";
+            nextBtn.className = "page-btn";
+            nextBtn.addEventListener("click", () => {
+                currentPage++;
+                displayTable(data);
+                setupPagination(data);
+            });
+            pagination.appendChild(nextBtn);
+        }
     }
 
-    // ตัวเลือกเปลี่ยนจำนวนแถวต่อหน้า
     addIngredientForm.addEventListener("submit", async function (event) {
         event.preventDefault();
 

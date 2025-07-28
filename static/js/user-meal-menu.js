@@ -305,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    window.loadSelectedMenus = async function loadSelectedMenus(rowsPerPage = 10, page = 1) {
+    window.loadSelectedMenus = async function loadSelectedMenus(rowsPerPage = 5, page = 1) {
         try {
             const response = await fetch("/users/selected_menus");
             const data = await response.json();
@@ -433,6 +433,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const totalPages = Math.ceil(totalRows / rowsPerPage);
 
+        // ปุ่มก่อนหน้า
+        if (currentPage > 1) {
+            const prevBtn = document.createElement("button");
+            prevBtn.innerText = "ก่อนหน้า";
+            prevBtn.classList.add("page-btn");
+            prevBtn.addEventListener("click", () => {
+                loadSelectedMenus(rowsPerPage, currentPage - 1);
+            });
+            paginationDiv.appendChild(prevBtn);
+        }
+
+        // ปุ่มเลขหน้า
         for (let i = 1; i <= totalPages; i++) {
             const pageBtn = document.createElement("button");
             pageBtn.innerText = i;
@@ -448,7 +460,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             paginationDiv.appendChild(pageBtn);
         }
+
+        // ปุ่มถัดไป
+        if (currentPage < totalPages) {
+            const nextBtn = document.createElement("button");
+            nextBtn.innerText = "ถัดไป";
+            nextBtn.classList.add("page-btn");
+            nextBtn.addEventListener("click", () => {
+                loadSelectedMenus(rowsPerPage, currentPage + 1);
+            });
+            paginationDiv.appendChild(nextBtn);
+        }
     }
+
     // เรียกฟังก์ชันโหลดข้อมูลทันที
     window.loadBmrTdee();
     window.loadSelectedMenus();
