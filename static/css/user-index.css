@@ -70,9 +70,71 @@
 
 .recipe-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(4, 1fr); /* 3 คอลัมน์เท่ากัน */
     gap: 20px;
     margin-top: 15px;
+}
+
+/* ✅ สีพื้นหลังสำหรับหมวดหมู่เมนู */
+.category-full {
+    background-color: #d4edda; /* เขียวพาสเทล */
+    border-left: 6px solid #28a745;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: black;
+    display: flex;
+}
+
+.category-full i{
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.category-partial{
+    background-color: #fff3cd; /* เหลืองพาสเทล */
+    border-left: 6px solid #ffc107;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: black;
+    display: flex;
+}
+
+.category-partial i{
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.category-title {
+    background: linear-gradient(to right, #dbeafe, #bfdbfe); /* ฟ้าอ่อนไล่สี */
+    color: black;                  /* เขียวเข้มสุขภาพ */
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 15px;
+    margin: 15px 0 10px 0;
+    border-left: 6px solid #3b82f6;  /* เส้นด้านซ้ายฟ้าเข้ม */
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.recipe-card.empty-card {
+    background-color: #f8f9fa; /* สีพื้นหลังเทาอ่อน */
+    border: 2px dashed #ccc;  /* เส้นกรอบประ */
+    border-radius: 12px;
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .recipe-card {
@@ -88,25 +150,6 @@
 .recipe-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-}
-
-/* ✅ สีพื้นหลังสำหรับหมวดหมู่เมนู */
-.category-full {
-    background-color: #d4edda; /* เขียวพาสเทล */
-    border-left: 6px solid #28a745;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    color: #155724;
-}
-
-.category-partial {
-    background-color: #fff3cd; /* เหลืองพาสเทล */
-    border-left: 6px solid #ffc107;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    color: #856404;
 }
 
 .recipe-img {
@@ -126,9 +169,10 @@
 }
 
 .recipe-info p {
-    font-size: 14px;
-    color: #555;
+    font-size: 16px;
+    color: black;
     margin: 5px 0;
+    text-align: left;
 }
 
 .recipe-buttons {
@@ -138,11 +182,11 @@
     margin-top: 12px;
 }
 
-.save-menu-button,
-.view-detail-button {
+/* ปุ่มบันทึกเมนู - เขียว */
+.save-menu-button {
     flex: 1;
     text-align: center;
-    background-color: #15803d;
+    background-color: #15803d; /* เขียว */
     color: #fff;
     padding: 8px;
     border: none;
@@ -150,12 +194,32 @@
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
+    font-size: 16px;
     transition: background-color 0.3s ease;
 }
 
-.save-menu-button:hover,
+.save-menu-button:hover {
+    background-color: #0f5e2b; /* เขียวเข้มขึ้นเมื่อ hover */
+}
+
+/* ปุ่มรายละเอียด - ฟ้า */
+.view-detail-button {
+    flex: 1;
+    text-align: center;
+    background-color: #2563eb; /* ฟ้า */
+    color: #fff;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
 .view-detail-button:hover {
-    background-color: #0f5e2b;
+    background-color: #1e40af; /* ฟ้าเข้มขึ้นเมื่อ hover */
 }
 
 /* ปุ่มวาปหมวดหมู่ */
@@ -261,127 +325,6 @@
 .text-white        { color: white;}
 
 .text-power {color: #FF3300;}
-
-.results-container .recipe i.text-success {
-    color: #28a745; /* สีเขียว */
-}
-
-.results-container .recipe i.text-warning {
-    color: #ffc107; /* สีเหลือง */
-}
-
-.results-container .recipe i.text-danger {
-    color: #dc3545; /* สีแดง */
-}
-
-/* ✅ ไฮไลต์หมวดหมู่ */
-.results-container .category-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #000; /* สีดำ */
-    margin-top: 20px;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-left: 5px solid #007bff; /* เส้นสีฟ้าด้านซ้าย */
-    background-color: #f0f8ff; /* สีฟ้าอ่อน */
-    border-radius: 4px;
-}
-
-.empty-ingredient-box {
-    background-color: #eef4ff; /* ฟ้าอ่อน */
-    border: 2px dashed #007bff;
-    border-radius: 12px;
-    padding: 30px 20px;
-    text-align: center;
-    color: #333;
-    margin: 25px auto;
-    max-width: 700px;
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1);
-    transition: all 0.3s ease-in-out;
-}
-
-.empty-ingredient-box i {
-    color: #007bff;
-    font-size: 36px;
-    margin-bottom: 12px;
-    display: block;
-}
-
-.empty-ingredient-box p {
-    font-size: 18px;
-    font-weight: 500;
-    margin: 0;
-}
-
-/* ✅ รองรับจอขนาดเล็ก (Tablet, Mobile) */
-@media screen and (max-width: 1024px) {
-    .recipe-container {
-        flex-direction: column; /* จัดเรียงเป็นแนวตั้ง */
-        text-align: center;
-    }
-
-    .recipe-left, .recipe-right {
-        width: 100%; /* กว้างเต็มจอ */
-    }
-
-    .recipe-right ul {
-        padding-left: 0;
-    }
-
-    .recipe-right li {
-        justify-content: center;
-    }
-
-    .save-menu-button {
-        width: 100%; /* ปรับปุ่มให้เต็มจอ */
-    }
-
-    .empty-ingredient-box {
-        padding: 20px 15px;
-        font-size: 16px;
-    }
-
-    .empty-ingredient-box i {
-        font-size: 28px;
-    }
-
-    .empty-ingredient-box p {
-        font-size: 16px;
-    }
-}
-
-/* ✅ รองรับมือถือ (Mobile) */
-@media screen and (max-width: 600px) {
-    .results-container {
-        padding: 10px;
-    }
-
-    .recipe-left p{
-        text-align: left;
-    }
-
-    .recipe-right li {
-        justify-content: left;
-    }
-
-    .category-title {
-        font-size: 16px; /* ลดขนาดตัวอักษร */
-        padding: 8px;
-    }
-
-    .recipe-container {
-        padding: 10px;
-    }
-
-    .recipe-left img {
-        max-width: 180px;
-    }
-
-    .save-menu-button {
-        font-size: 14px;
-        padding: 8px;
-    }
-}
 
 .ingredient-container{
     margin-top: 20px;
@@ -1123,6 +1066,18 @@ button.delete-ingredient i {
     font-size: 16px;
 }
 
+.form-row {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.form-row .form-group {
+    flex: 1;
+    min-width: 45%;
+}
+
 .select2-container--default .select2-selection--multiple {
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -1200,22 +1155,6 @@ button.delete-ingredient i {
 .close-button:hover {
     background: darkred;
     transform: scale(1.1); /* ขยายเล็กน้อยเมื่อโฮเวอร์ */
-}
-
-/* Media Query สำหรับหน้าจอขนาดเล็ก */
-@media (max-width: 768px) {
-    .user-edit-display-container {
-        flex-direction: column; /* จัดเรียงแนวตั้ง */
-        gap: 20px; /* เพิ่มช่องว่างระหว่างฟอร์มและข้อมูล */
-    }
-
-    .user-edit-form {
-        max-width: 100%; /* ฟอร์มเต็มความกว้าง */
-    }
-
-    .user-edit-form .form-row {
-        flex-direction: column; /* จัดช่องกรอกในแนวตั้ง */
-    }
 }
 
 .content-chart-container{

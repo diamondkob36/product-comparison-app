@@ -120,59 +120,76 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             resultsContainer.innerHTML = `
-                <h2><i class="fas fa-check-circle text-success"></i> เมนูที่มีวัตถุดิบหลักครบทั้งหมด</h2>
+                <h2 class="category-full">
+                    <i class="fas fa-check-circle text-success"></i> เมนูที่มีวัตถุดิบหลักครบทั้งหมด
+                </h2>
                 <div id="full-match-recipes"></div>
-                <h2>⚠️ เมนูที่มีวัตถุดิบหลักแต่ไม่ครบ</h2>
+                <h2 class="category-partial">
+                    <i class="fas fa-exclamation-triangle text-warning"></i> เมนูที่มีวัตถุดิบหลักแต่ไม่ครบ
+                </h2>
                 <div id="partial-match-recipes"></div>
             `;
 
             const fullMatchContainer = document.getElementById("full-match-recipes");
             const partialMatchContainer = document.getElementById("partial-match-recipes");
 
-    function renderRecipes(recipeGroups, container) {
-        recipeGroups.forEach(([category, recipes]) => {
-            // หัวข้อหมวดหมู่
-            const categoryTitle = document.createElement("h2");
-            categoryTitle.className = "category-title";
-            categoryTitle.textContent = `อาหารประเภท: ${category}`;
-            container.appendChild(categoryTitle);
+            function renderRecipes(recipeGroups, container) {
+                recipeGroups.forEach(([category, recipes]) => {
+                    // หัวข้อหมวดหมู่
+                    const categoryTitle = document.createElement("h2");
+                    categoryTitle.className = "category-title";
+                    categoryTitle.textContent = `อาหารประเภท: ${category}`;
+                    container.appendChild(categoryTitle);
 
-            // ✅ Container สำหรับการ์ด (Grid 3 คอลัมน์)
-            const gridContainer = document.createElement("div");
-            gridContainer.className = "recipe-grid";
+                    // ✅ Container สำหรับการ์ด (Grid 3 คอลัมน์)
+                    const gridContainer = document.createElement("div");
+                    gridContainer.className = "recipe-grid";
 
-            recipes.forEach(recipe => {
-                const recipeCard = document.createElement("div");
-                recipeCard.className = "recipe-card";
+                    recipes.forEach(recipe => {
+                        const recipeCard = document.createElement("div");
+                        recipeCard.className = "recipe-card";
 
-                const imageUrl = recipe.image_url && recipe.image_url !== "default.jpg"
-                    ? `/static/images/${recipe.image_url}`
-                    : "/static/images/default.jpg";
+                        const imageUrl = recipe.image_url && recipe.image_url !== "default.jpg"
+                            ? `/static/images/${recipe.image_url}`
+                            : "/static/images/default.jpg";
 
-                recipeCard.innerHTML = `
-                    <img src="${imageUrl}" alt="${recipe.name}" class="recipe-img">
-                    <div class="recipe-info">
-                        <h3>${recipe.name}</h3>
-                        <p><i class="fas fa-star text-gold"></i> คะแนน: ${recipe.stars}</p>
-                        <p><i class="fas fa-burn text-energy"></i> แคลอรี่รวม: ${recipe.calories} kcal</p>
-                        <p><i class="fas fa-users text-teal"></i> เสิร์ฟได้: ${recipe.servings} หน่วย</p>
-                        <p><i class="fas fa-chart-pie text-info"></i> พลังงานต่อหน่วย: ${recipe.calories_per_serving} kcal</p>
-                        <div class="recipe-buttons">
-                            <button class="save-menu-button" onclick="saveMenu(${recipe.id})">
-                                <i class="fas fa-check-circle"></i> บันทึกเมนู
-                            </button>
-                            <a href="/users/view-menu?recipe_id=${recipe.id}" class="view-detail-button">
-                                <i class="fas fa-info-circle"></i> รายละเอียด
-                            </a>
-                        </div>
-                    </div>
-                `;
-                gridContainer.appendChild(recipeCard);
-            });
+                        recipeCard.innerHTML = `
+                            <img src="${imageUrl}" alt="${recipe.name}" class="recipe-img">
+                            <div class="recipe-info">
+                                <h3>${recipe.name}</h3>
+                                <p><i class="fas fa-star text-gold"></i> คะแนน: ${recipe.stars}</p>
+                                <p><i class="fas fa-burn text-energy"></i> แคลอรี่รวม: ${recipe.calories} kcal</p>
+                                <p><i class="fas fa-users text-teal"></i> เสิร์ฟได้: ${recipe.servings} หน่วย</p>
+                                <p><i class="fas fa-chart-pie text-info"></i> พลังงานต่อหน่วย: ${recipe.calories_per_serving} kcal</p>
+                                <div class="recipe-buttons">
+                                    <button class="save-menu-button" onclick="saveMenu(${recipe.id})">
+                                        <i class="fas fa-check-circle"></i> บันทึกเมนู
+                                    </button>
+                                    <a href="/users/view-menu?recipe_id=${recipe.id}" class="view-detail-button">
+                                        <i class="fas fa-info-circle"></i> รายละเอียด
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                        gridContainer.appendChild(recipeCard);
+                    });
 
-            container.appendChild(gridContainer);
-        });
-    }
+                    
+                    // ✅ เติมการ์ดเปล่าเพื่อให้ครบ 3 ใบ
+                    const remainder = recipes.length % 4;
+                    if (remainder !== 0) {
+                        const emptyCardsToAdd = 4 - remainder;
+                        for (let i = 0; i < emptyCardsToAdd; i++) {
+                            const emptyCard = document.createElement("div");
+                            emptyCard.className = "recipe-card empty-card";
+                            emptyCard.textContent = "ไม่พบเมนูที่เหมาะสม";
+                            gridContainer.appendChild(emptyCard);
+                        }
+                    }
+
+                    container.appendChild(gridContainer);
+                });
+            }
 
             // ✅ แสดงเมนูแยกส่วน
             renderRecipes(data.full_match, fullMatchContainer);

@@ -276,8 +276,10 @@ def similarity_to_stars(similarity):
         result += '<i class="fas fa-star-half-alt text-gold"></i>'
     result += '<i class="far fa-star text-gold"></i>' * empty_stars
 
-    return result  # คืนค่าเป็น string เช่นเดิม
+    # ✅ เพิ่มการแสดงผล (x/5)
+    result += f' <span class="text-secondary">({stars:.1f}/5)</span>'
 
+    return result
 
 def calculate_bmr_tdee(weight, height, age, gender, activity_level):
     """
