@@ -129,85 +129,50 @@ document.addEventListener("DOMContentLoaded", function () {
             const fullMatchContainer = document.getElementById("full-match-recipes");
             const partialMatchContainer = document.getElementById("partial-match-recipes");
 
-            function renderRecipes(recipeGroups, container) {
-                recipeGroups.forEach(([category, recipes]) => {
-                    const categoryTitle = document.createElement("div");
-                    categoryTitle.className = "category-title";
-                    categoryTitle.textContent = `อาหารประเภท: ${category}`;
-                    categoryTitle.setAttribute("data-category", category);
-                    categoryTitle.setAttribute("data-match", container.id === "full-match-recipes" ? "full" : "partial");
+    function renderRecipes(recipeGroups, container) {
+        recipeGroups.forEach(([category, recipes]) => {
+            // หัวข้อหมวดหมู่
+            const categoryTitle = document.createElement("h2");
+            categoryTitle.className = "category-title";
+            categoryTitle.textContent = `อาหารประเภท: ${category}`;
+            container.appendChild(categoryTitle);
 
-                    container.appendChild(categoryTitle);
+            // ✅ Container สำหรับการ์ด (Grid 3 คอลัมน์)
+            const gridContainer = document.createElement("div");
+            gridContainer.className = "recipe-grid";
 
-                    let highestSimilarity = Math.max(...recipes.map(r => r.similarity));
-                    let isFirstHighlighted = false;
+            recipes.forEach(recipe => {
+                const recipeCard = document.createElement("div");
+                recipeCard.className = "recipe-card";
 
-                    recipes.forEach(recipe => {
-                        const recipeDiv = document.createElement("div");
-                        recipeDiv.className = "recipe-container";
+                const imageUrl = recipe.image_url && recipe.image_url !== "default.jpg"
+                    ? `/static/images/${recipe.image_url}`
+                    : "/static/images/default.jpg";
 
-                        // ✅ ตรวจสอบ image_url และกำหนดภาพเริ่มต้น
-                        const imageUrl = recipe.image_url && recipe.image_url !== "default.jpg" 
-                            ? `/static/images/${recipe.image_url}` 
-                            : "/static/images/default.jpg";
+                recipeCard.innerHTML = `
+                    <img src="${imageUrl}" alt="${recipe.name}" class="recipe-img">
+                    <div class="recipe-info">
+                        <h3>${recipe.name}</h3>
+                        <p><i class="fas fa-star text-gold"></i> คะแนน: ${recipe.stars}</p>
+                        <p><i class="fas fa-burn text-energy"></i> แคลอรี่รวม: ${recipe.calories} kcal</p>
+                        <p><i class="fas fa-users text-teal"></i> เสิร์ฟได้: ${recipe.servings} หน่วย</p>
+                        <p><i class="fas fa-chart-pie text-info"></i> พลังงานต่อหน่วย: ${recipe.calories_per_serving} kcal</p>
+                        <div class="recipe-buttons">
+                            <button class="save-menu-button" onclick="saveMenu(${recipe.id})">
+                                <i class="fas fa-check-circle"></i> บันทึกเมนู
+                            </button>
+                            <a href="/users/view-menu?recipe_id=${recipe.id}" class="view-detail-button">
+                                <i class="fas fa-info-circle"></i> รายละเอียด
+                            </a>
+                        </div>
+                    </div>
+                `;
+                gridContainer.appendChild(recipeCard);
+            });
 
-                        recipeDiv.innerHTML = `
-                            <div class="recipe-left">
-                                <img src="${imageUrl}" alt="${recipe.name}" class="recipe-image">
-                                <h3><i class="fas fa-utensils text-main"></i> ${recipe.name}</h3>
-                                <p><i class="fas fa-star text-gold"></i> คะแนนความใกล้เคียง: ${recipe.stars}</p>
-                                <p><i class="fas fa-burn text-energy"></i> แคลอรี่รวม: ${recipe.calories} kcal</p>
-                                <p><i class="fas fa-users text-teal"></i> เมนูนี้สามารถแบ่งทานได้: ${recipe.servings} หน่วยบริโภค</p>
-                                <p><i class="fas fa-chart-pie text-info"></i> พลังงานต่อหน่วย: ${recipe.calories_per_serving} kcal</p>
-                            </div>
-                            <div class="recipe-right">
-                                <p><strong><i class="fas fa-leaf text-dark-green"></i> วัตถุดิบหลัก:</strong></p>
-                                <ul>
-                                    ${(recipe.primary_ingredients || []).map(ing => {
-                                        let icon = ing.status === "ครบ" 
-                                            ? '<i class="fa-solid fa-check-circle text-success"></i>' 
-                                            : ing.status.includes("มีไม่เพียงพอ") 
-                                                ? '<i class="fa-solid fa-exclamation-circle text-warning"></i>' 
-                                                : '<i class="fa-solid fa-times-circle text-danger"></i>';
-                                        return `<li>${icon} ${ing.name} ${ing.converted_display} (${ing.status})</li>`;
-                                    }).join("")}
-                                </ul>
-
-                                <p><strong><i class="fas fa-pepper-hot text-danger"></i> วัตถุดิบเสริม / เครื่องปรุง:</strong></p>
-                                    ${(recipe.secondary_ingredients && recipe.secondary_ingredients.length > 0)
-                                    ? `<ul>${
-                                        recipe.secondary_ingredients.map(ing => {
-                                            let icon = ing.status === "ครบ"
-                                            ? '<i class="fa-solid fa-check-circle text-success"></i>'
-                                            : ing.status.includes("มีไม่เพียงพอ")
-                                                ? '<i class="fa-solid fa-exclamation-circle text-warning"></i>'
-                                                : '<i class="fa-solid fa-times-circle text-danger"></i>';
-                                            return `<li>${icon} ${ing.name} ${ing.converted_display} (${ing.status})</li>`;
-                                        }).join("")
-                                        }</ul>`
-                                    : `<p class="text-muted"><i class="fa-solid fa-ban text-danger"></i> ไม่มีการใช้วัตถุดิบเสริมหรือเครื่องปรุง</p>`}
-
-                                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                                    <button class="save-menu-button" onclick="saveMenu(${recipe.id})">
-                                        <i class="fas fa-check-circle"></i> บันทึกเมนู
-                                    </button>
-                                    <a href="/users/view-menu?recipe_id=${recipe.id}" class="view-detail-button">
-                                        <i class="fas fa-info-circle"></i> รายละเอียด
-                                    </a>
-                                </div>
-                            </div>
-                        `;
-
-                        // ✅ ไฮไลต์เฉพาะเมนูที่มีคะแนนสูงสุดของหมวดหมู่
-                        if (recipe.similarity === highestSimilarity && !isFirstHighlighted) {
-                            recipeDiv.classList.add("highlight");
-                            isFirstHighlighted = true;
-                        }
-
-                        container.appendChild(recipeDiv);
-                    });
-                });
-            }
+            container.appendChild(gridContainer);
+        });
+    }
 
             // ✅ แสดงเมนูแยกส่วน
             renderRecipes(data.full_match, fullMatchContainer);
