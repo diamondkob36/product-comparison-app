@@ -130,6 +130,7 @@
     color: red;
 }
 
+/*พื้นที่การ์ด*/
 .menu-grid {
     display: flex;
     flex-direction: column;
@@ -148,23 +149,140 @@
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    flex: 0 0 calc((100% - 60px) / 4); /* ✅ 4 ใบ + ช่องว่าง 20px × 3 */
+    flex: 0 0 calc((100% - 60px) / 4);
     max-width: calc((100% - 60px) / 4);
     height: 100%;
     box-sizing: border-box;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-colo 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
+/* เอฟเฟกต์ Hover */
 .menu-card.single-column:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    background-color: #c3e6cb;
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+    border: 1px solid #10b981;
 }
 
+/* ภาพเมนู */
+.menu-card.single-column img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    transition: transform 0.3s ease;
+}
+
+.menu-card.single-column:hover img {
+    transform: scale(1.05);
+}
+
+/* ชื่อเมนู */
+.menu-card.single-column h3 {
+    font-size: 20px;
+    margin-bottom: 6px;
+    color: #111827;
+}
+
+.nutrition-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.nutrition-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.nutri-box {
+    background: #f9fafb;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: background 0.2s ease;
+}
+
+.nutri-box.energy {
+    background: #fff7ed;
+    border-color: #fcd9b6;
+}
+
+.nutri-box.energy .nutri-label i {
+    color: #fb923c;
+}
+
+.nutri-box:hover {
+    background: #f3f4f6;
+}
+
+.nutri-label {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nutri-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+}
+
+.nutri-box i {
+    color: #9ca3af;
+}
+
+/* ชื่อหมวดหมู่ */
+.category-title {
+    background-color: #f0f7ff;
+    color: #1f2937;
+    padding: 12px 20px;
+    border-left: 6px solid #3b82f6;
+    border-radius: 8px;
+    font-size: 18px;
+    margin-bottom: 16px;
+    font-weight: bold;
+}
+
+/* ปุ่มบันทึกเมนู */
+.menu-actions {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.btn-save-menu {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-save-menu:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-2px);
+}
+
+/* การ์ดว่าง */
 .menu-card.placeholder {
     background: #f9fafb;
     border: 1px dashed #d1d5db;
@@ -184,172 +302,4 @@
     color: #cbd5e1;
 }
 
-.menu-card.placeholder p {
-    font-size: 15px;
-    margin: 0;
-}
 
-.menu-card.single-column img {
-    width: 230px;
-    height: 160px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.menu-card.single-column h3 {
-    font-size: 20px;
-    margin-bottom: 6px;
-}
-
-.nutrition-info {
-    margin-bottom: 12px;
-}
-
-.nutrition-info ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 10px;
-    font-size: 15px;
-    text-align: left;
-    display: inline-block;
-}
-
-.ingredient-list li{
-    margin-top: 8px;
-    font-size: 16px;
-    line-height: 1.4;
-    word-wrap: break-word;
-    color: black;
-}
-
-.category-tag {
-    display: inline-block;
-    background-color: #1d4ed8;
-    padding: 4px 10px;
-    font-size: 12px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-}
-
-.category-block {
-    margin-bottom: 40px;
-}
-
-.category-title {
-    background-color: #f0f7ff;
-    color: black;
-    padding: 12px 20px;
-    border-left: 6px solid #3b82f6;
-    border-radius: 8px;
-    font-size: 18px;
-    margin-bottom: 16px;
-}
-
-.menu-actions {
-    text-align: center;  /* ✅ ปุ่มตรงกลาง */
-    margin-top: 10px;
-}
-
-.btn-save-menu {
-    background-color: #10b981;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btn-save-menu:hover {
-    background-color: #059669;
-    transform: translateY(-2px);
-}
-
-.flash-popup {
-    position: fixed;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #10b981;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    z-index: 1000;
-    transition: all 0.3s ease;
-}
-.flash-popup.error {
-    background-color: #ef4444;
-}
-
-/* ✅ Responsive สำหรับจอแท็บเล็ตแนวนอนหรือแนวตั้ง */
-@media (max-width: 1024px) {
-    .menu-card.single-column {
-        flex: 0 0 calc((100% - 20px) / 2);
-        max-width: calc((100% - 20px) / 2);
-    }
-
-    .menu-card.single-column img {
-        max-width: 100%;
-        height: auto;
-    }
-
-    .ingredient-list li {
-        font-size: 15px;
-    }
-
-    .menu-actions {
-        margin-top: 16px;
-        text-align: center;
-    }
-
-    .btn-save-menu {
-        width: 90%;
-        max-width: 300px;
-        font-size: 16px;
-    }
-}
-
-/* ✅ Responsive สำหรับมือถือ */
-@media (max-width: 600px) {
-    .menu-card.single-column {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
-
-    .menu-card.single-column h3 {
-        font-size: 18px;
-    }
-
-    .ingredient-list li {
-        font-size: 14px;
-    }
-
-    .nutrition-info ul {
-        font-size: 14px;
-        display: block;
-        text-align: left;
-    }
-
-    .menu-card.single-column {
-        padding: 16px;
-    }
-
-    .btn-save-menu {
-        width: 100%;
-        font-size: 15px;
-    }
-
-    .category-title {
-        font-size: 16px;
-        padding: 10px 16px;
-    }
-
-    .centered-box {
-        padding: 20px;
-    }
-}

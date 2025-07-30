@@ -62,20 +62,33 @@
                                         <div class="menu-top">
                                             <img src="{{ url_for('static', filename='images/' ~ recipe.image_url) }}" alt="{{ recipe.name }}">
                                             <h3>{{ recipe.name }}</h3>
-                                            <p class="text-charcoal"><i class="fas fa-fire-alt text-danger"></i> พลังงานรวม: <strong>{{ recipe.calories_per_serving }} kcal</strong></p>
                                         </div>
-
-                                        <div class="nutrition-info">
-                                            <h4 class="text-soft-blue"><i class="fas fa-apple-alt text-danger"></i> สารอาหารที่ได้รับจากเมนูนี้</h4>
-                                            <ul class="ingredient-list">
-                                                <li><i class="fas fa-drumstick-bite text-primary"></i> โปรตีน: {{ recipe.protein }} กรัม</li>
-                                                <li><i class="fas fa-tint text-warning"></i> ไขมัน: {{ recipe.fat }} กรัม</li>
-                                                <li><i class="fas fa-bread-slice text-info"></i> คาร์โบไฮเดรต: {{ recipe.carbs }} กรัม</li>
-                                                <li><i class="fas fa-cube text-pink"></i> น้ำตาล: {{ recipe.sugar }} กรัม</li>
-                                                <li><i class="fas fa-prescription-bottle text-secondary"></i> โซเดียม: {{ recipe.sodium }} มิลลิกรัม</li>
-                                            </ul>
+                                        <div class="nutrition-cards">
+                                            <div class="nutri-box energy">
+                                                <span class="nutri-label"><i class="fas fa-fire-alt"></i> พลังงาน</span>
+                                                <span class="nutri-value">{{ recipe.calories_per_serving }} kcal</span>
+                                            </div>
+                                            <div class="nutri-box">
+                                                <span class="nutri-label"><i class="fas fa-drumstick-bite"></i> โปรตีน</span>
+                                                <span class="nutri-value">{{ recipe.protein }} กรัม</span>
+                                            </div>
+                                            <div class="nutri-box">
+                                                <span class="nutri-label"><i class="fas fa-tint"></i> ไขมัน</span>
+                                                <span class="nutri-value">{{ recipe.fat }} กรัม</span>
+                                            </div>
+                                            <div class="nutri-box">
+                                                <span class="nutri-label"><i class="fas fa-bread-slice"></i> คาร์โบไฮเดรต</span>
+                                                <span class="nutri-value">{{ recipe.carbs }} กรัม</span>
+                                            </div>
+                                            <div class="nutri-box">
+                                                <span class="nutri-label"><i class="fas fa-cube"></i> น้ำตาล</span>
+                                                <span class="nutri-value">{{ recipe.sugar }} กรัม</span>
+                                            </div>
+                                            <div class="nutri-box">
+                                                <span class="nutri-label"><i class="fas fa-prescription-bottle"></i> โซเดียม</span>
+                                                <span class="nutri-value">{{ recipe.sodium }} มิลลิกรัม</span>
+                                            </div>
                                         </div>
-
                                         <div class="menu-actions">
                                             <button type="button" class="btn-save-menu"
                                                 data-id="{{ recipe.id }}"

@@ -68,6 +68,14 @@
     color: #000;
 }
 
+.results-container{
+    padding: 20px;
+    border: 2px  solid #15803d;
+    border-radius: 20px;
+    background-color: #e9ecef;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
+}
+
 .recipe-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 3 คอลัมน์เท่ากัน */
@@ -152,6 +160,25 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
 }
 
+.recipe-card.highlight-top {
+    border: 2px solid #15803d;
+    box-shadow: 0 6px 18px rgba(21, 128, 61, 0.3);
+    position: relative;
+}
+
+.recipe-card.highlight-top::before {
+    content: "เมนูแนะนำ ★";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #15803d;
+    color: #fff;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
 .recipe-img {
     width: 100%;
     height: 180px;
@@ -186,43 +213,81 @@
 .save-menu-button {
     flex: 1;
     text-align: center;
-    background-color: #15803d; /* เขียว */
+    background-color: #15803d;
     color: #fff;
-    padding: 8px;
+    padding: 10px;
     border: none;
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(21, 128, 61, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
 .save-menu-button:hover {
-    background-color: #0f5e2b; /* เขียวเข้มขึ้นเมื่อ hover */
+    background-color: #0f5e2b;
+    transform: translateY(-2px); /* ลอยขึ้นเล็กน้อย */
+    box-shadow: 0 6px 12px rgba(21, 128, 61, 0.4);
+}
+
+/* เอฟเฟกต์คลื่นเมื่อกด */
+.save-menu-button:active {
+    transform: translateY(0); /* เด้งกลับลง */
 }
 
 /* ปุ่มรายละเอียด - ฟ้า */
 .view-detail-button {
     flex: 1;
     text-align: center;
-    background-color: #2563eb; /* ฟ้า */
+    background-color: #2563eb;
     color: #fff;
-    padding: 8px;
+    padding: 10px;
     border: none;
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
 .view-detail-button:hover {
-    background-color: #1e40af; /* ฟ้าเข้มขึ้นเมื่อ hover */
+    background-color: #1e40af;
+    transform: translateY(-2px); /* ลอยขึ้น */
+    box-shadow: 0 6px 12px rgba(37, 99, 235, 0.4);
 }
 
-/* ปุ่มวาปหมวดหมู่ */
+.view-detail-button:active {
+    transform: translateY(0);
+}
+
+/* เอฟเฟกต์แสงวาบเมื่อ hover */
+.save-menu-button::after,
+.view-detail-button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: skewX(-30deg);
+    transition: 0.5s;
+}
+
+.save-menu-button:hover::after,
+.view-detail-button:hover::after {
+    left: 100%; /* วาบแสงวิ่งผ่านปุ่ม */
+}
+
+/* พื้นที่ปุ่มวาปหมวดหมู่ */
 .category-buttons-container{
     display: flex;
     flex-direction: column;
@@ -247,6 +312,7 @@
     justify-content: center;
 }
 
+/* ปุ่มวาร์ปหมวดหมู่ */
 .category-jump-btn {
     align-items: center;
     gap: 6px;
@@ -254,28 +320,55 @@
     font-size: 16px;
     font-weight: 500;
     border: none;
-    border-radius: 10px; /* ปุ่ม pill */
+    border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     margin-bottom: 10px;
     margin-top: 10px;
+    position: relative;
+    overflow: hidden; /* เพื่อให้แสงวิ่งไม่ล้นปุ่ม */
 }
 
-.category-jump-btn i {
-    font-size: 14px;
+/* เอฟเฟกต์เงาและเด้งขึ้นเมื่อ hover */
+.category-jump-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* เอฟเฟกต์กดปุ่ม */
+.category-jump-btn:active {
+    transform: translateY(0);
+}
+
+/* เพิ่มเอฟเฟกต์แสงวิ่ง */
+.category-jump-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.25);
+    transform: skewX(-30deg);
+    transition: 0.5s;
+}
+
+.category-jump-btn:hover::after {
+    left: 100%;
+}
+
+/* ✅ ปุ่ม Full Match */
 .category-jump-btn.full-match {
     background-color: #28a745;
     color: #ffffff;
 }
 
 .category-jump-btn.full-match:hover {
-    background-color: #1e7e34;
-    transform: translateY(-1px);
+    background-color: #218838;
 }
 
+/* ✅ ปุ่ม Partial Match */
 .category-jump-btn.partial-match {
     background-color: #ffcc80; /* สีส้มพาสเทล */
     color: #4e3e2f;
@@ -283,9 +376,18 @@
 
 .category-jump-btn.partial-match:hover {
     background-color: #ffb74d;
-    transform: translateY(-1px);
 }
 
+/* เพิ่มเอฟเฟกต์สั่นเบาๆ เมื่อโฟกัสหรือ hover */
+.category-jump-btn:focus-visible {
+    animation: pulseBtn 0.3s ease;
+}
+
+@keyframes pulseBtn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
 
 /* ✅ เพิ่มสีไอคอนตามสถานะวัตถุดิบ */
 .text-danger {color: red;}

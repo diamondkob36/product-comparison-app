@@ -145,9 +145,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     const gridContainer = document.createElement("div");
                     gridContainer.className = "recipe-grid";
 
+                    // ✅ หาเมนูที่มีคะแนนสูงสุด
+                    let highestScore = 0;
+                    if (recipes.length > 0) {
+                        // พยายามใช้ similarity ถ้ามี ไม่งั้นใช้ stars
+                        highestScore = Math.max(...recipes.map(r => parseFloat(r.similarity || r.stars) || 0));
+                    }
+
                     recipes.forEach(recipe => {
                         const recipeCard = document.createElement("div");
                         recipeCard.className = "recipe-card";
+
+                        // ✅ ไฮไลท์การ์ดถ้าเป็นคะแนนสูงสุด
+                        if (parseFloat(recipe.similarity || recipe.stars) === highestScore) {
+                            recipeCard.classList.add("highlight-top");
+                        }
 
                         const imageUrl = recipe.image_url && recipe.image_url !== "default.jpg"
                             ? `/static/images/${recipe.image_url}`
@@ -174,8 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         gridContainer.appendChild(recipeCard);
                     });
 
-                    
-                    // ✅ เติมการ์ดเปล่าเพื่อให้ครบ 3 ใบ
+                    // ✅ เติมการ์ดเปล่าเพื่อให้ครบ 4 ใบ
                     const remainder = recipes.length % 4;
                     if (remainder !== 0) {
                         const emptyCardsToAdd = 4 - remainder;
