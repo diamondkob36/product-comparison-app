@@ -372,27 +372,27 @@ def calculate_bmi(weight_kg, height_cm):
         if bmi < 18.5:
             level = "ผอม"
             icon = '<i class="fas fa-exclamation-circle text-warning"></i>'
-            advice = '<i class="fas fa-lightbulb text-warning"></i> คำแนะนำ <i class="fas fa-weight text-warning"></i> น้ำหนักของคุณน้อยกว่ามาตรฐาน แนะนำให้เพิ่มน้ำหนักอย่างเหมาะสม'
+            advice = 'คำแนะนำ <i class="fas fa-weight text-warning"></i> น้ำหนักของคุณน้อยกว่ามาตรฐาน แนะนำให้เพิ่มน้ำหนักอย่างเหมาะสม'
 
         elif bmi < 23:
             level = "ปกติ"
             icon = '<i class="fas fa-check-circle text-teal"></i>'
-            advice = '<i class="fas fa-lightbulb text-warning"></i> คำแนะนำ <i class="fas fa-heartbeat text-success"></i> น้ำหนักอยู่ในเกณฑ์ปกติ รักษาสุขภาพให้ดีต่อเนื่อง'
+            advice = 'คำแนะนำ <i class="fas fa-heartbeat text-success"></i> น้ำหนักอยู่ในเกณฑ์ปกติ รักษาสุขภาพให้ดีต่อเนื่อง'
 
         elif bmi < 25:
             level = "น้ำหนักเกิน"
             icon = '<i class="fas fa-exclamation-triangle text-warning"></i>'
-            advice = '<i class="fas fa-lightbulb text-warning"></i> คำแนะนำ <i class="fas fa-running text-warning"></i> ควรระมัดระวังเรื่องการกินและออกกำลังกาย'
+            advice = 'คำแนะนำ <i class="fas fa-running text-warning"></i> ควรระมัดระวังเรื่องการกินและออกกำลังกาย'
 
         elif bmi < 30:
             level = "อ้วนระดับ 1"
             icon = '<i class="fas fa-exclamation-triangle text-warning"></i>'
-            advice = '<i class="fas fa-lightbulb text-warning"></i> คำแนะนำ <i class="fas fa-utensils text-main"></i> ควบคุมอาหาร และ เพิ่มการออกกำลังกาย <i class="fas fa-dumbbell text-teal"></i>'
+            advice = 'คำแนะนำ <i class="fas fa-utensils text-main"></i> ควบคุมอาหาร และ เพิ่มการออกกำลังกาย <i class="fas fa-dumbbell text-teal"></i>'
 
         else:
             level = "อ้วนระดับ 2"
             icon = '<i class="fas fa-times-circle text-danger"></i>'
-            advice = '<i class="fas fa-lightbulb text-warning"></i> คำแนะนำ <i class="fas fa-user-md text-danger"></i> แนะนำให้พบแพทย์หรือนักโภชนาการเพื่อวางแผนลดน้ำหนัก'
+            advice = 'คำแนะนำ <i class="fas fa-user-md text-danger"></i> แนะนำให้พบแพทย์หรือนักโภชนาการเพื่อวางแผนลดน้ำหนัก'
 
         return {
             "bmi": bmi,
