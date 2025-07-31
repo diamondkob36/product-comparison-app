@@ -139,6 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     const categoryTitle = document.createElement("h2");
                     categoryTitle.className = "category-title";
                     categoryTitle.textContent = `อาหารประเภท: ${category}`;
+
+                    // ✅ เพิ่ม data attributes สำหรับการเลื่อน
+                    categoryTitle.setAttribute("data-category", category);
+                    categoryTitle.setAttribute("data-match", container.id.includes("full") ? "full" : "partial");
+
                     container.appendChild(categoryTitle);
 
                     // ✅ Container สำหรับการ์ด (Grid 3 คอลัมน์)
@@ -148,7 +153,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     // ✅ หาเมนูที่มีคะแนนสูงสุด
                     let highestScore = 0;
                     if (recipes.length > 0) {
-                        // พยายามใช้ similarity ถ้ามี ไม่งั้นใช้ stars
                         highestScore = Math.max(...recipes.map(r => parseFloat(r.similarity || r.stars) || 0));
                     }
 

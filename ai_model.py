@@ -121,17 +121,10 @@ def recommend_recipes(available_ingredients, model, mlb):
 
     available_dict = {ing['name']: ing for ing in available_ingredients}
 
-    recipe_matrix = mlb.transform(
-        [[item['name'] for item in recipe['ingredients']] for recipe in recipes]
-    )
-    available_vector = mlb.transform([[ing['name'] for ing in available_ingredients]])[0]
+    full_match_recipes = []
+    partial_match_recipes = []
 
-    similarity_scores = cosine_similarity([available_vector], recipe_matrix).flatten()
-
-    full_match_recipes = []  # ✅ เมนูที่มีวัตถุดิบหลักครบ
-    partial_match_recipes = []  # ✅ เมนูที่มีวัตถุดิบหลักแต่ไม่ครบ
-
-    for i, recipe in enumerate(recipes):
+    for recipe in recipes:
         total_calories = 0
         weighted_score = 0
         match_count = 0
@@ -139,15 +132,27 @@ def recommend_recipes(available_ingredients, model, mlb):
 
         primary_ingredients = []
         secondary_ingredients = []
-        all_ingredients_match = True  
-        has_primary_ingredients = False  
+        all_ingredients_match = True
+        has_primary_ingredients = False
 
+        # ✅ กรองเวกเตอร์เฉพาะวัตถุดิบในเมนู
+        menu_ingredients = [ing['name'] for ing in recipe['ingredients']]
+        filtered_available = [ing['name'] for ing in available_ingredients if ing['name'] in menu_ingredients]
+
+        # ✅ คำนวณ cosine similarity เฉพาะวัตถุดิบที่เกี่ยวข้อง
+        similarity_score = 0
+        if filtered_available and menu_ingredients:
+            user_vec = mlb.transform([filtered_available])
+            menu_vec = mlb.transform([menu_ingredients])
+            similarity_score = cosine_similarity(user_vec, menu_vec)[0][0]
+
+        # ✅ ตรวจสอบวัตถุดิบหลัก
         for ing in recipe['ingredients']:
             name, amount, unit = ing['name'], ing['amount'], ing['unit']
             status = "ไม่มี"
 
             if name in available_dict:
-                has_primary_ingredients = True  # ✅ มีวัตถุดิบหลักอย่างน้อย 1 อย่าง
+                has_primary_ingredients = True
                 available_amount = available_dict[name]['amount']
 
                 if available_amount >= amount:
@@ -155,20 +160,20 @@ def recommend_recipes(available_ingredients, model, mlb):
                     weighted_score += 1
                     status = "ครบ"
                 elif available_amount > 0:
-                    match_count += available_amount / amount
-                    weighted_score += available_amount / amount
+                    ratio = available_amount / amount
+                    match_count += ratio
+                    weighted_score += ratio
                     status = f"มีไม่เพียงพอ ({available_amount}/{amount})"
                     all_ingredients_match = False
                 else:
-                    status = "ไม่มี"
                     all_ingredients_match = False
             else:
-                status = "ไม่มี"
                 all_ingredients_match = False
 
+            # คำนวณแคลอรี่
             if name in calories_data:
-                amount_in_grams = convert_to_grams(name, amount, unit)
-                total_calories += (amount_in_grams / 100) * calories_data[name]
+                grams = convert_to_grams(name, amount, unit)
+                total_calories += (grams / 100) * calories_data[name]
 
             primary_ingredients.append({
                 "name": name,
@@ -178,22 +183,20 @@ def recommend_recipes(available_ingredients, model, mlb):
                 "converted_display": display_converted_amount(name, amount, unit)
             })
 
+        # วัตถุดิบรอง
         for ing in recipe['secondary_ingredients']:
             name, amount, unit = ing['name'], ing['amount'], ing['unit']
             status = "ไม่มี"
 
             if name in available_dict:
-                available_amount = available_dict[name]['amount']
-                if available_amount >= amount:
+                if available_dict[name]['amount'] >= amount:
                     status = "ครบ"
-                elif available_amount > 0:
-                    status = f"มีไม่เพียงพอ ({available_amount}/{amount})"
-                else:
-                    status = "ไม่มี"
+                elif available_dict[name]['amount'] > 0:
+                    status = f"มีไม่เพียงพอ ({available_dict[name]['amount']}/{amount})"
 
             if name in calories_data:
-                amount_in_grams = convert_to_grams(name, amount, unit)
-                total_calories += (amount_in_grams / 100) * calories_data[name]
+                grams = convert_to_grams(name, amount, unit)
+                total_calories += (grams / 100) * calories_data[name]
 
             secondary_ingredients.append({
                 "name": name,
@@ -203,16 +206,16 @@ def recommend_recipes(available_ingredients, model, mlb):
                 "converted_display": display_converted_amount(name, amount, unit)
             })
 
-        similarity = (similarity_scores[i] * weighted_score / total_count) * 100 if total_count > 0 else 0
+        # ✅ คำนวณ similarity ปลอดภัย
+        if match_count == total_count and total_count > 0:
+            similarity = 100
+        else:
+            similarity = (similarity_score * (weighted_score / total_count)) * 100 if total_count > 0 else 0
 
-        # ✅ เงื่อนไขใหม่: ถ้า similarity = 0 และไม่มีวัตถุดิบหลักเลย → ไม่ต้องเพิ่มในผลลัพธ์
         if similarity == 0 or not has_primary_ingredients:
             continue
 
-        # ✅ ดึงจำนวน servings จากฐานข้อมูล
-        servings = recipe.get("servings", 1)  # ถ้าไม่มี ให้ค่าเริ่มต้นเป็น 1
-
-        # ✅ คำนวณพลังงานต่อหน่วยการแบ่งทาน
+        servings = recipe.get("servings", 1)
         calories_per_serving = total_calories / servings if servings > 0 else total_calories
 
         recipe_data = {
@@ -232,29 +235,24 @@ def recommend_recipes(available_ingredients, model, mlb):
         }
 
         if all_ingredients_match:
-            full_match_recipes.append(recipe_data)  
+            full_match_recipes.append(recipe_data)
         else:
-            partial_match_recipes.append(recipe_data)  
+            partial_match_recipes.append(recipe_data)
 
     def categorize_and_sort(recipes_list):
         categorized_results = {}
         for recipe in recipes_list:
             category = recipe['category']
-            if category not in categorized_results:
-                categorized_results[category] = []
-            categorized_results[category].append(recipe)
+            categorized_results.setdefault(category, []).append(recipe)
 
         for category in categorized_results:
-            # 🔻 เรียงตาม similarity มาก → น้อย และตัดแค่ 5 เมนู
-            categorized_results[category] = sorted(
-                categorized_results[category], key=lambda x: -x['similarity']
-            )[:5]
-        
+            categorized_results[category] = sorted(categorized_results[category], key=lambda x: -x['similarity'])[:5]
+
         return sorted(
             categorized_results.items(),
-            key=lambda x: max(recipe['similarity'] for recipe in x[1]),
+            key=lambda x: max(r['similarity'] for r in x[1]),
             reverse=True
-        ) if categorized_results else []
+        )
 
     return {
         "full_match": categorize_and_sort(full_match_recipes),
