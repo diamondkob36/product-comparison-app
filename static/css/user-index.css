@@ -389,6 +389,95 @@
     100% { transform: scale(1); }
 }
 
+/* ✅ Responsive สำหรับ Tablet */
+@media (max-width: 1024px) {
+    .recipe-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .category-title {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+    .recipe-info h3 {
+        font-size: 16px;
+    }
+    .recipe-info p {
+        font-size: 14px;
+    }
+}
+
+/* ✅ Responsive สำหรับมือถือ */
+@media (max-width: 768px) {
+    .recommend {
+        padding: 15px;
+    }
+    .results-container {
+        padding: 15px;
+    }
+    .recipe-grid {
+        grid-template-columns: 1fr;
+    }
+    .recipe-card {
+        max-width: 100%;
+    }
+    .category-title {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+    .recipe-info h3 {
+        font-size: 15px;
+    }
+    .recipe-info p {
+        font-size: 13px;
+    }
+    .recipe-buttons button,
+    .recipe-buttons a {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+/* ✅ ปรับปุ่มวาร์ปหมวดหมู่ให้จัดเรียงดีบนจอเล็ก */
+@media (max-width: 768px) {
+    .category-buttons-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .category-button-row {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .category-jump-btn {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .recommend h2{
+        font-size: 18px;
+    }
+}
+
+/* ✅ สำหรับจอเล็กมาก (<480px) */
+@media (max-width: 480px) {
+    .recommend {
+        padding: 10px;
+    }
+    .recommend h2{
+        font-size: 16px;
+    } 
+    .results-container {
+        padding: 10px;
+    }
+    .recipe-buttons {
+        flex-direction: column;
+    }
+    .recipe-buttons button,
+    .recipe-buttons.view-detail-button {
+        width: 100%;
+    }
+}
+
 /* ✅ เพิ่มสีไอคอนตามสถานะวัตถุดิบ */
 .text-danger {color: red;}
 .text-warning {color: orange;}
@@ -584,6 +673,70 @@ button.delete-ingredient i {
 .pagination button.disabled {
     background-color: #d3d3d3;
     cursor: not-allowed;
+}
+
+/* สำหรับ Tablet */
+@media (max-width: 1024px) {
+    .ingredient-grid {
+        grid-template-columns: 1fr; /* วางซ้อนกัน */
+    }
+    .add-ingredient-container,
+    .user-ingredients-container {
+        padding: 15px;
+    }
+    .add-ingredient-container form input,
+    .add-ingredient-container form select {
+        width: 97%;
+    }
+}
+
+/* สำหรับมือถือ */
+@media (max-width: 768px) {
+    .head-ingredient {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .add-ingredient-container form input,
+    .add-ingredient-container form select {
+        width: 93%;
+    }
+
+    .head-ingredient h2{
+        font-size: 16px;
+    }
+
+    .add-ingredient-container h3,
+    .user-ingredients-container h3 {
+        font-size: 16px;
+    }
+    .add-ingredient-container form label {
+        font-size: 14px;
+    }
+    .add-ingredient-container form input,
+    .add-ingredient-container form select {
+        font-size: 14px;
+        padding: 8px;
+    }
+    .pagination button {
+        padding: 5px 8px;
+        font-size: 13px;
+    }
+}
+
+/* สำหรับจอเล็กมาก (<480px) */
+@media (max-width: 480px) {
+    .add-ingredient-container,
+    .user-ingredients-container {
+        padding: 10px;
+    }
+    .add-ingredient-container form button {
+        width: 100%;
+        font-size: 14px;
+    }
+    table {
+        font-size: 13px;
+    }
 }
 
 /* Container ข้อมูลผู้ใช้ */
@@ -1041,6 +1194,12 @@ button.delete-ingredient i {
 }
 
 @media (max-width: 1024px) {
+
+    .head-user-info h2{
+        font-size: 16px;
+        text-align: center;
+    }
+
     .info-daily-intake {
         grid-template-columns: 1fr 1fr; /* จาก 3 เป็น 2 */
     }
@@ -1058,6 +1217,12 @@ button.delete-ingredient i {
     .info-column-2{
         margin-top: -15px;
     }
+
+    .box-info-2 p{
+        font-size: 16px;
+        text-align: center;
+    }
+
     .box-daily-1{
         margin-top: -35px;
     }
@@ -1072,6 +1237,10 @@ button.delete-ingredient i {
     .total_nutrition-column,
     .info-daily-intake {
         grid-template-columns: 1fr;
+    }
+
+    .head-user-info h2{
+        font-size: 14px;
     }
 
     .box-display-info {
@@ -1492,4 +1661,50 @@ td {
 .total_nutrition-warning p{
     color: #92400e;
     font-weight: bold;
+}
+
+/* ✅ ปรับขนาดสำหรับ Tablet */
+@media (max-width: 1024px) {
+    .column-selected-menu {
+        grid-template-columns: 1fr; /* ซ้อนกันแทนที่จะแบ่งครึ่ง */
+    }
+    .head-selected-menu h2 {
+        font-size: 18px;
+    }
+}
+
+/* ✅ ปรับขนาดสำหรับ Mobile */
+@media (max-width: 768px) {
+    .head-selected-menu {
+        flex-direction: column;
+        text-align: center;
+        padding: 5px;
+    }
+    .head-selected-menu h2 {
+        font-size: 16px;
+    }
+    .selected-menu,
+    .nutrition {
+        padding: 15px;
+    }
+    th, td {
+        padding: 10px;
+        font-size: 13px;
+    }
+}
+
+/* ✅ ปรับขนาดสำหรับจอเล็กมาก (<480px) */
+@media (max-width: 480px) {
+    .head-selected-menu h2 {
+        font-size: 14px;
+    }
+    .nutrition-bar-label {
+        font-size: 12px;
+    }
+    .nutrition-bar {
+        padding: 8px 10px;
+    }
+    .progress-bar-outer {
+        height: 16px;
+    }
 }

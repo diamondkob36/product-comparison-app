@@ -275,7 +275,7 @@ def similarity_to_stars(similarity):
     result += '<i class="far fa-star text-gold"></i>' * empty_stars
 
     # ✅ เพิ่มการแสดงผล (x/5)
-    result += f' <span class="text-secondary">({stars:.1f}/5)</span>'
+    result += f' <span class="text-secondary">({stars:.1f}/5.0)</span>'
 
     return result
 

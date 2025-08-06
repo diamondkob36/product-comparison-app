@@ -36,7 +36,7 @@
                     ล้างคำค้นหา <i class="fas fa-times-circle"></i>
                 </button>
             </div>
-            <p id="search-summary" class="text-neutral text-center" style="margin-top: -10px;"></p>
+            <p id="search-summary" class="search-summary text-neutral" style="margin-top: -10px;"></p>
             <div id="category-jump-buttons" class="category-jump-buttons" style="margin-top: 10px; margin-bottom: 20px;"></div>
 
             {% if recipes %}
@@ -68,23 +68,23 @@
                                                 <span class="nutri-label"><i class="fas fa-fire-alt"></i> พลังงาน</span>
                                                 <span class="nutri-value">{{ recipe.calories_per_serving }} kcal</span>
                                             </div>
-                                            <div class="nutri-box">
+                                            <div class="nutri-box protein">
                                                 <span class="nutri-label"><i class="fas fa-drumstick-bite"></i> โปรตีน</span>
                                                 <span class="nutri-value">{{ recipe.protein }} กรัม</span>
                                             </div>
-                                            <div class="nutri-box">
+                                            <div class="nutri-box fat">
                                                 <span class="nutri-label"><i class="fas fa-tint"></i> ไขมัน</span>
                                                 <span class="nutri-value">{{ recipe.fat }} กรัม</span>
                                             </div>
-                                            <div class="nutri-box">
+                                            <div class="nutri-box carb">
                                                 <span class="nutri-label"><i class="fas fa-bread-slice"></i> คาร์โบไฮเดรต</span>
                                                 <span class="nutri-value">{{ recipe.carbs }} กรัม</span>
                                             </div>
-                                            <div class="nutri-box">
+                                            <div class="nutri-box sugar">
                                                 <span class="nutri-label"><i class="fas fa-cube"></i> น้ำตาล</span>
                                                 <span class="nutri-value">{{ recipe.sugar }} กรัม</span>
                                             </div>
-                                            <div class="nutri-box">
+                                            <div class="nutri-box sodium">
                                                 <span class="nutri-label"><i class="fas fa-prescription-bottle"></i> โซเดียม</span>
                                                 <span class="nutri-value">{{ recipe.sodium }} มิลลิกรัม</span>
                                             </div>

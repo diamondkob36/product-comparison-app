@@ -258,45 +258,65 @@ document.addEventListener("DOMContentLoaded", async function () {
             const intakeData = await intakeRes.json();
 
             if (maxData.error || intakeData.error) {
-            console.error("Error loading data:", maxData.error || intakeData.error);
-            return;
+                console.error("Error loading data:", maxData.error || intakeData.error);
+                return;
             }
 
             const nutrients = [
-            { key: "tdee", label: "🔥 พลังงาน", unit: "กิโลแคลอรี" },
-            { key: "protein", label: "🍗 โปรตีน", unit: "กรัม" },
-            { key: "fat", label: "🥓 ไขมัน", unit: "กรัม" },
-            { key: "carb", label: "🍞 คาร์โบไฮเดรต", unit: "กรัม" },
-            { key: "sugar", label: "🍬 น้ำตาล", unit: "กรัม" },
-            { key: "sodium", label: "🧂 โซเดียม", unit: "มก." }
+                { key: "tdee", label: "🔥 พลังงาน", unit: "กิโลแคลอรี", advice: "ควรลดปริมาณการรับประทานหรือเพิ่มการออกกำลังกาย" },
+                { key: "protein", label: "🍗 โปรตีน", unit: "กรัม", advice: "แบ่งการทานโปรตีนให้สมดุลในแต่ละมื้อ" },
+                { key: "fat", label: "🥓 ไขมัน", unit: "กรัม", advice: "ลดอาหารทอดและไขมันจากสัตว์" },
+                { key: "carb", label: "🍞 คาร์โบไฮเดรต", unit: "กรัม", advice: "ลดอาหารแป้งขัดสี และเพิ่มผัก" },
+                { key: "sugar", label: "🍬 น้ำตาล", unit: "กรัม", advice: "ลดการทานขนมหวานหรือเครื่องดื่มหวาน" },
+                { key: "sodium", label: "🧂 โซเดียม", unit: "มก.", advice: "ลดการใช้เครื่องปรุงรสเค็มและอาหารแปรรูป" }
             ];
 
             const container = document.getElementById("nutrition-bars-container");
             container.innerHTML = "";
 
-            nutrients.forEach(nutri => {
-            const actual = intakeData[nutri.key] || 0;
-            const max = maxData.max_values[nutri.key] || 1;
-            const percent = (actual / max) * 100;
-            let colorClass = "green-bar";
-            if (percent > 150) colorClass = "red-bar";
-            else if (percent > 100) colorClass = "yellow-bar";
+            let warnings = [];
 
-            const bar = document.createElement("div");
-            bar.className = "nutrition-bar";
-            bar.innerHTML = `
-                <div class="nutrition-bar-label">
-                    <span>${nutri.label}</span>
-                    <span>${actual.toFixed(0)} / ${max.toFixed(0)} ${nutri.unit}</span>
-                </div>
-                <div class="progress-bar-outer">
-                    <div class="progress-bar-inner ${colorClass}" style="width: ${Math.min(percent, 100)}%;">
-                        <span>${Math.round(percent)}%</span>
+            nutrients.forEach(nutri => {
+                const actual = intakeData[nutri.key] || 0;
+                const max = maxData.max_values[nutri.key] || 1;
+                const percent = (actual / max) * 100;
+                let colorClass = "green-bar";
+
+                if (percent > 150) {
+                    colorClass = "red-bar";
+                    warnings.push(`${nutri.label} เกิน ${Math.round(percent)}% ⚠️ (${nutri.advice})`);
+                } else if (percent > 100) {
+                    colorClass = "yellow-bar";
+                    warnings.push(`${nutri.label} เกิน ${Math.round(percent)}% (${nutri.advice})`);
+                }
+
+                const bar = document.createElement("div");
+                bar.className = "nutrition-bar";
+                bar.innerHTML = `
+                    <div class="nutrition-bar-label">
+                        <span>${nutri.label}</span>
+                        <span>${actual.toFixed(0)} / ${max.toFixed(0)} ${nutri.unit}</span>
                     </div>
-                </div>
-            `;
-            container.appendChild(bar);
+                    <div class="progress-bar-outer">
+                        <div class="progress-bar-inner ${colorClass}" style="width: ${Math.min(percent, 100)}%;">
+                            <span>${Math.round(percent)}%</span>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(bar);
             });
+
+            // ✅ อัปเดตคำแนะนำ
+            const adviceContainer = document.querySelector(".total_nutrition-warning p");
+            if (warnings.length > 0) {
+                adviceContainer.innerHTML = `
+                    หมายเหตุ: พบสารอาหารบางรายการเกินค่าที่แนะนำ<br>
+                    - ${warnings.join("<br>- ")}
+                `;
+            } else {
+                adviceContainer.textContent =
+                    "หมายเหตุ: ข้อมูลพลังงานและสารอาหารที่แสดงถูกคำนวณจากวัตถุดิบดิบก่อนการปรุงอาหาร ซึ่งอาจแตกต่างจากปริมาณที่ได้รับจริงหลังปรุงอาหาร เช่น การสูญเสียน้ำมัน ไขมัน หรือน้ำตาล";
+            }
 
         } catch (error) {
             console.error("Error building nutrition bars:", error);
