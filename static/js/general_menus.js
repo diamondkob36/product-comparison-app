@@ -199,3 +199,29 @@ function updateCategoryJumpButtons() {
   });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    if (!scrollTopBtn) return;
+
+    // แสดงปุ่มเมื่อเลื่อนลงเกิน 300px
+    window.addEventListener("scroll", () => {
+        if (window.scrollY > 300) {
+            scrollTopBtn.style.display = "block";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    });
+
+    // คลิกแล้วเลื่อนขึ้นบนสุด
+    scrollTopBtn.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    });
+});
+
+
+
+
+

@@ -6,19 +6,27 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     let chartInstance = null;
 
-    // ✅ ฟังก์ชันเปิดฟอร์มแก้ไขข้อมูล
-    editButton.addEventListener("click", function () {
+    // helper: โหลดข้อมูลล่าสุดจากเซิร์ฟเวอร์
+    async function refreshFormFromServer() {
+        await loadUserInfo();
+    }
+
+    // เปิดฟอร์ม → โหลดค่าล่าสุดเสมอ
+    editButton.addEventListener("click", async function () {
+        await refreshFormFromServer();
         editFormContainer.style.display = "flex";
     });
 
-    // ✅ ฟังก์ชันปิดฟอร์มแก้ไขข้อมูล
-    closeEditForm.addEventListener("click", function () {
+    // ปิดฟอร์ม (กดปุ่ม X) → รีค่ากลับเป็นข้อมูลเดิม
+    closeEditForm.addEventListener("click", async function () {
+        await refreshFormFromServer();
         editFormContainer.style.display = "none";
     });
 
-    // ✅ ปิดฟอร์มเมื่อคลิกนอกตัวฟอร์ม
-    editFormContainer.addEventListener("click", function (event) {
+    // ปิดฟอร์มเมื่อคลิกนอกตัวฟอร์ม → รีค่ากลับเป็นข้อมูลเดิม
+    editFormContainer.addEventListener("click", async function (event) {
         if (event.target === editFormContainer) {
+            await refreshFormFromServer();
             editFormContainer.style.display = "none";
         }
     });
@@ -31,6 +39,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     });
     
+    // ปุ่มเลื่อนขึ้นด้านบน
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    const recommendSection = document.querySelector(".recommend");
+
+    window.addEventListener("scroll", function () {
+        // หาตำแหน่งของ .recommend เมื่อเทียบกับ viewport
+        const rect = recommendSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+        // ถ้าด้านบนของ recommend เลื่อนขึ้นไปพ้นจอแล้ว → แสดงปุ่ม
+        if (rect.top < 0) {
+            scrollTopBtn.style.display = "block";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    });
+
+    scrollTopBtn.addEventListener("click", function () {
+        recommendSection.scrollIntoView({
+            behavior: "smooth"
+        });
+    });
+
     // ฟังก์ชันโหลดข้อมูลผู้ใช้
     async function loadUserInfo() {
         try {

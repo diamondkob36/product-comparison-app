@@ -1708,3 +1708,63 @@ td {
         height: 16px;
     }
 }
+
+#scrollTopBtn {
+    display: none; /* เริ่มต้นซ่อนปุ่ม */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    background: linear-gradient(135deg, #4CAF50, #2e7d32);
+    color: #fff;
+    border: none;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+#scrollTopBtn:hover {
+    background: linear-gradient(135deg, #45a049, #256d27);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* มือถือจอเล็ก */
+@media (max-width: 480px) {
+    #scrollTopBtn {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
+/* แท็บเล็ต */
+@media (min-width: 481px) and (max-width: 1024px) {
+    #scrollTopBtn {
+        width: 46px;
+        height: 46px;
+        font-size: 19px;
+        bottom: 18px;
+        right: 18px;
+    }
+}
+
+/* เดสก์ท็อปจอใหญ่ */
+@media (min-width: 1440px) {
+    #scrollTopBtn {
+        width: 56px;
+        height: 56px;
+        font-size: 22px;
+        bottom: 25px;
+        right: 25px;
+    }
+}
+

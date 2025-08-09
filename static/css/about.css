@@ -1,3 +1,27 @@
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/static/images/bg3.png") center/cover no-repeat;
+    filter: blur(8px);
+    transform: scale(1.05);
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: -1;
+}
+
 .main-content {
     position: relative;
     z-index: 1;
@@ -16,33 +40,30 @@
     margin-top: 30px;
 }
 
-.title{
+.title {
     color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 
 .creator-card {
-    background: #f9f9f9;
+    background: rgba(255, 255, 255, 0.9);
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 15px;
     width: 400px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     animation: fadeSlideUp 0.8s ease-in-out;
+    backdrop-filter: blur(4px);
 }
 
 @keyframes fadeSlideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 .creator-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .creator-card img {
@@ -51,34 +72,25 @@
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
 }
 
 .creator-card img:hover {
-  transform: scale(1.05);
-  transition: transform 0.3s ease;
+    transform: scale(1.08);
 }
 
 .creator-card h3 {
     margin: 10px 0 5px;
     color: #2c3e50;
+    font-weight: 600;
 }
 
 .creator-card p {
-    margin: 2px 0;
-    color: black;
+    margin: 4px 0;
+    color: #333;
     font-size: 16px;
 }
 
-.text-primary{ color: #1d4ed8; } /* น้ำเงินสด */
-.text-teal{ color: #14b8a6; }
-
-#snow-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-}
+.text-energy { color: #fb923c; }
+.text-main { color: #f97316; }

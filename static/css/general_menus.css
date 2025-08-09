@@ -262,30 +262,29 @@
 
 /* ✅ สีพื้นหลังของแต่ละสารอาหาร (เข้มขึ้น) */
 .nutri-box.energy {
-    background: #ffedd5;  
-    border-color: #fbbf24;
+    background: #fff3e5;  /* อ่อนลงจาก #ffedd5 */
+    border-color: #fcd34d;
 }
 .nutri-box.protein {
-    background: #d1fae5;
-    border-color: #34d399;
+    background: #e6f9f0;  /* อ่อนลงจาก #d1fae5 */
+    border-color: #6ee7b7;
 }
 .nutri-box.fat {
-    background: #fee2e2;
-    border-color: #f87171;
+    background: #fff1f1;  /* อ่อนลงจาก #fee2e2 */
+    border-color: #fca5a5;
 }
 .nutri-box.carb {
-    background: #fef9c3;
-    border-color: #facc15;
+    background: #fefce8;  /* อ่อนลงจาก #fef9c3 */
+    border-color: #fde047;
 }
 .nutri-box.sugar {
-    background: #fce7f3;
-    border-color: #f472b6;
+    background: #fdf0f8;  /* อ่อนลงจาก #fce7f3 */
+    border-color: #f9a8d4;
 }
 .nutri-box.sodium {
-    background: #dbeafe;
-    border-color: #60a5fa;
+    background: #eef6ff;  /* อ่อนลงจาก #dbeafe */
+    border-color: #93c5fd;
 }
-
 
 /* ✅ ปรับสีไอคอนให้เหมาะสมกับแต่ละบล็อก */
 .nutri-box.energy .nutri-label i {
@@ -319,7 +318,7 @@
 }
 
 .nutri-box .nutri-value {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     color: #111;
 }
@@ -440,6 +439,67 @@
         gap: 8px;
     }
 }
+
+#scrollTopBtn {
+    display: none; /* เริ่มต้นซ่อนปุ่ม */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    background: linear-gradient(135deg, #4CAF50, #2e7d32);
+    color: #fff;
+    border: none;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+#scrollTopBtn:hover {
+    background: linear-gradient(135deg, #45a049, #256d27);
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* มือถือจอเล็ก */
+@media (max-width: 480px) {
+    #scrollTopBtn {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
+/* แท็บเล็ต */
+@media (min-width: 481px) and (max-width: 1024px) {
+    #scrollTopBtn {
+        width: 46px;
+        height: 46px;
+        font-size: 19px;
+        bottom: 18px;
+        right: 18px;
+    }
+}
+
+/* เดสก์ท็อปจอใหญ่ */
+@media (min-width: 1440px) {
+    #scrollTopBtn {
+        width: 56px;
+        height: 56px;
+        font-size: 22px;
+        bottom: 25px;
+        right: 25px;
+    }
+}
+
+
 
 
 
