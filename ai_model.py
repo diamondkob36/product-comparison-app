@@ -206,7 +206,7 @@ def recommend_recipes(available_ingredients, model, mlb):
                 "converted_display": display_converted_amount(name, amount, unit)
             })
 
-        # ✅ คำนวณ similarity ปลอดภัย
+        # ✅ คำนวณ similarity
         if match_count == total_count and total_count > 0:
             similarity = 100
         else:
