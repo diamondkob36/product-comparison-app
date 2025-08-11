@@ -388,6 +388,12 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             const data = await response.json();
 
+             // ✅ ถ้า session หมดอายุ → เรียก handler จาก window
+            if (response.status === 401 && data.redirect) {
+                    window.handleSessionExpired(data);
+            return;
+            }
+
             if (data.error) {
                 console.error("Error deleting menu:", data.error);
                 Swal.fire({

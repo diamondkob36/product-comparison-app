@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         const formData = new FormData(editUserForm);
-        const payload = Object.fromEntries(formData);
+        const payload = Object.fromEntries(formData.entries()); // ✅ .entries() เพื่อให้เข้ากันได้ทุก browser
 
         // ✅ ดึงค่าเป้าหมายรองแบบหลายตัวเลือก
         const subgoals = $('#subgoal').val();
@@ -234,16 +234,23 @@ document.addEventListener("DOMContentLoaded", async function () {
             });
 
             const data = await response.json();
+
+            // ✅ Session timeout → popup แล้ว redirect
+            if (response.status === 401 && data.redirect) {
+                window.handleSessionExpired(data);
+                return;
+            }          
+
             if (data.error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'เกิดข้อผิดพลาด',
                     text: data.error,
-                scrollbarPadding: true,
-                heightAuto: false,
-                timer: 1500,
-                timerProgressBar: true,
-                showConfirmButton: false
+                    scrollbarPadding: true,
+                    heightAuto: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
                 return;
             }
@@ -353,6 +360,22 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.error("Error building nutrition bars:", error);
         }
     };
+
+    // ✅ helper: ตรวจ session หมดอายุแบบ global
+    window.handleSessionExpired = async function (data){
+        if (data.redirect) {
+            Swal.fire({
+                icon: "warning",
+                title: "หมดเวลาการเข้าสู่ระบบ",
+                text: data.error || "กรุณาเข้าสู่ระบบใหม่",
+                confirmButtonText: "เข้าสู่ระบบ",
+                heightAuto: false,
+                scrollbarPadding: true
+            }).then(() => {
+                window.location.href = data.redirect;
+            });
+        }
+    }
 
     // โหลดข้อมูลผู้ใช้และกราฟเมื่อหน้าเว็บโหลดเสร็จ
     await loadUserInfo();

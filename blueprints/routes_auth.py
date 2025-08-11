@@ -113,5 +113,7 @@ def api_login():
 # 🔹 ออกจากระบบ
 @auth_bp.route('/logout')
 def logout():
+    session.clear()  # ✅ ล้าง session ทั้งหมด
     return redirect(url_for('main.home'))
+
 

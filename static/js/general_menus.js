@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const primary = JSON.parse(button.dataset.primary || "[]");
       const secondary = JSON.parse(button.dataset.secondary || "[]");
 
-      // ✅ แทน confirm ด้วย SweetAlert2
       const result = await Swal.fire({
         title: 'ยืนยันการบันทึก',
         text: 'คุณต้องการบันทึกเมนูนี้หรือไม่?',
@@ -19,50 +18,59 @@ document.addEventListener("DOMContentLoaded", function () {
         scrollbarPadding: true,
         heightAuto: false
       });
+
       if (!result.isConfirmed) return;
 
-      fetch("/users/save-menu-no-deduct", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          recipe_id: id,
-          user_servings: servings,
-          primary_ingredients: primary,
-          secondary_ingredients: secondary
-        }),
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            Swal.fire({
-              icon: 'success',
-              title: 'สำเร็จ!',
-              text: 'บันทึกเมนูสำเร็จ',
-              timer: 1000,
-              timerProgressBar: true,
-              showConfirmButton: false,
-              scrollbarPadding: true,
-              heightAuto: false
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'เกิดข้อผิดพลาด',
-              text: 'ไม่สามารถบันทึกเมนูได้',
-              scrollbarPadding: true,
-              heightAuto: false
-            });
-          }
-        })
-        .catch(() => {
+      try {
+        const res = await fetch("/users/save-menu-no-deduct", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            recipe_id: id,
+            user_servings: servings,
+            primary_ingredients: primary,
+            secondary_ingredients: secondary
+          }),
+        });
+
+        const data = await res.json();
+
+        // ✅ ตรวจ session timeout
+        if (res.status === 401 && data.redirect) {
+          window.handleSessionExpired(data);
+          return;
+        }
+
+        if (data.success) {
           Swal.fire({
-            icon: 'error',
-            title: 'เกิดข้อผิดพลาด',
-            text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+            icon: 'success',
+            title: 'สำเร็จ!',
+            text: 'บันทึกเมนูสำเร็จ',
+            timer: 1000,
+            timerProgressBar: true,
+            showConfirmButton: false,
             scrollbarPadding: true,
             heightAuto: false
           });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: data.error || 'ไม่สามารถบันทึกเมนูได้',
+            scrollbarPadding: true,
+            heightAuto: false
+          });
+        }
+
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+          scrollbarPadding: true,
+          heightAuto: false
         });
+      }
     });
   });
 });
@@ -221,6 +229,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// ✅ helper: ตรวจ session หมดอายุแบบ global
+window.handleSessionExpired = async function (data){
+  if (data.redirect) {
+    Swal.fire({
+      icon: "warning",
+      title: "หมดเวลาการเข้าสู่ระบบ",
+      text: data.error || "กรุณาเข้าสู่ระบบใหม่",
+      confirmButtonText: "เข้าสู่ระบบ",
+      heightAuto: false,
+      scrollbarPadding: true
+      }).then(() => {
+        window.location.href = data.redirect;
+      });
+  }
+}
 
 
 

@@ -107,6 +107,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         const data = await response.json();
 
+                        // ✅ ถ้า session หมดอายุ → เรียก handler จาก window
+                        if (response.status === 401 && data.redirect) {
+                            window.handleSessionExpired(data);
+                            return;
+                        }
+
                         if (response.ok) {
                             Swal.fire({
                                 icon: 'success',
@@ -224,6 +230,12 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const data = await response.json();
+
+            // ✅ ถ้า session หมดอายุ → เรียก handler จาก window
+            if (response.status === 401 && data.redirect) {
+                window.handleSessionExpired(data);
+                return;
+            }
 
             if (response.ok) {
                 Swal.fire({

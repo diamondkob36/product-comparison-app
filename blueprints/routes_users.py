@@ -19,7 +19,10 @@ def homeuser():
 @users_bp.route('/add_ingredient', methods=['POST'])
 def add_ingredient():
     if "user" not in session or "id" not in session["user"]:
-        return jsonify({"error": "กรุณาเข้าสู่ระบบก่อน"}), 403
+        return jsonify({
+            "error": "หมดเวลาการเข้าสู่ระบบ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+            "redirect": url_for("auth.login")
+        }), 401
 
     # รับข้อมูลจาก JSON
     data = request.json
@@ -91,7 +94,10 @@ def add_ingredient():
 @users_bp.route('/delete_ingredient/<int:ingredient_id>', methods=['DELETE'])
 def delete_ingredient(ingredient_id):
     if "user" not in session or "id" not in session["user"]:
-        return jsonify({"error": "กรุณาเข้าสู่ระบบก่อน"}), 403
+        return jsonify({
+            "error": "หมดเวลาการเข้าสู่ระบบ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+            "redirect": url_for("auth.login")
+        }), 401
 
     user_id = session["user"]["id"]
 
@@ -302,7 +308,10 @@ def default_intake():
 @users_bp.route('/get_user_info', methods=['GET'])
 def get_user_info():
     if "user" not in session or "id" not in session["user"]:
-        return jsonify({"error": "กรุณาเข้าสู่ระบบก่อน"}), 403
+        return jsonify({
+            "error": "หมดเวลาการเข้าสู่ระบบ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+            "redirect": url_for("auth.login")
+        }), 401
 
     user_id = session["user"]["id"]
 
@@ -338,7 +347,10 @@ def get_user_info():
 @users_bp.route('/update_user_info', methods=['POST'])
 def update_user_info():
     if "user" not in session or "id" not in session["user"]:
-        return jsonify({"error": "กรุณาเข้าสู่ระบบก่อน"}), 403
+        return jsonify({
+            "error": "หมดเวลาการเข้าสู่ระบบ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+            "redirect": url_for("auth.login")
+        }), 401
 
     user_id = session["user"]["id"]
     data = request.json
@@ -730,7 +742,10 @@ def selected_menus():
 @users_bp.route('/delete_selected_menu/<int:menu_id>', methods=['DELETE'])
 def delete_selected_menu(menu_id):
     if "user" not in session or "id" not in session["user"]:
-        return jsonify({"error": "กรุณาเข้าสู่ระบบก่อน"}), 403
+        return jsonify({
+            "error": "หมดเวลาการเข้าสู่ระบบ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+            "redirect": url_for("auth.login")
+        }), 401
 
     user_id = session["user"]["id"]
 
@@ -1069,9 +1084,10 @@ def general_menus():
 @users_bp.route('/save-menu-no-deduct', methods=['POST'])
 def save_menu_without_deduct():
     if "user" not in session or "id" not in session["user"]:
-        if request.is_json:
-            return jsonify({"success": False, "error": "unauthorized"}), 403
-        return redirect(url_for("auth.login"))
+        return jsonify({
+            "error": "หมดเวลาการเข้าสู่ระบบ กรุณาเข้าสู่ระบบใหม่อีกครั้ง",
+            "redirect": url_for("auth.login")
+        }), 401
 
     user_id = session["user"]["id"]
 
