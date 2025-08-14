@@ -1277,6 +1277,7 @@ button.delete-ingredient i {
     background: rgba(0, 0, 0, 0.5); /* พื้นหลังโปร่งใส */
     justify-content: center;
     align-items: center;
+    overflow-x: hidden;
     z-index: 1000;
 }
 
@@ -1287,6 +1288,7 @@ button.delete-ingredient i {
     max-width: 500px; /* ✅ Scroll ได้ภายในกล่อง */
     max-height: 90vh;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* ✅ ปรับตำแหน่งฟอร์มไม่ให้ติดขอบ */
@@ -1357,6 +1359,19 @@ button.delete-ingredient i {
     background-color: #fff;
     min-height: 42px;
     cursor: text;
+    max-height: 100px;          /* ✅ จำกัดความสูงไม่ให้สูงเกิน */
+    overflow-y: auto;           /* ✅ เพิ่ม scrollbar ถ้าสูงเกิน */
+    word-wrap: break-word;      /* ป้องกันข้อความล้น */
+    white-space: normal;
+}
+
+/* ✅ Dropdown ที่แสดงรายการ */
+.select2-container--open .select2-dropdown {
+  max-height: 150px !important;
+  overflow-y: auto !important;
+  font-size: 14px;
+  overflow-x: hidden;
+  z-index: 9999;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {

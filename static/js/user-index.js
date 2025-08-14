@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     $(document).ready(function() {
         $('#subgoal').select2({
             placeholder: $('#subgoal').data('placeholder'),
+            dropdownParent: $('#edit-form-container'),
             allowClear: true,
             width: '100%'
         });
