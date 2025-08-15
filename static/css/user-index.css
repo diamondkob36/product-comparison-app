@@ -10,11 +10,6 @@
     background-color: #fff;
 }
 
-/* ปรับความกว้างให้ Select2 */
-.select2-container {
-    width: 100% !important;
-}
-
 /* ปรับการแสดงผลของ Select2 */
 .select2-container .select2-selection--single {
     height: 42px; /* ปรับความสูง */
@@ -1267,6 +1262,7 @@ button.delete-ingredient i {
 }
 
 /* ✅ ซ่อน Popup เมื่อเข้าเว็บ */
+
 .user-edit-form-container {
     display: none;
     position: fixed;
@@ -1367,7 +1363,6 @@ button.delete-ingredient i {
 
 /* ✅ Dropdown ที่แสดงรายการ */
 .select2-container--open .select2-dropdown {
-  max-height: 150px !important;
   overflow-y: auto !important;
   font-size: 14px;
   overflow-x: hidden;

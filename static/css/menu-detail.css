@@ -94,7 +94,7 @@ h1 {
     font-weight: bold;
     color: #333;
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 /* ✅ ปรับ Dropdown, Input, และปุ่มเพิ่มอยู่แถวเดียวกัน */
@@ -106,7 +106,15 @@ h1 {
 }
 
 /* ✅ ปรับขนาด Dropdown และ Input */
-.ingredient-row select,
+.ingredient-row select{
+    flex: 2;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
 .ingredient-row input {
     flex: 2;
     padding: 12px;
@@ -425,32 +433,16 @@ h1 {
 }
 
 /* ✅ เพิ่ม Media Queries สำหรับหน้าจอกลาง (Tablet แนวนอน) */
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (max-width: 768px) {
     .container {
         max-width: 700px; /* อาจปรับเป็น 80% ก็ได้ */
         margin: auto;
         padding: 20px;
     }
-    
-    h1 {
-        font-size: 22px;
-    }
-    
-    /* ตัวอย่าง: กลับเป็น row อีกครั้ง */
-    .ingredient-row {
-        flex-direction: row;
-        gap: 10px;
-    }
-    
-    .ingredient-row select,
-    .ingredient-row button,
-    .ingredient-row input {
-        width: auto;
-    }
 }
 
-/* ✅ ทำให้รองรับ **มือถือ (ต่ำกว่า 768px)** */
-@media (max-width: 768px) {
+/* ✅ ทำให้รองรับ **มือถือ (ต่ำกว่า 426)** */
+@media (max-width: 426px) {
     .container {
         max-width: 85%;
         padding: 15px;
@@ -472,7 +464,7 @@ h1 {
     /* ✅ จัดให้ปุ่มและอินพุตเป็นแนวตั้ง */
     .ingredient-row {
         flex-direction: column;
-        gap: 5px;
+        gap: 10px;
     }
 
     .ingredient-row select,
@@ -481,7 +473,7 @@ h1 {
     }
 
     .ingredient-row input{
-        width: 95%;
+        width: 92%;
     }
 
     /* ✅ ปรับให้ปุ่มอยู่เต็มแถวในมือถือ */

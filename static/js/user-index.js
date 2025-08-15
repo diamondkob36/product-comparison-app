@@ -15,12 +15,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     editButton.addEventListener("click", async function () {
         await refreshFormFromServer();
         editFormContainer.style.display = "flex";
+        document.body.classList.add("no-scroll");  // ✅ ปิด scroll
     });
 
     // ปิดฟอร์ม (กดปุ่ม X) → รีค่ากลับเป็นข้อมูลเดิม
     closeEditForm.addEventListener("click", async function () {
         await refreshFormFromServer();
         editFormContainer.style.display = "none";
+        document.body.classList.remove("no-scroll");  // ✅ เปิด scroll
     });
 
     // ปิดฟอร์มเมื่อคลิกนอกตัวฟอร์ม → รีค่ากลับเป็นข้อมูลเดิม
@@ -28,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (event.target === editFormContainer) {
             await refreshFormFromServer();
             editFormContainer.style.display = "none";
+            document.body.classList.remove("no-scroll");  // ✅ เปิด scroll
         }
     });
 

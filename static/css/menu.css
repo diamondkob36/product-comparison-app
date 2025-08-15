@@ -1,4 +1,10 @@
 /* แถบเมนูหลัก */
+
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
 .navbar {
     position: sticky;
     top: 0;
