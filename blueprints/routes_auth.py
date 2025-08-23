@@ -104,8 +104,12 @@ def api_login():
             "id": user["id"],
             "username": user["username"],
             "name": user["name"],
+            "role": user["role"]  # ✅ เก็บ role ลง session
         }
-        return jsonify({"message": "เข้าสู่ระบบสำเร็จ!"}), 200
+        return jsonify({
+            "message": "เข้าสู่ระบบสำเร็จ!",
+            "role": user["role"]  # ✅ ส่ง role กลับมาด้วย
+        }), 200
 
     return jsonify({"error": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"}), 401
 

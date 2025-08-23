@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 11, 2025 at 05:50 PM
+-- Generation Time: Aug 23, 2025 at 06:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1330,16 +1330,18 @@ CREATE TABLE `users` (
   `gender` enum('ชาย','หญิง') DEFAULT NULL COMMENT 'เพศ',
   `activity_level` enum('ไม่ออกกำลังกาย','ออกกำลังกายเบา (1-3 วัน/สัปดาห์)','ออกกำลังกายปานกลาง (3-5 วัน/สัปดาห์)','ออกกำลังกายหนัก (6-7 วัน/สัปดาห์)','ใช้แรงกายหนักมาก') DEFAULT NULL COMMENT 'ระดับกิจกรรม',
   `goal` enum('ลดน้ำตาล','ลดโซเดียม','ลดน้ำหนัก','เพิ่มน้ำหนัก','ปกติ') DEFAULT NULL COMMENT 'เป้าหมายของผู้ใช้',
-  `subgoal` varchar(255) DEFAULT NULL
+  `subgoal` varchar(255) DEFAULT NULL,
+  `role` text NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `name`, `weight`, `height`, `age`, `gender`, `activity_level`, `goal`, `subgoal`) VALUES
-(10, 'admin', 'scrypt:32768:8:1$clXxBdtCa9eXyVMv$2ab149ae573455f999a36e11f5e065746496f773ee5b985f86622f18359face78ee0ddb4b6f799ebb397faa72adb117a20fc118358ace413c05ceb67757d1bad', 'Anuwat Anek', 70, 163, 22, 'ชาย', 'ออกกำลังกายปานกลาง (3-5 วัน/สัปดาห์)', 'ปกติ', ''),
-(18, 'a', 'scrypt:32768:8:1$AkxQPPb5tb6OKsUz$f0f5f0777d9dbe8567d7a184843404034c9326dcf16f6991094da92f8419a8cf805b4bc71911e74aae1644aa9860c5d1c62f444571c7c6ff95264dcd37740fe4', 'a', 60, 1, 1, 'ชาย', 'ไม่ออกกำลังกาย', 'เพิ่มน้ำหนัก', 'ลดน้ำตาล');
+INSERT INTO `users` (`id`, `username`, `password`, `name`, `weight`, `height`, `age`, `gender`, `activity_level`, `goal`, `subgoal`, `role`) VALUES
+(10, 'admin', 'scrypt:32768:8:1$clXxBdtCa9eXyVMv$2ab149ae573455f999a36e11f5e065746496f773ee5b985f86622f18359face78ee0ddb4b6f799ebb397faa72adb117a20fc118358ace413c05ceb67757d1bad', 'Anuwat Anek', 70, 163, 22, 'ชาย', 'ออกกำลังกายปานกลาง (3-5 วัน/สัปดาห์)', 'ปกติ', '', 'admin'),
+(18, 'a', 'scrypt:32768:8:1$AkxQPPb5tb6OKsUz$f0f5f0777d9dbe8567d7a184843404034c9326dcf16f6991094da92f8419a8cf805b4bc71911e74aae1644aa9860c5d1c62f444571c7c6ff95264dcd37740fe4', 'a', 60, 1, 1, 'ชาย', 'ไม่ออกกำลังกาย', 'เพิ่มน้ำหนัก', 'ลดน้ำตาล', 'user'),
+(19, 'admin2', 'scrypt:32768:8:1$a2JkENeFea1UoivM$4451b8985e900a699f474e7ebfcd3e80ed30ab538ef941a892928e3c8a5d14a332df177617517f561261cd719fa5563f8eef51782dd7a4e0d776b80dbb13391c', 'อนุวรรตน์', 40, 163, 22, 'ชาย', 'ออกกำลังกายเบา (1-3 วัน/สัปดาห์)', 'ปกติ', NULL, 'user');
 
 -- --------------------------------------------------------
 
@@ -1519,7 +1521,7 @@ ALTER TABLE `unit_conversions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `user_ingredients`

@@ -5,6 +5,7 @@ from blueprints.routes_main import main_bp
 from blueprints.routes_api import api_bp
 from blueprints.routes_auth import auth_bp
 from blueprints.routes_users import users_bp
+from blueprints.routes_admin import admin_bp
 app = Flask(__name__)
 
 # ตั้งค่า secret_key
@@ -14,6 +15,7 @@ app.register_blueprint(main_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(users_bp, url_prefix='/users')
+app.register_blueprint(admin_bp, url_prefix='/admin')
 
 if __name__ == '__main__':
     app.run(debug=True)
