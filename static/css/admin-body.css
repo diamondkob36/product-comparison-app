@@ -1,0 +1,33 @@
+/* พื้นหลัง */
+body {
+    background: #82AC88;
+    background-attachment: fixed; /* พื้นหลังคงที่ */
+    color: #c9d1d9; /* สีข้อความ */
+    font-family: 'Orbitron', sans-serif; /* ฟอนต์แนว Sci-Fi */
+    min-height: 100vh; /* ความสูงขั้นต่ำของ body เท่ากับหน้าจอ */
+    margin: 0; /* ลบ margin ค่าเริ่มต้น */
+    overflow-x: hidden;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.main-content {
+    margin: auto;
+    padding-top: 10px ;
+    width: 90%;
+}
+
+/* การตอบสนองหน้าจอเล็ก */
+@media (max-width: 768px) {
+    .main-content {
+        padding-top: 20px ;
+        width: 95%;
+    }
+}
+
+@media (max-width: 426px) {
+    .main-content {
+        padding-top: 10px ;
+    }
+}

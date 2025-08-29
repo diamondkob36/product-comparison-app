@@ -1,4 +1,6 @@
 from flask import Blueprint, session, redirect,url_for, flash, render_template
+import mysql.connector
+from db_utils import get_count_from_table
 
 # สร้าง Blueprint
 admin_bp = Blueprint('admin', __name__, template_folder='/admin', url_prefix='/admin')
@@ -14,4 +16,11 @@ def adminindex():
         flash('คุณไม่มีสิทธิ์เข้าถึงหน้านี้!', 'danger')
         return redirect(url_for('auth.login'))
 
-    return render_template('admin-index.html')
+    recipe_count = get_count_from_table("recipes")
+    user_count = get_count_from_table("users")
+    unit_count = get_count_from_table("ingredient_units")
+
+    return render_template("admin-index.html",
+                           recipe_count=recipe_count,
+                           user_count=user_count,
+                           unit_count=unit_count)

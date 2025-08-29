@@ -8,12 +8,30 @@
     <link rel="icon" type="image/x-icon" href="/static/images/logo2.png">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-body.css') }}">
 
     <script src="{{ url_for('static', filename='js/admin-index.js') }}"></script>
 
 </head>
 <body>
 
+    {% include 'menubar.html' %}
+    <div class="main-content"></div>
+        <div class="dashboard-row">
+            <div class="dashboard-box">
+                <h3>เมนูทั้งหมด</h3>
+                <p>{{ recipe_count }}</p>
+            </div>
+            <div class="dashboard-box">
+                <h3>ผู้ใช้งาน</h3>
+                <p>{{ user_count }}</p>
+            </div>
+            <div class="dashboard-box">
+                <h3>จำนวนวัตถุดิบ</h3>
+                <p>{{ unit_count }}</p>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
