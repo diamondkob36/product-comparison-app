@@ -276,6 +276,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             await loadNutritionBars();
             await loadBMI();
             editFormContainer.style.display = "none";
+            document.body.classList.remove("no-scroll"); // ✅ เพิ่มบรรทัดนี้
         } catch (error) {
             console.error("Error updating user info:", error);
             Swal.fire({
