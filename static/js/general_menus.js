@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
           Swal.fire({
             icon: 'success',
             title: 'สำเร็จ!',
-            text: 'บันทึกเมนูสำเร็จ',
-            timer: 1000,
+            html: 'บันทึกเมนูของคุณเรียบร้อยแล้ว<br>กลับไปยังหน้าหลักเพื่อดูผลลัพธ์',
+            timer: 1500,
             timerProgressBar: true,
             showConfirmButton: false,
             scrollbarPadding: true,

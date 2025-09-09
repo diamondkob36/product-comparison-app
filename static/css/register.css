@@ -8,9 +8,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: auto;         /* ✅ ปรับให้สูงตามเนื้อหา */
     position: relative;
-    overflow: hidden;
+    overflow: auto;       /* ✅ อนุญาตให้ scroll */
+    min-height: 100vh;    /* ✅ ยังคงให้สูงอย่างน้อยเท่าจอ */
 }
 
 /* ✅ เลเยอร์เบลอและโทนเทา */
@@ -201,4 +202,11 @@ body > * {
 
 .custom-alert.error {
     background-color: #dc3545;
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    width: 90%;
+    padding: 20px 10px;
+  }
 }
