@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 23, 2025 at 06:12 PM
+-- Generation Time: Sep 09, 2025 at 12:22 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -1341,7 +1341,14 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `weight`, `height`, `age`, `gender`, `activity_level`, `goal`, `subgoal`, `role`) VALUES
 (10, 'admin', 'scrypt:32768:8:1$clXxBdtCa9eXyVMv$2ab149ae573455f999a36e11f5e065746496f773ee5b985f86622f18359face78ee0ddb4b6f799ebb397faa72adb117a20fc118358ace413c05ceb67757d1bad', 'Anuwat Anek', 70, 163, 22, 'ชาย', 'ออกกำลังกายปานกลาง (3-5 วัน/สัปดาห์)', 'ปกติ', '', 'admin'),
 (18, 'a', 'scrypt:32768:8:1$AkxQPPb5tb6OKsUz$f0f5f0777d9dbe8567d7a184843404034c9326dcf16f6991094da92f8419a8cf805b4bc71911e74aae1644aa9860c5d1c62f444571c7c6ff95264dcd37740fe4', 'a', 60, 1, 1, 'ชาย', 'ไม่ออกกำลังกาย', 'เพิ่มน้ำหนัก', 'ลดน้ำตาล', 'user'),
-(19, 'admin2', 'scrypt:32768:8:1$a2JkENeFea1UoivM$4451b8985e900a699f474e7ebfcd3e80ed30ab538ef941a892928e3c8a5d14a332df177617517f561261cd719fa5563f8eef51782dd7a4e0d776b80dbb13391c', 'อนุวรรตน์', 40, 163, 22, 'ชาย', 'ออกกำลังกายเบา (1-3 วัน/สัปดาห์)', 'ปกติ', NULL, 'user');
+(19, 'admin2', 'scrypt:32768:8:1$a2JkENeFea1UoivM$4451b8985e900a699f474e7ebfcd3e80ed30ab538ef941a892928e3c8a5d14a332df177617517f561261cd719fa5563f8eef51782dd7a4e0d776b80dbb13391c', 'นฤมล', 50, 150, 55, 'หญิง', 'ออกกำลังกายเบา (1-3 วัน/สัปดาห์)', 'ลดน้ำหนัก', '', 'user'),
+(20, 'จอนวิค', 'scrypt:32768:8:1$h3AAhcwead9q2r0O$24928cf2f06a59bfc21dfcac6c7eed354293b7243516e2164d14ff7792deff62340453c00ad5de9196d73a3a85685e26e3ce13d8ac6ae8597f91fe9b8f254565', 'อุนิทิน', 115, 180, 23, 'ชาย', 'ไม่ออกกำลังกาย', 'ปกติ', 'ลดน้ำตาล,ลดโซเดียม', 'user'),
+(21, 'ณัฏฐากร', 'scrypt:32768:8:1$cGPwwN6phDfCtAhb$21628691a1ce1af2167889ecdab5cc04b2a8b0974a4c0a8f34c66d2555bb92da0ce54e03707bafeab00646838f458c54fa3dbf4024276cd77443eec906e357d2', 'ณัฏฐากร', 56, 158, 21, 'หญิง', 'ไม่ออกกำลังกาย', 'ปกติ', 'ลดน้ำตาล', 'user'),
+(22, 'Phongsakorn', 'scrypt:32768:8:1$9ShMKS29zeqed3ue$1dff9d59add3f89eefea7054bc7a7366ed3c69ba93752b95dca46512fe0efa1d2c1b20bd48dade9ac3cea406216248b2473e54743ac4ba4080419c74f522cc56', 'Phongsakorn', 70, 170, 21, 'ชาย', 'ออกกำลังกายปานกลาง (3-5 วัน/สัปดาห์)', 'ลดน้ำหนัก', 'ลดน้ำตาล,ลดโซเดียม', 'user'),
+(23, 'Pipat', 'scrypt:32768:8:1$J4kA6g87uK3K7MU3$057522c7ff6fbde5fe665750e6fa85591673256d3b7a82ef28a4c81d5f512c41c1f56c75a4c3daea5c32e59aa8b1e2ee94c3ad365e7927aecbc2877cbeca8ee2', 'Pipat sudsangkhiew', 75, 185, 21, 'ชาย', 'ออกกำลังกายเบา (1-3 วัน/สัปดาห์)', 'ปกติ', NULL, 'user'),
+(24, 'Pk', 'scrypt:32768:8:1$2jf4KB3KNrpesiL7$9db97e5e1cf1c2cd40936276b6136f8b6264ea097db98c7f26c6809a6b4edb7c32b26354cab8802bc702b70beff2f5421e57a104b5c495a7bb245549fe5fb642', 'Pk', 110, 180, 48, 'ชาย', 'ไม่ออกกำลังกาย', 'ลดน้ำหนัก', 'ลดน้ำตาล,ลดโซเดียม', 'user'),
+(25, 'phanphet', 'scrypt:32768:8:1$JnAMIqOHdOnMYfND$6283767d0dc47681c687a6326b9187c30ff649381c7b6e323dec722ccf9298ce7640a8d19d1b6b7c631b9029d6961398eb08fde276d3e4a53ba53d3fd91b0222', 'พานเพชร ', 54, 178, 21, 'ชาย', 'ไม่ออกกำลังกาย', 'เพิ่มน้ำหนัก', NULL, 'user'),
+(26, 'Fluke_45', 'scrypt:32768:8:1$z17iGgLe6VBWpUKf$cc9db80c1b95f52b4d079f3e859fb9c0c65674915d7b589750e6024899f7a34994ba16817466cc2c522d7e4898bce71430bbdefd880736c10c62c0553ea22342', 'นพดล วัฒนพันธ์', 120, 183, 23, 'ชาย', 'ออกกำลังกายเบา (1-3 วัน/สัปดาห์)', 'ลดน้ำหนัก', 'ลดน้ำตาล,ลดโซเดียม', 'user');
 
 -- --------------------------------------------------------
 
@@ -1363,7 +1370,15 @@ CREATE TABLE `user_ingredients` (
 INSERT INTO `user_ingredients` (`id`, `user_id`, `ingredient_id`, `amount`) VALUES
 (131, 10, 333, 19),
 (132, 10, 242, 500),
-(133, 10, 2, 500);
+(133, 10, 2, 500),
+(134, 20, 443, 500),
+(135, 20, 49, 2),
+(136, 20, 279, 2000),
+(137, 21, 2, 70),
+(138, 24, 412, 10000000),
+(139, 24, 340, 100000000),
+(140, 24, 475, 1000000000),
+(142, 25, 260, 300);
 
 -- --------------------------------------------------------
 
@@ -1411,7 +1426,10 @@ INSERT INTO `user_selected_menus` (`id`, `user_id`, `recipe_id`, `created_at`, `
 (121, 10, 31, '2025-08-06 14:43:36', '[{\"amount\": 80, \"converted_display\": \"80 กรัม\", \"name\": \"เนื้อหมู\", \"unit\": \"กรัม\"}, {\"amount\": 2, \"converted_display\": \"2 ใบ (~0 กรัม)\", \"name\": \"ใบมะกรูด\", \"unit\": \"ใบ\"}, {\"amount\": 1, \"converted_display\": \"1 เม็ด (~5 กรัม)\", \"name\": \"พริกชี้ฟ้า(แดง)\", \"unit\": \"เม็ด\"}]', '[{\"amount\": 20, \"converted_display\": \"20 กรัม\", \"name\": \"พริกแกงพะแนง\", \"unit\": \"กรัม\"}, {\"amount\": 100, \"converted_display\": \"100 มิลลิลิตร (~101 กรัม)\", \"name\": \"กะทิ\", \"unit\": \"มิลลิลิตร\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำปลา\", \"unit\": \"ช้อนโต๊ะ\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำตาลปี๊บ\", \"unit\": \"ช้อนโต๊ะ\"}]', 1),
 (122, 10, 31, '2025-08-06 14:43:38', '[{\"amount\": 80, \"converted_display\": \"80 กรัม\", \"name\": \"เนื้อหมู\", \"unit\": \"กรัม\"}, {\"amount\": 2, \"converted_display\": \"2 ใบ (~0 กรัม)\", \"name\": \"ใบมะกรูด\", \"unit\": \"ใบ\"}, {\"amount\": 1, \"converted_display\": \"1 เม็ด (~5 กรัม)\", \"name\": \"พริกชี้ฟ้า(แดง)\", \"unit\": \"เม็ด\"}]', '[{\"amount\": 20, \"converted_display\": \"20 กรัม\", \"name\": \"พริกแกงพะแนง\", \"unit\": \"กรัม\"}, {\"amount\": 100, \"converted_display\": \"100 มิลลิลิตร (~101 กรัม)\", \"name\": \"กะทิ\", \"unit\": \"มิลลิลิตร\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำปลา\", \"unit\": \"ช้อนโต๊ะ\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำตาลปี๊บ\", \"unit\": \"ช้อนโต๊ะ\"}]', 1),
 (123, 10, 24, '2025-08-11 14:55:50', '[{\"name\": \"ไข่ไก่\", \"amount\": 1, \"unit\": \"ฟอง\"}]', '[{\"name\": \"น้ำมันถั่วเหลือง\", \"amount\": 1, \"unit\": \"ช้อนโต๊ะ\"}]', 1),
-(124, 10, 29, '2025-08-11 15:49:17', '[{\"amount\": 80, \"converted_display\": \"80 กรัม\", \"name\": \"อกไก่\", \"unit\": \"กรัม\"}, {\"amount\": 50, \"converted_display\": \"50 กรัม\", \"name\": \"มะเขือเปราะ\", \"unit\": \"กรัม\"}, {\"amount\": 50, \"converted_display\": \"50 ใบ (~10 กรัม)\", \"name\": \"ใบโหระพา\", \"unit\": \"ใบ\"}, {\"amount\": 1, \"converted_display\": \"1 เม็ด (~5 กรัม)\", \"name\": \"พริกชี้ฟ้า(แดง)\", \"unit\": \"เม็ด\"}]', '[{\"amount\": 20, \"converted_display\": \"20 กรัม\", \"name\": \"พริกแกงเขียวหวาน\", \"unit\": \"กรัม\"}, {\"amount\": 100, \"converted_display\": \"100 มิลลิลิตร (~101 กรัม)\", \"name\": \"กะทิ\", \"unit\": \"มิลลิลิตร\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำปลา\", \"unit\": \"ช้อนโต๊ะ\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำตาลปี๊บ\", \"unit\": \"ช้อนโต๊ะ\"}]', 1);
+(124, 10, 29, '2025-08-11 15:49:17', '[{\"amount\": 80, \"converted_display\": \"80 กรัม\", \"name\": \"อกไก่\", \"unit\": \"กรัม\"}, {\"amount\": 50, \"converted_display\": \"50 กรัม\", \"name\": \"มะเขือเปราะ\", \"unit\": \"กรัม\"}, {\"amount\": 50, \"converted_display\": \"50 ใบ (~10 กรัม)\", \"name\": \"ใบโหระพา\", \"unit\": \"ใบ\"}, {\"amount\": 1, \"converted_display\": \"1 เม็ด (~5 กรัม)\", \"name\": \"พริกชี้ฟ้า(แดง)\", \"unit\": \"เม็ด\"}]', '[{\"amount\": 20, \"converted_display\": \"20 กรัม\", \"name\": \"พริกแกงเขียวหวาน\", \"unit\": \"กรัม\"}, {\"amount\": 100, \"converted_display\": \"100 มิลลิลิตร (~101 กรัม)\", \"name\": \"กะทิ\", \"unit\": \"มิลลิลิตร\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำปลา\", \"unit\": \"ช้อนโต๊ะ\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำตาลปี๊บ\", \"unit\": \"ช้อนโต๊ะ\"}]', 1),
+(125, 20, 21, '2025-09-03 05:26:24', '[{\"amount\": 100, \"converted_display\": \"100 กรัม\", \"name\": \"เนื้อหมู\", \"unit\": \"กรัม\"}, {\"amount\": 150, \"converted_display\": \"150 กรัม\", \"name\": \"ข้าวสวย\", \"unit\": \"กรัม\"}, {\"amount\": 1, \"converted_display\": \"1 ฟอง (~60 กรัม)\", \"name\": \"ไข่ไก่\", \"unit\": \"ฟอง\"}, {\"amount\": 30, \"converted_display\": \"30 กรัม\", \"name\": \"ผักคะน้า\", \"unit\": \"กรัม\"}, {\"amount\": 20, \"converted_display\": \"20 กรัม\", \"name\": \"แครอท\", \"unit\": \"กรัม\"}, {\"amount\": 2, \"converted_display\": \"2 กลีบ (~6 กรัม)\", \"name\": \"กระเทียม\", \"unit\": \"กลีบ\"}]', '[{\"amount\": 1, \"converted_display\": \"1 ช้อนโต๊ะ (~3 ช้อนชา / ~20 กรัม)\", \"name\": \"ซอสหอยนางรม\", \"unit\": \"ช้อนโต๊ะ\"}, {\"amount\": 1, \"converted_display\": \"1 ช้อนโต๊ะ (~3 ช้อนชา / ~15 กรัม)\", \"name\": \"ซีอิ๊วขาว\", \"unit\": \"ช้อนโต๊ะ\"}, {\"amount\": 1, \"converted_display\": \"1 ช้อนโต๊ะ (~3 ช้อนชา / ~12 กรัม)\", \"name\": \"น้ำตาลทรายขาว\", \"unit\": \"ช้อนโต๊ะ\"}, {\"amount\": 1, \"converted_display\": \"1 ช้อนโต๊ะ (~3 ช้อนชา / ~13 กรัม)\", \"name\": \"น้ำมันถั่วเหลือง\", \"unit\": \"ช้อนโต๊ะ\"}]', 1),
+(126, 23, 31, '2025-09-08 05:37:12', '[{\"amount\": 80, \"converted_display\": \"80 กรัม\", \"name\": \"เนื้อหมู\", \"unit\": \"กรัม\"}, {\"amount\": 2, \"converted_display\": \"2 ใบ (~0 กรัม)\", \"name\": \"ใบมะกรูด\", \"unit\": \"ใบ\"}, {\"amount\": 1, \"converted_display\": \"1 เม็ด (~5 กรัม)\", \"name\": \"พริกชี้ฟ้า(แดง)\", \"unit\": \"เม็ด\"}]', '[{\"amount\": 20, \"converted_display\": \"20 กรัม\", \"name\": \"พริกแกงพะแนง\", \"unit\": \"กรัม\"}, {\"amount\": 100, \"converted_display\": \"100 มิลลิลิตร (~101 กรัม)\", \"name\": \"กะทิ\", \"unit\": \"มิลลิลิตร\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำปลา\", \"unit\": \"ช้อนโต๊ะ\"}, {\"amount\": 0.4, \"converted_display\": \"0.4 ช้อนโต๊ะ (~1 ช้อนชา / ~6 กรัม)\", \"name\": \"น้ำตาลปี๊บ\", \"unit\": \"ช้อนโต๊ะ\"}]', 1),
+(127, 24, 113, '2025-09-08 05:58:46', '[{\"name\": \"นมสด\", \"amount\": 100, \"unit\": \"มิลลิลิตร\"}, {\"name\": \"ผงโกโก้\", \"amount\": 2, \"unit\": \"ช้อนชา\"}]', '[{\"name\": \"น้ำเปล่า\", \"amount\": 50, \"unit\": \"มิลลิลิตร\"}, {\"name\": \"นมข้นหวาน\", \"amount\": 10, \"unit\": \"มิลลิลิตร\"}, {\"name\": \"กบ\", \"amount\": 100, \"unit\": \"กรัม\"}, {\"name\": \"หมูสับ\", \"amount\": 1000, \"unit\": \"กรัม\"}]', 1);
 
 --
 -- Indexes for dumped tables
@@ -1521,19 +1539,19 @@ ALTER TABLE `unit_conversions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `user_ingredients`
 --
 ALTER TABLE `user_ingredients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
 
 --
 -- AUTO_INCREMENT for table `user_selected_menus`
 --
 ALTER TABLE `user_selected_menus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 
 --
 -- Constraints for dumped tables
