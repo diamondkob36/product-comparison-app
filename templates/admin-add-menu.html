@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin เพิ่มเมนูใหม่ - MealMatch AI</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='images/logo2.png') }}" type="image/png">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-add-menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-body.css') }}">
+</head>
+<body>
+    {% include 'menubar.html' %}
+    <div class="main-content">
+        <div class="add-menu-container">
+            <h1 class="add-menu-title">เพิ่มเมนูใหม่</h1>
+            <form method="POST">
+                <label>ชื่อเมนู</label>
+                <input type="text" name="name" required>
+
+                <label>URL รูปภาพ</label>
+                <input type="text" name="image_url" placeholder="เช่น images/krapao.jpg">
+
+                <label>วัตถุดิบหลัก (JSON)</label>
+                <textarea name="ingredients" rows="3">[]</textarea>
+
+                <label>วัตถุดิบรอง (JSON)</label>
+                <textarea name="secondary_ingredients" rows="3">[]</textarea>
+
+                <label>วิธีทำ (JSON)</label>
+                <textarea name="instructions" rows="3">[]</textarea>
+
+                <label>จำนวนเสิร์ฟ</label>
+                <input type="number" name="servings" min="1" value="1">
+
+                <label>หมวดหมู่เมนู</label>
+                <select name="category_id" required>
+                    {% for c in categories %}
+                        <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+
+                <label>แหล่งที่มา (JSON)</label>
+                <textarea name="source" rows="2">{}</textarea>
+
+                <label>รูปแบบเมนู</label>
+                <select name="menu_type">
+                    <option value='["general"]'>เมนูทั่วไป</option>
+                    <option value='["system"]'>เมนูระบบ</option>
+                </select>
+
+                    <!-- ✅ ปุ่มกลับ + รีเซ็ต -->
+                <div class="button-group">
+                    <a href="{{ url_for('admin.adminindex') }}" class="btn-back">⬅ กลับ</a>
+                    <button type="reset" class="btn-reset">รีเซ็ต</button>
+                </div>
+
+                <button type="submit" class="btn-save">บันทึกเมนู</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+.add-menu-container {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 20px;
+}
+
+.add-menu-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.add-menu-box {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form label{
+    color: black;
+}
+
+form input, form textarea, form select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-back,
+.btn-reset,
+.btn-save {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  text-align: center;
+  font-weight: bold;
+}
+
+.btn-back {
+  flex: 1;
+  background: #6c757d;
+  color: white;
+  text-decoration: none;
+}
+
+.btn-back:hover {
+  background: #5a6268;
+}
+
+.btn-reset {
+  flex: 1;
+  background: #ffc107;
+  color: black;
+}
+
+.btn-reset:hover {
+  background: #e0a800;
+}
+
+.btn-save {
+  width: 100%;
+  background: #2c7be5;
+  color: white;
+  margin-top: 15px;
+}
+
+.btn-save:hover {
+  background: #1a5bbf;
+}

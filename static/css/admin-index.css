@@ -1,11 +1,20 @@
+.dashboard{
+  background-color: #e0e0e0;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 20px;
+}
+
 .dashboard-row {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap; /* ✅ รองรับหน้าจอเล็ก */
   gap: 20px;
-  margin-bottom: 20px;
-  background-color: #e0e0e0;
-  padding: 20px;
+}
+
+.head-dashboard{
+  display: flex;
+  color: black;
 }
 
 .dashboard-box {
@@ -35,3 +44,32 @@
   font-weight: bold;
   color: #2c7be5;
 }
+
+.quick-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* ✅ รองรับจอเล็ก */
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.quick-btn {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+  background: #2c7be5;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.quick-btn:hover {
+  transform: translateY(-3px);
+  background: #1a5bbf;
+}
+

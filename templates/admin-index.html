@@ -17,18 +17,32 @@
 
     {% include 'menubar.html' %}
     <div class="main-content"></div>
-        <div class="dashboard-row">
-            <div class="dashboard-box">
-                <h3>เมนูทั้งหมด</h3>
-                <p>{{ recipe_count }}</p>
+        <div class="dashboard">
+            <h1 class="head-dashboard">แดชบอร์ดจัดการระบบ</h1>
+            <div class="dashboard-row">
+                <div class="dashboard-box">
+                    <h3>เมนูทั้งหมด</h3>
+                    <p>{{ recipe_count }}</p>
+                </div>
+                <div class="dashboard-box">
+                    <h3>ผู้ใช้งาน</h3>
+                    <p>{{ user_count }}</p>
+                </div>
+                <div class="dashboard-box">
+                    <h3>จำนวนข้อมูลวัตถุดิบ</h3>
+                    <p>{{ unit_count }}</p>
+                </div>
+                <div class="dashboard-box">
+                    <h3>การแปลงหน่วยเป็นกรัม</h3>
+                    <p>{{ conversion_count }}</p>
+                </div>
             </div>
-            <div class="dashboard-box">
-                <h3>ผู้ใช้งาน</h3>
-                <p>{{ user_count }}</p>
-            </div>
-            <div class="dashboard-box">
-                <h3>จำนวนวัตถุดิบ</h3>
-                <p>{{ unit_count }}</p>
+            <h2 class="head-dashboard">เมนูด่วน</h2>
+            <div class="quick-actions">
+                <a href="{{ url_for('admin.add_menu') }}" class="quick-btn">➕ เพิ่มเมนู</a>
+                <a href="#" class="quick-btn">🥬 เพิ่มวัตถุดิบ</a>
+                <a href="#" class="quick-btn">⚖️ เพิ่มการแปลงหน่วยเป็นกรัม</a>
+                <a href="#" class="quick-btn">👤 จัดการผู้ใช้</a>
             </div>
         </div>
     </div>
