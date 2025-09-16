@@ -15,7 +15,7 @@
 </head>
 <body>
 
-    {% include 'menubar.html' %}
+    {% include 'admin-menubar.html' %}
     <div class="main-content"></div>
         <div class="dashboard">
             <h1 class="head-dashboard">แดชบอร์ดจัดการระบบ</h1>
@@ -43,6 +43,12 @@
                 <a href="#" class="quick-btn">🥬 เพิ่มวัตถุดิบ</a>
                 <a href="#" class="quick-btn">⚖️ เพิ่มการแปลงหน่วยเป็นกรัม</a>
                 <a href="#" class="quick-btn">👤 จัดการผู้ใช้</a>
+            </div>
+            <h2 class="head-dashboard">เมนูอื่นๆ</h2>
+            <div class="quick-actions">
+                <a href="{{ url_for('admin.all_menus') }}" class="quick-btn">➕ รายการเมนูทั้งหมด</a>
+                <a href="#" class="quick-btn">🥬 รายการวัตถุดิบทั้งหมด</a>
+                <a href="#" class="quick-btn">⚖️ รายการ การแปลงหน่วยทั้งหมด</a>
             </div>
         </div>
     </div>

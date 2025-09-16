@@ -40,6 +40,13 @@ form input, form textarea, form select {
   border: 1px solid #ccc;
 }
 
+form input[type="file"] {
+  border: none;
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 8px;
+}
+
 .button-group {
   display: flex;
   gap: 10px;

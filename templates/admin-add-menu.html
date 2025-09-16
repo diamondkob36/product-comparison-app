@@ -10,16 +10,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-body.css') }}">
 </head>
 <body>
-    {% include 'menubar.html' %}
+    {% include 'admin-menubar.html' %}
     <div class="main-content">
         <div class="add-menu-container">
             <h1 class="add-menu-title">เพิ่มเมนูใหม่</h1>
             <form method="POST">
                 <label>ชื่อเมนู</label>
-                <input type="text" name="name" required>
+                <input type="text" name="name" required placeholder="ชื่อเมนูอาหาร">
 
                 <label>URL รูปภาพ</label>
-                <input type="text" name="image_url" placeholder="เช่น images/krapao.jpg">
+                <input type="text" name="image_url" placeholder="เช่น krapao.jpg">
+
+                <label>อัปโหลดรูปภาพ</label>
+                <input type="file" name="image_file" accept="image/*">
 
                 <label>วัตถุดิบหลัก (JSON)</label>
                 <textarea name="ingredients" rows="3">[]</textarea>
