@@ -1,3 +1,7 @@
+.head-dashboard{
+  color: white;
+}
+
 .menu-table {
   width: 100%;
   border-collapse: separate; /* ✅ ใช้ separate เพื่อให้ border-radius มีผล */
@@ -53,4 +57,41 @@
   margin-bottom: 4px;
   line-height: 1.5;
   font-size: 14px;
+}
+
+.btn-action {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.btn-edit {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.btn-edit:hover {
+  background-color: #e0a800;
+  color: #000;
+}
+
+.btn-delete {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+}
+
+.btn-table{
+  display: flex;
+  justify-content: center;
+  gap: 5px;
 }

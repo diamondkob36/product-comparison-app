@@ -26,62 +26,74 @@
             <th>จำนวนเสิร์ฟ</th>
             <th>หมวดหมู่</th>
             <th>รูปแบบเมนู</th>
+            <th>การกระทำ</th> <!-- ✅ เพิ่ม -->
             </tr>
         </thead>
         <tbody>
             {% for r in recipes %}
             <tr>
-            <td>{{ r.id }}</td>
-            <td>{{ r.name }}</td>
-            <td>
-                {% if r.image_exists %}
-                ✅ มีไฟล์
-                {% else %}
-                ❌ ไม่พบไฟล์
-                {% endif %}
-            </td>
-            <td class="text-left">
-                {% if r.ingredients %}
-                <ul>
-                    {% for i in r.ingredients %}
-                    <li>{{ i }}</li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <span style="color:red;">ว่างเปล่า</span>
-                {% endif %}
-            </td>
-            <td class="text-left">
-                {% if r.secondary_ingredients %}
-                <ul>
-                    {% for i in r.secondary_ingredients %}
-                    <li>{{ i }}</li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <span style="color:red;">ว่างเปล่า</span>
-                {% endif %}
-            </td>
-            <td>
-            {% if 'system' in r.menu_type %}
-                {% if r.instructions %}
-                <span style="color:green; font-weight:bold;">✅ มีวิธีทำ</span>
-                {% else %}
-                <span style="color:red;">❌ ว่างเปล่า</span>
-                {% endif %}
-            {% elif 'general' in r.menu_type %}
-                <span style="color:blue; font-weight:bold;">ℹ️ เป็นเมนูทั่วไป</span>
-            {% endif %}
-            </td>
-            <td>{{ r.servings or '-' }}</td>
-            <td>{{ r.category_name or '-' }}</td>
-            <td>
-                {% if r.menu_type %}
-                {{ r.menu_type|join(', ') }}
-                {% else %}
-                <span style="color:red;">ว่างเปล่า</span>
-                {% endif %}
-            </td>
+                <td>{{ r.id }}</td>
+                <td>{{ r.name }}</td>
+                <td>
+                    {% if r.image_exists %}
+                    ✅ มีไฟล์
+                    {% else %}
+                    ❌ ไม่พบไฟล์
+                    {% endif %}
+                </td>
+                <td class="text-left">
+                    {% if r.ingredients %}
+                    <ul>
+                        {% for i in r.ingredients %}
+                        <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <span style="color:red;">ว่างเปล่า</span>
+                    {% endif %}
+                </td>
+                <td class="text-left">
+                    {% if r.secondary_ingredients %}
+                    <ul>
+                        {% for i in r.secondary_ingredients %}
+                        <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <span style="color:red;">ว่างเปล่า</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if 'system' in r.menu_type %}
+                    {% if r.instructions %}
+                        <span style="color:green; font-weight:bold;">✅ มีวิธีทำ</span>
+                    {% else %}
+                        <span style="color:red;">❌ ว่างเปล่า</span>
+                    {% endif %}
+                    {% elif 'general' in r.menu_type %}
+                    <span style="color:blue; font-weight:bold;">ℹ️ เป็นเมนูทั่วไป</span>
+                    {% endif %}
+                </td>
+                <td>{{ r.servings or '-' }}</td>
+                <td>{{ r.category_name or '-' }}</td>
+                <td>
+                    {% if r.menu_type %}
+                    {{ r.menu_type|join(', ') }}
+                    {% else %}
+                    <span style="color:red;">ว่างเปล่า</span>
+                    {% endif %}
+                </td>
+
+                <!-- ✅ คอลัมน์ใหม่ -->
+                <td>
+                    <div class="btn-table">
+                        <a href="{{ url_for('admin.edit_menu', menu_id=r.id) }}" class="btn-action btn-edit">แก้ไข</a>
+                        <form method="POST" action="{{ url_for('admin.delete_menu', menu_id=r.id) }}" 
+                                onsubmit="return confirm('คุณแน่ใจหรือไม่ที่จะลบเมนูนี้?');">
+                            <button type="submit" class="btn-action btn-delete">ลบ</button>
+                        </form>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

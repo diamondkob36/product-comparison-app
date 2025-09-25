@@ -14,7 +14,7 @@
     <div class="main-content">
         <div class="add-menu-container">
             <h1 class="add-menu-title">เพิ่มเมนูใหม่</h1>
-            <form method="POST">
+           <form method="POST" enctype="multipart/form-data">
                 <label>ชื่อเมนู</label>
                 <input type="text" name="name" required placeholder="ชื่อเมนูอาหาร">
 
@@ -52,7 +52,7 @@
                     <option value='["system"]'>เมนูระบบ</option>
                 </select>
 
-                    <!-- ✅ ปุ่มกลับ + รีเซ็ต -->
+                <!-- ✅ ปุ่มกลับ + รีเซ็ต -->
                 <div class="button-group">
                     <a href="{{ url_for('admin.adminindex') }}" class="btn-back">⬅ กลับ</a>
                     <button type="reset" class="btn-reset">รีเซ็ต</button>

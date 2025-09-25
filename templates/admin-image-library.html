@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>คลังรูปภาพ - MealMatch AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-image-library.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-body.css') }}">
+
+    <script src="{{ url_for('static', filename='js/admin-image-library.js') }}"></script>
+</head>
+<body>
+    {% include 'admin-menubar.html' %}
+    <div class="main-content">
+        <h1 class="head-dashboard">คลังรูปภาพ</h1>
+
+        <table class="menu-table">
+        <thead>
+            <tr>
+            <th>รูป/ชื่อไฟล์</th>
+            <th>ใช้งานในเมนู</th>
+            <th>การกระทำ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for img in images %}
+            <tr>
+            <td>
+                <a href="javascript:void(0);" class="image-link" data-img="{{ url_for('static', filename=img.url) }}">
+                    {{ img.filename }}
+                </a>
+            </td>
+            <td>
+            {% if img.used_by %}
+                <div class="used-by-list">
+                {% for r in img.used_by %}
+                    <p><a href="{{ url_for('admin.edit_menu', menu_id=r.id) }}">{{ r.name }}</a></p>
+                {% endfor %}
+                </div>
+            {% else %}
+                <span class="text-muted">ไม่ถูกใช้งาน</span>
+            {% endif %}
+            </td>
+            <td>
+                {% if not img.used_by %}
+                <form method="POST" action="{{ url_for('admin.delete_image', filename=img.filename) }}" onsubmit="return confirm('ลบรูปนี้หรือไม่?');">
+                    <button type="submit" class="btn-action btn-delete">ลบ</button>
+                </form>
+                {% else %}
+                <span style="color:gray;">ไม่สามารถลบ</span>
+                {% endif %}
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+    <!-- ✅ Popup สำหรับแสดงภาพ -->
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div class="caption" id="caption"></div>
+    </div>
+</body>
+</html>
